@@ -1,0 +1,24 @@
+Email = "harikrishnan.int2027g3@gmail.com"
+The_Sheet_Link_Reports = "https://docs.google.com/spreadsheets/d/13hYacqrTMuR9QabZbLFukyhb5K6GNMZSdQZOa8ri3N4/edit?usp=sharing"
+
+from this email only u can edit it there has the Reports sheets u need to update the daily report, weekly report, monthly report. 
+Give me the code for this
+
+jira = "https://harikrishnanint2027g3.atlassian.net/jira/software/projects/VCT/boards/68?filter=&groupBy=none"
+
+"Name
+Virya Clean Tech
+
+Space key
+VCT
+
+Space owner
+Hari Krishnan C
+
+Default assignee
+Space owner
+
+" these are the things for its jira thing. from this u need to connet with the jira and get the dashboard make it to a visualize nice clean looking email with colours like the github md file like that bit not that. Has the banner and title and the dashboard in the colours and the no of leads and date with the date and things automated in the subject send the mail to the same mail. Present and label the mail as the Reports -> daily, weekly and monthly. At first need to send the 4 text mails when i connect to the vercel by taking the data from the jira and int the google sheets it need to update this 
+Daily	Time	Sent Status	Weekly	Time	Sent Status	Monthly	Time	Sent Status
+
+this is in the google sheets coloumn need to update this https://docs.google.com/spreadsheets/d/13hYacqrTMuR9QabZbLFukyhb5K6GNMZSdQZOa8ri3N4/edit?gid=2032005398#gid=2032005398 in this link it has the reports sheet tab there it need to update each mails its automate.
