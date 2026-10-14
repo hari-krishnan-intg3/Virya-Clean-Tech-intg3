@@ -22,10 +22,12 @@
 
 const VISITOR_KEY = 'virya.visitor';
 const SESSION_KEY = 'virya.session';
+const SESSION_ACTIVITY_KEY = 'virya.session.lastActivity';
 const CONSENT_KEY = 'virya.tracking';
 
 export const FLUSH_INTERVAL_MS = 30_000;
 export const FLUSH_EVENT_THRESHOLD = 6;
+export const SESSION_IDLE_MS = 30 * 60_000;
 
 /** Fired on the window so the chatbot, forms and pages can all report into this. */
 export const TRACK_EVENT = 'virya:track';
@@ -75,6 +77,7 @@ export function setTrackingPreference(enabled: boolean): void {
       localStorage.removeItem('virya.visitor.memory');
       localStorage.removeItem('virya.chat.history');
       sessionStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(SESSION_ACTIVITY_KEY);
       events.length = 0;
       state = null;
       return;
@@ -116,10 +119,21 @@ export function getVisitorId(): string {
 
 export function getSessionId(): string {
   try {
-    return getOrCreate(SESSION_KEY, 'ses', sessionStorage);
+    const now = Date.now();
+    const existing = sessionStorage.getItem(SESSION_KEY);
+    const lastActivity = Number(sessionStorage.getItem(SESSION_ACTIVITY_KEY));
+    const expired = Boolean(existing) && sessionHasExpired(lastActivity, now);
+    const sessionId = existing && !expired ? existing : randomId('ses');
+    sessionStorage.setItem(SESSION_KEY, sessionId);
+    sessionStorage.setItem(SESSION_ACTIVITY_KEY, String(now));
+    return sessionId;
   } catch {
     return randomId('ses');
   }
+}
+
+export function sessionHasExpired(lastActivity: number, now = Date.now()): boolean {
+  return !Number.isFinite(lastActivity) || lastActivity <= 0 || now - lastActivity > SESSION_IDLE_MS;
 }
 
 /* ------------------------------------------------------------------ */
@@ -239,7 +253,8 @@ function createState(): SessionState {
 let state: SessionState | null = null;
 
 export function getSession(): SessionState {
-  if (!state) state = createState();
+  const sessionId = getSessionId();
+  if (!state || state.sessionId !== sessionId) state = createState();
   return state;
 }
 

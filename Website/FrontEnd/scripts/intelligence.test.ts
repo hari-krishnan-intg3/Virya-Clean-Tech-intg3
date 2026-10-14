@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { SESSION_HEADERS, sheetColumnName } from '../api/_lib/session.js';
 import { getVercelAnalytics } from '../api/_lib/vercel-analytics.js';
+import { sessionHasExpired, SESSION_IDLE_MS } from '../src/lib/session';
 import { parseChatSnapshot, parseVisitorMemory } from '../src/lib/visitorMemory';
 
 const now = Date.parse('2026-10-14T00:00:00.000Z');
@@ -28,6 +29,9 @@ test('column 27 maps to AA', () => assert.equal(sheetColumnName(27), 'AA'));
 test('session header column 35 maps to AI', () => assert.equal(sheetColumnName(35), 'AI'));
 test('column 36 maps to AJ', () => assert.equal(sheetColumnName(36), 'AJ'));
 test('session headers end at AJ after adding UTC offset', () => assert.equal(sheetColumnName(SESSION_HEADERS.length), 'AJ'));
+test('active session does not expire before the idle limit', () => assert.equal(sessionHasExpired(now - SESSION_IDLE_MS + 1, now), false));
+test('session expires after thirty minutes idle', () => assert.equal(sessionHasExpired(now - SESSION_IDLE_MS - 1, now), true));
+test('session expires when its activity timestamp is invalid', () => assert.equal(sessionHasExpired(Number.NaN, now), true));
 test('valid visitor memory is restored', () => assert.equal(parseVisitorMemory(visitorRaw(), now)?.lastPath, '/services/solar'));
 test('null visitor memory is ignored', () => assert.equal(parseVisitorMemory(null, now), null));
 test('malformed visitor memory is ignored', () => assert.equal(parseVisitorMemory('{', now), null));
