@@ -81,8 +81,52 @@ export interface AppConfig {
    * (the default) only the truncated form is persisted.
    */
   storeRawIp: boolean;
-  /** Shared key the browser form presents to /api/leads. */
-  leadsIngestKey?: string;
+}
+
+export interface LeadIntakeConfig {
+  jira: JiraConfig;
+  google?: GoogleAuthConfig;
+  sheets?: SheetsConfig;
+  leadsAssigneeId?: string;
+  storeRawIp: boolean;
+}
+
+/** Loads only the integrations required by website lead intake. */
+export function loadLeadIntakeConfig(): LeadIntakeConfig {
+  const projectKey = 'VCT';
+  const jira: JiraConfig = {
+    baseUrl: required('JIRA_BASE_URL').replace(/\/+$/, ''),
+    email: required('JIRA_EMAIL'),
+    apiToken: required('JIRA_API_TOKEN'),
+    projectKey,
+    leadsProjectKey: projectKey,
+  };
+
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+  const spreadsheetId = process.env.SHEETS_SPREADSHEET_ID;
+  const leadsTab = process.env.SHEETS_LEADS_TAB;
+  const sheetsReady = Boolean(clientEmail && privateKey && spreadsheetId && leadsTab);
+
+  return {
+    jira,
+    ...(sheetsReady
+      ? {
+          google: {
+            clientEmail: clientEmail as string,
+            privateKey: (privateKey as string).replace(/\\n/g, '\n'),
+          },
+          sheets: {
+            spreadsheetId: spreadsheetId as string,
+            reportsTab: process.env.SHEETS_REPORTS_TAB || 'Reports',
+            kpiTab: process.env.SHEETS_KPI_TAB || 'Reports KPI',
+            leadsTab,
+          },
+        }
+      : {}),
+    leadsAssigneeId: process.env.JIRA_LEADS_ASSIGNEE_ID || undefined,
+    storeRawIp: process.env.STORE_RAW_IP === 'true',
+  };
 }
 
 /** Whether the app has enough configuration to run. Used by /api/health. */
@@ -135,7 +179,6 @@ cronSecret: required('CRON_SECRET'),
     sessionsTab: process.env.SHEETS_SESSIONS_TAB ?? 'Sessions',
     leadsAssigneeId: process.env.JIRA_LEADS_ASSIGNEE_ID || undefined,
     storeRawIp: process.env.STORE_RAW_IP === 'true',
-    leadsIngestKey: process.env.LEADS_INGEST_KEY || undefined,
   };
 }
 

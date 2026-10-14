@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { loadConfig, missingEnv } from './_lib/config';
+import { loadLeadIntakeConfig } from './_lib/config';
 import { buildRequestContext } from './_lib/context';
 import {
   createLeadIssue,
@@ -21,7 +21,7 @@ import { ensureTab } from './_lib/tabs';
  * Writes to three places, each idempotent and each allowed to fail without
  * losing the others:
  *
- *   1. **Jira** — a Task in the leads project, assigned, with the next
+ *   1. **Jira** — a Task in the VCT project, assigned, with the next
  *      actions as subtasks and the session context in the description.
  *   2. **Sheets / Leads** — one row per enquiry, for the KPI counters.
  *   3. **Sheets / Sessions** — the visit itself, upserted by `/api/session`.
@@ -30,16 +30,16 @@ import { ensureTab } from './_lib/tabs';
  * and the response always says which parts succeeded.
  */
 
-function authorized(req: VercelRequest, cronSecret: string): boolean {
-  const header = req.headers.authorization;
-  if (typeof header === 'string' && header.replace(/^Bearer\s+/i, '').trim() === cronSecret) {
-    return true;
+function sameOrigin(req: VercelRequest): boolean {
+  const origin = req.headers.origin;
+  const host = req.headers.host;
+  if (typeof origin !== 'string' || typeof host !== 'string') return false;
+
+  try {
+    return new URL(origin).host.toLowerCase() === host.toLowerCase();
+  } catch {
+    return false;
   }
-
-  const browserKey = process.env.LEADS_INGEST_KEY;
-  if (browserKey && req.headers['x-leads-key'] === browserKey) return true;
-
-  return false;
 }
 
 const LEAD_HEADERS = [
@@ -87,15 +87,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const missing = missingEnv();
+  const missing = ['JIRA_BASE_URL', 'JIRA_EMAIL', 'JIRA_API_TOKEN'].filter(
+    (key) => !process.env[key],
+  );
   if (missing.length > 0) {
-    return res.status(500).json({ error: 'Server is not fully configured', missing });
+    return res.status(500).json({ error: 'Jira lead intake is not configured', missing });
   }
 
-  const config = loadConfig();
-  if (!authorized(req, config.cronSecret)) {
-    return res.status(401).json({ error: 'Unauthorized' });
+  if (!sameOrigin(req)) {
+    return res.status(403).json({ error: 'Requests must come from this site' });
   }
+
+  const config = loadLeadIntakeConfig();
 
   const body = (req.body ?? {}) as Partial<LeadInput> & {
     context?: Record<string, unknown>;
@@ -159,7 +162,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // 2) Sheets — the Leads tab that feeds the KPI counters
-  if (config.sheets.leadsTab && !config.dryRun) {
+  if (config.sheets?.leadsTab && config.google) {
     try {
       const tab = config.sheets.leadsTab;
       await ensureTab(config.sheets, config.google, tab);
@@ -201,8 +204,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  return res.status(200).json({
-    ok: true,
+  return res.status(jira ? 200 : 502).json({
+    ok: Boolean(jira),
     receivedAt: timestamp,
     jira,
     subtasks: subtasks.length,
@@ -210,8 +213,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     leadsProjectReady,
     sheetWritten,
     errors: errors.length ? errors : undefined,
-    note: config.jira.leadsProjectKey
-      ? undefined
-      : 'Set JIRA_LEADS_PROJECT_KEY to file leads into Jira.',
+    note: jira ? undefined : 'The lead could not be recorded in Jira. Please retry.',
   });
 }

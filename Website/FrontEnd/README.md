@@ -164,20 +164,14 @@ with `preconnect`.
 
 ## Integration points
 
-Everything below is deliberately **not** wired up, because the corresponding
-backend service does not exist yet. Each has a clean, documented seam.
+### Consultation form → Jira
 
-### 1. Consultation form → your API / CRM
+The form posts to the same-origin `/api/leads` endpoint by default. The
+server-side route creates a Task in Jira project `VCT`; set `JIRA_BASE_URL`,
+`JIRA_EMAIL`, and `JIRA_API_TOKEN` in the server environment (Vercel settings
+for deployment). No Jira credential or API key is exposed to the browser.
 
-The only environment variable in the project:
-
-```bash
-cp .env.example .env
-# then set:
-VITE_BOOKING_ENDPOINT=https://your-endpoint.example/leads
-```
-
-`src/lib/validation.ts → submitBookingRequest()` will `POST` JSON to that URL:
+`src/lib/validation.ts → submitBookingRequest()` sends JSON in this shape:
 
 ```json
 {
@@ -188,16 +182,8 @@ VITE_BOOKING_ENDPOINT=https://your-endpoint.example/leads
 }
 ```
 
-**Requirements:** the endpoint must allow CORS from the site's origin, and must
-accept the field names above. Non-2xx responses surface the retryable error
-state automatically.
-
-**When unset (default):** the form validates locally, exercises the
-loading → success animation, and confirms receipt in the UI. **Note:** the
-site ships this way, so until you set the endpoint the form does not actually
-transmit anything. If you go live without configuring it, wire the primary CTA
-to the Google Calendar booking flow instead (already implemented) so leads are
-still captured.
+Non-2xx responses surface the retryable error state. Jira and Sheets
+credentials remain server-side; Google Sheets lead logging is optional.
 
 ### 2. Analytics / conversion tracking
 

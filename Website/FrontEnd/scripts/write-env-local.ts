@@ -46,7 +46,7 @@ const env = `# ── LOCAL ENV (gitignored) ───────────�
 
 JIRA_BASE_URL=${optional('JIRA_BASE_URL', 'https://harikrishnanint2027g3.atlassian.net')}
 JIRA_PROJECT_KEY=${optional('JIRA_PROJECT_KEY', 'VCT')}
-JIRA_LEADS_PROJECT_KEY=${optional('JIRA_LEADS_PROJECT_KEY', 'LEADS')}
+JIRA_LEADS_PROJECT_KEY=${optional('JIRA_LEADS_PROJECT_KEY', 'VCT')}
 JIRA_EMAIL=${optional('JIRA_EMAIL')}
 JIRA_API_TOKEN=${read('JIRA_API_TOKEN')}
 
@@ -65,7 +65,6 @@ MAIL_TO=${optional('MAIL_TO')}
 CRON_SECRET=${cronSecret}
 SITE_URL=${optional('SITE_URL', 'https://viryacleantech.com')}
 
-VITE_BOOKING_ENDPOINT=${optional('VITE_BOOKING_ENDPOINT')}
 `;
 
 writeFileSync('.env.local', env, 'utf8');

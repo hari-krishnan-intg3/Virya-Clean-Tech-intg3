@@ -56,19 +56,12 @@ Everything below was tested live against your accounts, not assumed:
 
 ---
 
-## 2. ⚠️ One manual step: the Jira leads project
+## 2. Jira lead destination
 
-Creating Jira projects over REST **is not permitted on your tenant** — the API
-reports `CREATE_PROJECTS` as an unrecognised permission. The code attempts it
-automatically and falls back with instructions, but you'll need to do it once by
-hand:
-
-> Jira → **Projects → Create** → key `LEADS`, name `Virya Leads`
-
-Then set `JIRA_LEADS_PROJECT_KEY=LEADS` (already in `.env.local`).
-
-The code is otherwise complete: every lead becomes a Task carrying
-*"Lead created by {name} on {timestamp} (IST) from website"*.
+Website enquiries are created as Tasks in the existing `VCT` project. No
+separate leads project or project-creation permission is needed. Each issue
+includes the contact details, request, session context, intent score, and
+follow-up subtasks.
 
 ---
 
@@ -168,14 +161,16 @@ Subject carries the headline numbers:
 
 ## 7. Wiring the website form to Jira
 
-Set `VITE_LEADS_ENDPOINT=/api/leads` and `VITE_LEADS_KEY=<LEADS_INGEST_KEY>`
-before building. Every consultation-form submission then:
+The consultation form posts to `/api/leads` by default; no Vite variable or
+browser API key is required. Configure `JIRA_BASE_URL`, `JIRA_EMAIL`, and
+`JIRA_API_TOKEN` as server-side environment variables in Vercel. Every
+consultation-form submission then:
 
-1. creates a Task in the LEADS project with who/when,
-2. appends a row to the `Leads` sheet tab (auto-created on first use),
-3. flows into the Leads KPI on the next report.
+1. creates a Task in the `VCT` project with who/when,
+2. appends a row to the `Leads` sheet when its Google and Sheets settings are configured.
 
-Leave them blank and the form behaves as a local simulation.
+The API checks the browser request's origin. If Jira rejects issue creation,
+the API returns an error and the form does not show a false success state.
 
 ---
 

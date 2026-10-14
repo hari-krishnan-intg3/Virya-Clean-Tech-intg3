@@ -94,17 +94,13 @@ export interface BookingSubmission extends BookingFormValues {
   context: Record<string, unknown>;
 }
 
-export const LEADS_ENDPOINT = (import.meta.env.VITE_LEADS_ENDPOINT as string | undefined) ?? '';
-export const LEADS_INGEST_KEY = (import.meta.env.VITE_LEADS_KEY as string | undefined) ?? '';
-export const BOOKING_ENDPOINT =
-  (import.meta.env.VITE_BOOKING_ENDPOINT as string | undefined) ?? '';
+export const LEADS_ENDPOINT =
+  (import.meta.env.VITE_LEADS_ENDPOINT as string | undefined) || '/api/leads';
 
 /**
  * Posts the enquiry.
  *
- * Prefers `/api/leads`, which files a Jira task with subtasks and writes to
- * the Leads sheet. Falls back to a generic webhook, and finally to a local
- * simulation so the form is still demonstrable with nothing configured.
+ * Sends submissions to the server-side Jira intake route by default.
  */
 export async function submitBookingRequest(
   payload: BookingSubmission,
@@ -112,45 +108,17 @@ export async function submitBookingRequest(
 ): Promise<void> {
   const body = JSON.stringify(payload);
 
-  if (LEADS_ENDPOINT) {
-    const response = await fetch(LEADS_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(LEADS_INGEST_KEY ? { 'x-leads-key': LEADS_INGEST_KEY } : {}),
-      },
-      body,
-      signal,
-    });
-    if (!response.ok) {
-      throw new Error(`Lead intake failed (${response.status})`);
-    }
-    markFormSubmitted(payload.service);
-    return;
-  }
-
-  if (BOOKING_ENDPOINT) {
-    const response = await fetch(BOOKING_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body,
-      signal,
-    });
-    if (!response.ok) {
-      throw new Error(`Booking endpoint responded with ${response.status}`);
-    }
-    markFormSubmitted(payload.service);
-    return;
-  }
-
-  // Nothing configured: simulate so the success state is still reachable.
-  await new Promise<void>((resolve, reject) => {
-    const timer = window.setTimeout(resolve, 900);
-    signal?.addEventListener('abort', () => {
-      window.clearTimeout(timer);
-      reject(new DOMException('Aborted', 'AbortError'));
-    });
+  const response = await fetch(LEADS_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+    signal,
   });
+  const result = (await response.json().catch(() => null)) as { ok?: boolean } | null;
+  if (!response.ok || result?.ok !== true) {
+    throw new Error(`Lead intake failed (${response.status})`);
+  }
+  markFormSubmitted(payload.service);
 }
 
 /** Attaches the session snapshot so the server can file an enriched lead. */
