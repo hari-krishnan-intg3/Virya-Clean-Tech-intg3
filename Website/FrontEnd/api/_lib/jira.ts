@@ -13,6 +13,8 @@ export interface JiraIssue {
   created: string;
   updated: string;
   assignee: string | null;
+  labels: string[];
+  parentKey: string | null;
   url: string;
 }
 
@@ -65,7 +67,7 @@ export async function searchIssues(
     body: JSON.stringify({
       jql,
       maxResults,
-      fields: ['summary', 'status', 'issuetype', 'created', 'updated', 'assignee'],
+      fields: ['summary', 'status', 'issuetype', 'created', 'updated', 'assignee', 'labels', 'parent'],
     }),
   });
 
@@ -82,7 +84,7 @@ export async function searchIssues(
     const url =
       `${config.baseUrl}/rest/api/3/search?jql=${encodeURIComponent(jql)}` +
       `&maxResults=${maxResults}` +
-      `&fields=summary,status,issuetype,created,updated,assignee`;
+      `&fields=summary,status,issuetype,created,updated,assignee,labels,parent`;
     const legacy = await fetch(url, { headers });
 
     if (!legacy.ok) {
@@ -111,6 +113,8 @@ function mapIssue(raw: any): JiraIssue {
     created: raw.fields?.created ?? '',
     updated: raw.fields?.updated ?? '',
     assignee: raw.fields?.assignee?.displayName ?? null,
+    labels: raw.fields?.labels ?? [],
+    parentKey: raw.fields?.parent?.key ?? null,
     url: `/browse/${key}`,
   };
 }
@@ -136,7 +140,15 @@ export async function getSnapshot(
 
   // Pull the full project so type/status breakdowns are accurate, not just
   // for issues created in the window.
-  const { issues } = await searchIssues(config, baseJql, 200);
+  const { issues: allIssues } = await searchIssues(config, baseJql, 200);
+  const testParents = new Set(
+    allIssues.filter((issue) => issue.labels.includes('test-lead')).map((issue) => issue.key),
+  );
+  const issues = allIssues.filter(
+    (issue) =>
+      !issue.labels.includes('test-lead') &&
+      (!issue.parentKey || !testParents.has(issue.parentKey)),
+  );
 
   const start = rangeStart.getTime();
   const end = rangeEnd.getTime();

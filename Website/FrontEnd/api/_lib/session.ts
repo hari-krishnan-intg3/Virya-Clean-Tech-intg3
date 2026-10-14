@@ -41,6 +41,7 @@ export interface SessionRecord {
   utm: string;
   /** Client-derived, trusted: only the browser can know these accurately. */
   timezone: string;
+  utcOffset: number;
   localHour: number;
   device: string;
   viewport: string;
@@ -80,6 +81,7 @@ export const SESSION_HEADERS = [
   'Landing Page',
   'UTM',
   'Timezone',
+  'UTC Offset Minutes',
   'Local Hour',
   'Device (client)',
   'Viewport',
@@ -99,7 +101,18 @@ export const SESSION_HEADERS = [
 ] as const;
 
 const COLUMN_COUNT = SESSION_HEADERS.length;
-const LAST_COLUMN = String.fromCharCode(64 + COLUMN_COUNT); // 'A'..'Z' is enough at 35
+
+export function sheetColumnName(index: number): string {
+  let name = '';
+  while (index > 0) {
+    index -= 1;
+    name = String.fromCharCode(65 + (index % 26)) + name;
+    index = Math.floor(index / 26);
+  }
+  return name;
+}
+
+const LAST_COLUMN = sheetColumnName(COLUMN_COUNT);
 
 /**
  * Rows are expensive to find, so remember where we put them. A warm lambda
@@ -140,6 +153,7 @@ function toRow(record: SessionRecord): (string | number | boolean)[] {
     record.landingPage,
     record.utm,
     record.timezone,
+    record.utcOffset,
     record.localHour,
     record.device,
     record.viewport,
@@ -207,6 +221,7 @@ export interface SessionPayload {
   landingPage?: string;
   utm?: Record<string, string>;
   timezone?: string;
+  utcOffset?: number;
   localHour?: number;
   device?: string;
   viewport?: string;
@@ -236,7 +251,7 @@ export async function upsertSession(
   if (!sessionId) throw new Error('sessionId is required');
 
   await ensureTab(sheets, google, tab);
-  await writeHeadersOnce(sheets, google, tab);
+  await ensureSessionHeaders(sheets, google, tab);
 
   const record: SessionRecord = {
     sessionId,
@@ -260,6 +275,7 @@ export async function upsertSession(
       .join(' ')
       .slice(0, 240),
     timezone: text(payload.timezone, 60),
+    utcOffset: Math.min(840, Math.max(-840, Math.round(payload.utcOffset ?? 0))),
     localHour: Math.max(0, Math.min(23, Math.round(payload.localHour ?? 0))),
     device: text(payload.device, 20),
     viewport: text(payload.viewport, 24),
@@ -292,7 +308,7 @@ export async function upsertSession(
   }
 
   // appendRows writes to the next free row; find it after the write.
-  const { appendRows } = await import('./sheets');
+  const { appendRows } = await import('./sheets.js');
   await appendRows(sheets, google, tab, `A:${LAST_COLUMN}`, [values]);
 
   const nextRow = await countRowsAfter(sheets, google, tab, sessionId, existingRow);
@@ -316,17 +332,20 @@ async function countRowsAfter(
 
 let headersWritten = false;
 
-async function writeHeadersOnce(
+export async function ensureSessionHeaders(
   sheets: SheetsConfig,
   google: GoogleAuthConfig,
   tab: string,
 ): Promise<void> {
   if (headersWritten) return;
 
-  const existing = await readTab(sheets, google, tab, 'A1:B1');
-  const first = (existing[0]?.[0] ?? '').trim();
+  const existing = await readTab(sheets, google, tab, `A1:${LAST_COLUMN}1`);
+  const headers = existing[0] ?? [];
 
-  if (first !== SESSION_HEADERS[0]) {
+  if (
+    headers.length !== COLUMN_COUNT ||
+    SESSION_HEADERS.some((header, index) => headers[index] !== header)
+  ) {
     await writeTab(sheets, google, tab, `A1:${LAST_COLUMN}1`, [[...SESSION_HEADERS]]);
   }
 

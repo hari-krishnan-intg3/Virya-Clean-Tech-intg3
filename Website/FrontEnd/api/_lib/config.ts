@@ -46,6 +46,8 @@ export interface SheetsConfig {
   kpiTab: string;
   /** Optional tab that holds raw leads. */
   leadsTab?: string;
+  /** Tab that stores Vercel Web Analytics snapshots. */
+  analyticsTab?: string;
 }
 
 export interface MailConfig {
@@ -55,11 +57,19 @@ export interface MailConfig {
   to: string;
 }
 
+export interface VercelAnalyticsConfig {
+  accessToken: string;
+  projectId: string;
+  teamId?: string;
+  teamSlug?: string;
+}
+
 export interface AppConfig {
   jira: JiraConfig;
   google: GoogleAuthConfig;
   sheets: SheetsConfig;
   mail: MailConfig;
+  vercelAnalytics?: VercelAnalyticsConfig;
   /** Shared secret Vercel Cron sends as `Authorization: Bearer <CRON_SECRET>`. */
   cronSecret: string;
   /** Site used for absolute links in the email. */
@@ -121,6 +131,7 @@ export function loadLeadIntakeConfig(): LeadIntakeConfig {
             reportsTab: process.env.SHEETS_REPORTS_TAB || 'Reports',
             kpiTab: process.env.SHEETS_KPI_TAB || 'Reports KPI',
             leadsTab,
+            analyticsTab: process.env.SHEETS_ANALYTICS_TAB || 'Vercel Analytics',
           },
         }
       : {}),
@@ -167,12 +178,25 @@ export function loadConfig(): AppConfig {
       reportsTab: process.env.SHEETS_REPORTS_TAB || 'Reports',
       kpiTab: process.env.SHEETS_KPI_TAB || 'Reports KPI',
       leadsTab: process.env.SHEETS_LEADS_TAB || undefined,
+      analyticsTab: process.env.SHEETS_ANALYTICS_TAB || 'Vercel Analytics',
     },
     mail: {
       apiKey: required('RESEND_API_KEY'),
       from: process.env.MAIL_FROM || 'Virya Reports <onboarding@resend.dev>',
       to: required('MAIL_TO'),
     },
+    ...(process.env.VERCEL_ACCESS_TOKEN &&
+    (process.env.VERCEL_ANALYTICS_PROJECT_ID || process.env.VERCEL_PROJECT_ID)
+      ? {
+          vercelAnalytics: {
+            accessToken: process.env.VERCEL_ACCESS_TOKEN,
+            projectId:
+              process.env.VERCEL_ANALYTICS_PROJECT_ID || process.env.VERCEL_PROJECT_ID!,
+            teamId: process.env.VERCEL_TEAM_ID || undefined,
+            teamSlug: process.env.VERCEL_TEAM_SLUG || undefined,
+          },
+        }
+      : {}),
 cronSecret: required('CRON_SECRET'),
     siteUrl: (process.env.SITE_URL || 'https://viryacleantech.com').replace(/\/+$/, ''),
     dryRun: process.env.DRY_RUN === 'true',
@@ -194,6 +218,7 @@ export function sessionConfig(): Pick<AppConfig, 'sheets' | 'google' | 'sessions
       reportsTab: process.env.SHEETS_REPORTS_TAB || 'Reports',
       kpiTab: process.env.SHEETS_KPI_TAB || 'Reports KPI',
       leadsTab: process.env.SHEETS_LEADS_TAB || undefined,
+      analyticsTab: process.env.SHEETS_ANALYTICS_TAB || 'Vercel Analytics',
     },
     google: {
       clientEmail: required('GOOGLE_CLIENT_EMAIL'),

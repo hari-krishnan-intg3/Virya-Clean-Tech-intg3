@@ -22,6 +22,14 @@ loadEnvLocal();
 const live = process.argv.includes('--live');
 if (live) process.env.DRY_RUN = 'false';
 
+const typesArgumentIndex = process.argv.indexOf('--types');
+const typesArgument = typesArgumentIndex >= 0 ? process.argv[typesArgumentIndex + 1] : undefined;
+const types = typesArgument?.split(',').map((type) => type.trim()).filter(Boolean) ?? [
+  'daily',
+  'weekly',
+  'monthly',
+];
+
 const { default: handler } = await import('../api/reports');
 
 function mockRes() {
@@ -48,7 +56,7 @@ const req: any = {
   method: 'POST',
   headers: { authorization: `Bearer ${process.env.CRON_SECRET}` },
   query: {},
-  body: { types: ['daily', 'weekly', 'monthly'], test: !live },
+  body: { types, test: !live },
 };
 
 const res = mockRes();

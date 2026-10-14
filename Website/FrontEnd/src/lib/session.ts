@@ -16,8 +16,8 @@
  *     from JavaScript (timezone, screen, language) is collected here. Anything
  *     only the server can know (real client IP, geolocation) is derived in
  *     `api/session.ts` and never trusted from the client.
- *  4. **Privacy first.** Honours Do Not Track, never stores free-text PII the
- *     visitor did not type, and masks the IP unless explicitly told not to.
+ *  4. **Privacy first.** Requires explicit opt-in, honours Do Not Track,
+ *     never stores free-text PII the visitor did not type, and masks IPs.
  */
 
 const VISITOR_KEY = 'virya.visitor';
@@ -39,32 +39,52 @@ export interface TrackedEvent {
 /* Consent                                                             */
 /* ------------------------------------------------------------------ */
 
-/**
- * Tracking is opt-out by default only when the browser sends Do Not Track.
- * We do not gate on a cookie banner for a site that records no cookies and
- * stores one row per anonymous session.
- */
-export function trackingAllowed(): boolean {
+function doNotTrackEnabled(): boolean {
   if (typeof window === 'undefined') return false;
-
-  const dnt =
+  const value =
     navigator.doNotTrack ??
     (window as unknown as { doNotTrack?: string }).doNotTrack ??
     null;
-  if (dnt === '1' || dnt === 'yes' || dnt === 'on') return false;
+  return value === '1' || value === 'yes' || value === 'on';
+}
 
-  const stored = localStorage.getItem(CONSENT_KEY);
-  if (stored === 'off') return false;
+export function trackingAllowed(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (doNotTrackEnabled()) return false;
+  try {
+    return localStorage.getItem(CONSENT_KEY) === 'on';
+  } catch {
+    return false;
+  }
+}
 
-  return true;
+export function trackingChoiceRequired(): boolean {
+  if (typeof window === 'undefined' || doNotTrackEnabled()) return false;
+  try {
+    return localStorage.getItem(CONSENT_KEY) === null;
+  } catch {
+    return false;
+  }
 }
 
 export function setTrackingPreference(enabled: boolean): void {
-  localStorage.setItem(CONSENT_KEY, enabled ? 'on' : 'off');
-  if (!enabled) {
-    sessionStorage.removeItem(SESSION_KEY);
-    events.length = 0;
+  try {
+    localStorage.setItem(CONSENT_KEY, enabled ? 'on' : 'off');
+    if (!enabled) {
+      localStorage.removeItem(VISITOR_KEY);
+      localStorage.removeItem('virya.visitor.memory');
+      localStorage.removeItem('virya.chat.history');
+      sessionStorage.removeItem(SESSION_KEY);
+      events.length = 0;
+      state = null;
+      return;
+    }
+  } catch {
+    return;
   }
+
+  installSessionTracking();
+  recordPageView(`${window.location.pathname}${window.location.search}`);
 }
 
 /* ------------------------------------------------------------------ */
@@ -311,7 +331,12 @@ export async function flush(reason: FlushReason = 'manual'): Promise<void> {
   const batch = events;
   events = [];
 
-  const payload = JSON.stringify({ ...session, events: batch, flushReason: reason });
+  const payload = JSON.stringify({
+    ...session,
+    ...session.context,
+    events: batch,
+    flushReason: reason,
+  });
 
   try {
     if (reason === 'pagehide' && navigator.sendBeacon) {
@@ -343,9 +368,8 @@ let installed = false;
  * only the first call does anything.
  */
 export function installSessionTracking(): void {
-  if (installed || typeof window === 'undefined') return;
+  if (installed || typeof window === 'undefined' || !trackingAllowed()) return;
   installed = true;
-  if (!trackingAllowed()) return;
 
   window.setInterval(() => void flush('interval'), FLUSH_INTERVAL_MS);
   window.addEventListener('pagehide', () => void flush('pagehide'));
@@ -359,10 +383,12 @@ export function installSessionTracking(): void {
 /* ------------------------------------------------------------------ */
 
 export function markFormStarted(): void {
+  if (!trackingAllowed()) return;
   getSession().formStarted = true;
 }
 
 export function markFormSubmitted(service: string): void {
+  if (!trackingAllowed()) return;
   const session = getSession();
   session.formSubmitted = true;
   session.primaryInterest = service;
@@ -370,10 +396,12 @@ export function markFormSubmitted(service: string): void {
 }
 
 export function recordChatbotOpened(): void {
+  if (!trackingAllowed()) return;
   getSession().chatbotOpened = true;
 }
 
 export function recordChatbotMessage(service: string | null): void {
+  if (!trackingAllowed()) return;
   const session = getSession();
   session.chatbotMessages += 1;
   if (service && !session.primaryInterest) session.primaryInterest = service;
@@ -381,6 +409,7 @@ export function recordChatbotMessage(service: string | null): void {
 
 /** Accumulated active time, driven by the page view hook. */
 export function addActiveTime(seconds: number): void {
+  if (!trackingAllowed()) return;
   getSession().activeSeconds += seconds;
 }
 
@@ -390,6 +419,7 @@ export function addActiveTime(seconds: number): void {
  * produced it.
  */
 export function buildLeadContext(): Record<string, unknown> {
+  if (!trackingAllowed()) return {};
   const session = getSession();
   return {
     visitorId: session.visitorId,
@@ -404,6 +434,7 @@ export function buildLeadContext(): Record<string, unknown> {
     referrer: session.referrer,
     landingPage: session.landingPage,
     timezone: session.context.timezone,
+    utcOffset: session.context.utcOffset,
     localHour: session.context.localHour,
     device: session.context.device,
     viewport: session.context.viewport,

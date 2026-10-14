@@ -51,6 +51,10 @@ npx tsx scripts/verify-connections.ts   # test Jira + Sheets access
 npx tsx scripts/dump-tab.ts "Reports KPI" "A1:M14"   # inspect a sheet tab
 npx tsx scripts/reset-kpi.ts            # zero the KPI counters
 npx tsx scripts/write-env-local.ts <path-to-sa.json>   # rebuild .env.local
+npm run leads:sync                      # backfill Jira leads by issue key
+npm run analytics:setup                  # create the Vercel Analytics tab
+npm run sessions:setup                   # migrate Sessions headers
+npm run test:intelligence                # synthetic privacy/analytics tests
 ```
 
 ## What each report contains
@@ -63,8 +67,9 @@ npx tsx scripts/write-env-local.ts <path-to-sa.json>   # rebuild .env.local
 3. Issues by Status (with bar meters)
 4. Issues by Type
 5. Recently created issues (links into Jira)
-6. **Executive Report Dispatch & KPI Dashboard** — mirrors the `Reports KPI` tab
-7. Generation timestamp
+6. Vercel page views, unique visitors and top pages when API access is configured
+7. **Executive Report Dispatch & KPI Dashboard** — mirrors the `Reports KPI` tab
+8. Generation timestamp
 
 ## Google Sheets it touches
 
@@ -74,4 +79,12 @@ Workbook: *The Reports*
 | --- | --- | --- |
 | `Reports` | write | `Daily\|Time\|Sent Status\|Weekly\|…\|Monthly\|Time\|Sent Status` — stamped after each send |
 | `Reports KPI` | read + write | Executive dispatch dashboard; counters increment per send |
-| `Leads` | read + write | Created automatically on the first lead; source for the Leads KPI |
+| `Leads` | read + write | Jira leads are upserted by issue key before each report; test-labeled issues are excluded |
+| `Sessions` | write | One row per consented browser session, updated in place; visitor IDs allow distinct-visitor counts |
+| `Vercel Analytics` | write | Periodic Vercel pageview, unique-visitor and top-page snapshots |
+
+Vercel API analytics requires `VERCEL_ACCESS_TOKEN` and a project ID (set
+`VERCEL_ANALYTICS_PROJECT_ID` if Vercel's `VERCEL_PROJECT_ID` is unavailable).
+The token is server-only and must never use a `VITE_` prefix. The public SPA
+loads Vercel's Web Analytics client only after the visitor opts in; chat text
+stays in the browser and is not sent to the Vercel API.

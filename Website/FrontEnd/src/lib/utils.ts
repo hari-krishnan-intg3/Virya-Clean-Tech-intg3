@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { track } from './session';
+import { track as vercelTrack } from '@vercel/analytics/react';
+import { track, trackingAllowed } from './session';
 
 /** Merge conditional class names, resolving conflicting Tailwind utilities. */
 export function cn(...inputs: ClassValue[]): string {
@@ -29,6 +30,17 @@ export function trackEvent(name: string, payload: Record<string, unknown> = {}):
   if (typeof window === 'undefined') return;
 
   track(name, payload);
+
+  if (trackingAllowed()) {
+    const properties: Record<string, string | number | boolean | null> = {};
+    for (const [key, value] of Object.entries(payload)) {
+      if (/email|phone|name|message|text|ip/i.test(key)) continue;
+      if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null) {
+        properties[key] = value;
+      }
+    }
+    vercelTrack(name, properties);
+  }
 
   window.dispatchEvent(
     new CustomEvent('virya:track', { detail: { event: name, ...payload, at: Date.now() } }),

@@ -12,6 +12,12 @@ import { KpiStore } from './_lib/kpi.js';
 import { getPeriod } from './_lib/periods.js';
 import { sendEmail } from './_lib/mailer.js';
 import { buildSubject, renderReportEmail, renderReportText } from './_lib/email.js';
+import { syncJiraLeadsToSheet } from './_lib/lead-sync.js';
+import {
+  ensureVercelAnalyticsTab,
+  getVercelAnalytics,
+  logVercelAnalytics,
+} from './_lib/vercel-analytics.js';
 
 /**
  * Reports endpoint — daily / weekly / monthly.
@@ -74,8 +80,64 @@ async function runReport(type: ReportType, testMode: boolean): Promise<RunResult
   try {
     const jira = await getSnapshot(config.jira, period.from, period.to);
 
+    let vercelAnalytics;
+    let analyticsNote = config.vercelAnalytics
+      ? 'Vercel Analytics unavailable for this period'
+      : 'Add VERCEL_ACCESS_TOKEN to enable website analytics';
+
+    if (!config.dryRun && !testMode) {
+      try {
+        await ensureVercelAnalyticsTab(
+          config.sheets,
+          config.google,
+          config.sheets.analyticsTab || 'Vercel Analytics',
+        );
+      } catch (error) {
+        analyticsNote = `Analytics tab unavailable: ${error instanceof Error ? error.message : 'unknown error'}`;
+      }
+    }
+
+    if (config.vercelAnalytics) {
+      try {
+        vercelAnalytics = await getVercelAnalytics(
+          config.vercelAnalytics,
+          period.from,
+          period.to,
+        );
+        analyticsNote = '';
+        if (!config.dryRun && !testMode) {
+          await logVercelAnalytics(
+            config.sheets,
+            config.google,
+            config.sheets.analyticsTab || 'Vercel Analytics',
+            type,
+            vercelAnalytics,
+          );
+        }
+      } catch (error) {
+        analyticsNote = `Vercel Analytics request failed: ${error instanceof Error ? error.message : 'unknown error'}`;
+      }
+    }
+
     if (config.sheets.leadsTab) {
       // A missing or empty Leads tab must never break the whole report.
+      let syncNote = 'Jira lead sync not run';
+      if (!config.dryRun && !testMode) {
+        try {
+          const synced = await syncJiraLeadsToSheet(
+            config.jira,
+            config.sheets,
+            config.google,
+            config.sheets.leadsTab,
+          );
+          syncNote = `${synced.rowsAdded} new rows from ${synced.jiraLeads} Jira leads`;
+        } catch (error) {
+          syncNote = `Jira lead sync failed: ${error instanceof Error ? error.message : 'unknown error'}`;
+        }
+      } else {
+        syncNote = 'Jira lead sync skipped in test mode';
+      }
+
       try {
         const result = await countLeadsInRange(
           config.sheets,
@@ -87,10 +149,10 @@ async function runReport(type: ReportType, testMode: boolean): Promise<RunResult
         leads = result.count;
         leadsNote =
           result.mode === 'dated'
-            ? `${result.count} of ${result.total} rows dated in period`
-            : `${result.total} rows (no date column)`;
+            ? `${result.count} of ${result.total} rows dated in period; ${syncNote}`
+            : `${result.total} rows (no date column); ${syncNote}`;
       } catch {
-        leadsNote = 'leads tab not created yet';
+        leadsNote = `leads tab unavailable; ${syncNote}`;
       }
     }
 
@@ -111,6 +173,8 @@ async function runReport(type: ReportType, testMode: boolean): Promise<RunResult
       jira,
       leads,
       leadsNote,
+      vercelAnalytics,
+      analyticsNote,
       siteUrl: config.siteUrl,
       projectName: 'Virya Clean Tech',
       kpi: kpiBefore,

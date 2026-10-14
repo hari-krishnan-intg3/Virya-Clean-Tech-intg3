@@ -1,5 +1,6 @@
 import type { JiraSnapshot } from './jira.js';
 import type { KpiSnapshot } from './kpi.js';
+import type { VercelAnalyticsSnapshot } from './vercel-analytics.js';
 import { kpiPanel, kpiText } from './kpi-email.js';
 import { formatDateTime, type Period } from './periods.js';
 
@@ -33,6 +34,8 @@ export interface ReportData {
   projectName: string;
   /** Executive dispatch counters read from the "Reports KPI" tab. */
   kpi?: KpiSnapshot;
+  vercelAnalytics?: VercelAnalyticsSnapshot;
+  analyticsNote?: string;
   /** Sheet URLs so the reader can jump straight to the data. */
   links?: { reports: string; kpi: string };
 }
@@ -168,6 +171,28 @@ function issueTable(issues: JiraSnapshot['recent'], siteUrl: string): string {
   </table>`;
 }
 
+function webAnalyticsPanel(snapshot: VercelAnalyticsSnapshot): string {
+  const pages = snapshot.topPages.length
+    ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        ${snapshot.topPages
+          .map(
+            (page) => `<tr>
+              <td style="padding:4px 0;font:400 12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:${C.text};">${escapeHtml(page.path)}</td>
+              <td align="right" style="padding:4px 0;font:600 12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:${C.muted};">${page.pageViews} views · ${page.visitors} visitors</td>
+            </tr>`,
+          )
+          .join('')}
+      </table>`
+    : `<p style="margin:0;font:400 13px/1.6 -apple-system,'Segoe UI',Roboto,sans-serif;color:${C.muted};">No page breakdown for this period.</p>`;
+
+  return panel(
+    'Vercel Web Analytics',
+    `<p style="margin:0 0 10px;font:400 13px/1.6 -apple-system,'Segoe UI',Roboto,sans-serif;color:${C.text};">
+      <strong>${snapshot.pageViews}</strong> page views · <strong>${snapshot.uniqueVisitors}</strong> unique visitors
+    </p>${pages}`,
+  );
+}
+
 export function renderReportEmail(data: ReportData): string {
   const { period, jira, leads, siteUrl, projectName } = data;
 
@@ -228,6 +253,8 @@ export function renderReportEmail(data: ReportData): string {
               ${panel('Issues by Status', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${breakdown(jira.byStatus)}</table>`)}
               ${panel('Issues by Type', `<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${breakdown(jira.byType)}</table>`)}
               ${panel(`Recently Created (${Math.min(jira.recent.length, 8)})`, issueTable(jira.recent, siteUrl))}
+              ${data.vercelAnalytics ? webAnalyticsPanel(data.vercelAnalytics) : ''}
+              ${!data.vercelAnalytics && data.analyticsNote ? panel('Vercel Web Analytics', `<p style="margin:0;font:400 13px/1.6 -apple-system,'Segoe UI',Roboto,sans-serif;color:${C.muted};">${escapeHtml(data.analyticsNote)}</p>`) : ''}
 
               ${data.kpi ? kpiPanel(data.kpi, data.links?.kpi) : ''}
 
@@ -288,6 +315,19 @@ export function renderReportText(data: ReportData): string {
     '',
     'BY TYPE',
     ...jira.byType.map((r) => `  ${r.type.padEnd(22)} ${r.count}`),
+    ...(data.vercelAnalytics
+      ? [
+          '',
+          'VERCEL WEB ANALYTICS',
+          `  Page views     : ${data.vercelAnalytics.pageViews}`,
+          `  Unique visitors: ${data.vercelAnalytics.uniqueVisitors}`,
+          ...data.vercelAnalytics.topPages.map(
+            (page) => `  ${page.path} — ${page.pageViews} views, ${page.visitors} visitors`,
+          ),
+        ]
+      : data.analyticsNote
+        ? ['', 'VERCEL WEB ANALYTICS', `  ${data.analyticsNote}`]
+        : []),
     ...(data.kpi ? ['', kpiText(data.kpi)] : []),
     '',
     'RECENTLY CREATED',

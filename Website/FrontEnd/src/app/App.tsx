@@ -3,6 +3,9 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { NavbarContainer } from '@/components/layout/NavbarContainer';
 import { FooterContainer } from '@/components/layout/FooterContainer';
 import { ScrollManager } from '@/components/layout/ScrollManager';
+import { ExitIntentPrompt } from '@/components/privacy/ExitIntentPrompt';
+import { PrivacyConsent } from '@/components/privacy/PrivacyConsent';
+import { VercelAnalyticsGate } from '@/components/privacy/VercelAnalyticsGate';
 import { getService, type ServiceSlug } from '@/data/services';
 import {
   installSessionTracking,
@@ -10,8 +13,8 @@ import {
   recordScrollDepth,
   recordServiceView,
   addActiveTime,
-  trackingAllowed,
 } from '@/lib/session';
+import { readVisitorMemory, saveVisitorProgress, type VisitorMemory } from '@/lib/visitorMemory';
 
 import HomePage from '@/pages/HomePage';
 
@@ -96,11 +99,26 @@ function useEngagementTracking() {
 export default function App() {
   const { activeService, seenServices } = useRouteContext();
   const location = useLocation();
+  const [returningVisitor, setReturningVisitor] = useState<VisitorMemory | null>(readVisitorMemory);
 
   useEngagementTracking();
 
   useEffect(() => {
     installSessionTracking();
+  }, []);
+
+  useEffect(() => {
+    const saveProgress = () =>
+      saveVisitorProgress(`${location.pathname}${location.hash}`, activeService ?? null);
+    saveProgress();
+    window.addEventListener('virya:tracking-preference', saveProgress);
+    return () => window.removeEventListener('virya:tracking-preference', saveProgress);
+  }, [activeService, location.hash, location.pathname]);
+
+  useEffect(() => {
+    const refreshMemory = () => setReturningVisitor(readVisitorMemory());
+    window.addEventListener('virya:tracking-preference', refreshMemory);
+    return () => window.removeEventListener('virya:tracking-preference', refreshMemory);
   }, []);
 
   // Capture intent the chatbot discovered so the form can pre-select it.
@@ -118,7 +136,7 @@ export default function App() {
   }, [onAssistantInterest]);
 
   // The chatbot is noise on the form page itself — it competes with the form.
-  const showAssistant = !location.pathname.startsWith('/request-consultation') && trackingAllowed();
+  const showAssistant = !location.pathname.startsWith('/request-consultation');
 
   return (
     <>
@@ -151,10 +169,17 @@ export default function App() {
       </main>
 
       <FooterContainer />
+      <PrivacyConsent />
+      <VercelAnalyticsGate />
+      <ExitIntentPrompt />
 
       {showAssistant && (
         <Suspense fallback={null}>
-          <ChatAssistant activeService={activeService} seenServices={seenServices} />
+          <ChatAssistant
+            activeService={activeService}
+            seenServices={seenServices}
+            returningVisitor={returningVisitor}
+          />
         </Suspense>
       )}
     </>

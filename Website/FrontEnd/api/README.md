@@ -79,6 +79,15 @@ Single report:
 npx tsx scripts/run-reports.ts --type weekly --live
 ```
 
+Website analytics and lead-sheet utilities:
+
+```bash
+npm run analytics:setup   # create the Vercel Analytics sheet tab
+npm run sessions:setup    # migrate the Sessions tab headers
+npm run leads:sync        # idempotently backfill non-test Jira leads
+npm run test:intelligence # 30 synthetic behavior tests; no production writes
+```
+
 Diagnostics:
 
 ```bash
@@ -171,6 +180,12 @@ consultation-form submission then:
 
 The API checks the browser request's origin. If Jira rejects issue creation,
 the API returns an error and the form does not show a false success state.
+
+Daily, weekly, and monthly report crons are defined in `vercel.json`. Reports
+backfill Jira leads before counting the Leads tab and write Vercel pageview /
+unique-visitor totals to `Vercel Analytics`. Configure `VERCEL_ACCESS_TOKEN`
+server-side to enable API metrics; without it, emails still send and identify
+that analytics data is unavailable.
 
 ---
 

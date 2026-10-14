@@ -7,8 +7,7 @@ import {
   resolveAssignee,
   type LeadInput,
 } from './_lib/leads.js';
-import { appendRows, readTab, writeTab } from './_lib/sheets.js';
-import { ensureTab } from './_lib/tabs.js';
+import { upsertLeadRows } from './_lib/lead-sync.js';
 
 /**
  * Lead intake.
@@ -41,30 +40,6 @@ function sameOrigin(req: VercelRequest): boolean {
     return false;
   }
 }
-
-const LEAD_HEADERS = [
-  'Created',
-  'Name',
-  'Email',
-  'Phone',
-  'Company',
-  'Service',
-  'Consumption',
-  'Capacity',
-  'Location',
-  'Details',
-  'Jira Key',
-  'Intent Score',
-  'Source',
-  'Session ID',
-  'Landing Page',
-  'Referrer',
-  'Device',
-  'Timezone',
-  'IP',
-  'City',
-  'Assistant Messages',
-];
 
 /** Mirrors the client-side score so both systems agree on lead quality. */
 function intentScore(lead: LeadInput): number {
@@ -165,14 +140,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (lead.source !== 'test' && config.sheets?.leadsTab && config.google) {
     try {
       const tab = config.sheets.leadsTab;
-      await ensureTab(config.sheets, config.google, tab);
-
-      const existing = await readTab(config.sheets, config.google, tab, 'A1:A2');
-      if (existing.length === 0) {
-        await writeTab(config.sheets, config.google, tab, 'A1:U1', [LEAD_HEADERS]);
-      }
-
-      await appendRows(config.sheets, config.google, tab, 'A:U', [
+      await upsertLeadRows(config.sheets, config.google, tab, [
         [
           timestamp,
           fullName,

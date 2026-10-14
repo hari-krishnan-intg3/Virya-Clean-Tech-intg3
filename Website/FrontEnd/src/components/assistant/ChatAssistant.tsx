@@ -9,6 +9,7 @@ import { CONTACT } from '@/app/siteConfig';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { cn } from '@/lib/utils';
 import { flush, recordChatbotMessage, recordChatbotOpened } from '@/lib/session';
+import { readChatHistory, saveChatHistory, type VisitorMemory } from '@/lib/visitorMemory';
 import { trackEvent } from '@/lib/utils';
 
 interface Message {
@@ -18,6 +19,7 @@ interface Message {
   chips?: Chip[];
   /** Rendered as a muted footnote under the bubble. */
   footnote?: string;
+  resumePath?: string;
 }
 
 export interface ChatAssistantProps {
@@ -25,6 +27,7 @@ export interface ChatAssistantProps {
   activeService?: ServiceSlug;
   /** Services opened this session, in order. */
   seenServices: ServiceSlug[];
+  returningVisitor: VisitorMemory | null;
 }
 
 let messageCounter = 0;
@@ -33,13 +36,16 @@ const nextId = () => ++messageCounter;
 /** After this many substantive exchanges we offer to get a human involved. */
 const HANDOVER_AFTER = 4;
 
-export function ChatAssistant({ activeService, seenServices }: ChatAssistantProps) {
+export function ChatAssistant({ activeService, seenServices, returningVisitor }: ChatAssistantProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const reduced = usePrefersReducedMotion();
 
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() =>
+    readChatHistory().map((message) => ({ id: nextId(), ...message })),
+  );
+  const [resumePromptDismissed, setResumePromptDismissed] = useState(false);
   const [typing, setTyping] = useState(false);
   const [unread, setUnread] = useState(true);
   const [input, setInput] = useState('');
@@ -51,15 +57,30 @@ export function ChatAssistant({ activeService, seenServices }: ChatAssistantProp
   /* ── Context ─────────────────────────────────────────────────── */
 
   const context: BotContext = useMemo(
-    () => ({
-      path: location.pathname,
-      activeService,
-      seenServices,
-      greeted: messages.length > 0,
-      leadInterest: false,
-      primaryInterestHint: seenServices[seenServices.length - 1] ?? activeService,
-    }),
-    [location.pathname, activeService, seenServices, messages.length],
+    () => {
+      const rememberedInterest = returningVisitor?.primaryInterest;
+      const rememberedService = rememberedInterest && getService(rememberedInterest as ServiceSlug)
+        ? (rememberedInterest as ServiceSlug)
+        : undefined;
+
+      return {
+        path: location.pathname,
+        activeService,
+        seenServices: [
+          ...new Set<ServiceSlug>([
+            ...(returningVisitor?.servicesViewed ?? []).filter((service): service is ServiceSlug =>
+              Boolean(getService(service as ServiceSlug)),
+            ),
+            ...seenServices,
+          ]),
+        ],
+        greeted: messages.length > 0,
+        leadInterest: false,
+        primaryInterestHint:
+          rememberedService ?? seenServices[seenServices.length - 1] ?? activeService,
+      };
+    },
+    [location.pathname, activeService, seenServices, messages.length, returningVisitor],
   );
 
   const [greeting] = useState(() => buildGreeting());
@@ -97,25 +118,42 @@ export function ChatAssistant({ activeService, seenServices }: ChatAssistantProp
     setUnread(false);
 
     setMessages((prev) => {
-      if (prev.length) return prev;
-
       const fresh = buildGreeting({
         service: activeService ? getService(activeService)?.label : undefined,
       });
 
-      return [
-        {
-          id: nextId(),
-          role: 'assistant',
-          text: `${fresh.line}\n\n${fresh.lead}`,
-          chips: openingChips({ ...context, greeted: false }),
-        },
-      ];
+      const initial = prev.length
+        ? prev
+        : [
+            {
+              id: nextId(),
+              role: 'assistant' as const,
+              text: `${fresh.line}\n\n${fresh.lead}`,
+              chips: openingChips({ ...context, greeted: false }),
+            },
+          ];
+
+      if (returningVisitor && !resumePromptDismissed && !prev.some((message) => message.resumePath)) {
+        const interest = returningVisitor.primaryInterest
+          ? getService(returningVisitor.primaryInterest as ServiceSlug)?.label
+          : undefined;
+        return [
+          ...initial,
+          {
+            id: nextId(),
+            role: 'assistant',
+            text: `Welcome back${interest ? ` — you were exploring ${interest}` : ''}. Would you like to continue where you left off?`,
+            resumePath: returningVisitor.lastPath,
+          },
+        ];
+      }
+
+      return initial;
     });
 
     recordChatbotOpened();
     trackEvent('assistant_open', { path: location.pathname, service: activeService ?? 'none' });
-  }, [activeService, context, location.pathname]);
+  }, [activeService, context, location.pathname, returningVisitor, resumePromptDismissed]);
 
   const send = useCallback(
     (text: string) => {
@@ -184,6 +222,10 @@ export function ChatAssistant({ activeService, seenServices }: ChatAssistantProp
     const node = listRef.current;
     if (node) node.scrollTop = node.scrollHeight;
   }, [messages, typing, open]);
+
+  useEffect(() => {
+    saveChatHistory(messages.filter((message) => !message.resumePath));
+  }, [messages]);
 
   useEffect(
     () => () => {
@@ -298,6 +340,42 @@ export function ChatAssistant({ activeService, seenServices }: ChatAssistantProp
                       ))}
                     </ul>
                   )}
+
+                  {message.resumePath && (
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setResumePromptDismissed(true);
+                          setOpen(false);
+                          navigate(message.resumePath ?? '/');
+                        }}
+                        className="btn-primary btn-sm"
+                      >
+                        Continue where I left off
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setResumePromptDismissed(true);
+                          const fresh = buildGreeting({
+                            service: activeService ? getService(activeService)?.label : undefined,
+                          });
+                          setMessages([
+                            {
+                              id: nextId(),
+                              role: 'assistant',
+                              text: `${fresh.line}\n\n${fresh.lead}`,
+                              chips: openingChips({ ...context, greeted: false }),
+                            },
+                          ]);
+                        }}
+                        className="btn-outline btn-sm"
+                      >
+                        Start fresh
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
 
@@ -377,6 +455,7 @@ export function ChatAssistant({ activeService, seenServices }: ChatAssistantProp
                 <button
                   type="button"
                   onClick={() => {
+                    setResumePromptDismissed(true);
                     setMessages([]);
                     setInput('');
                     openPanel();

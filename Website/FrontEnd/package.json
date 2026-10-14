@@ -17,10 +17,15 @@
     "reports:verify": "tsx scripts/verify-connections.ts",
     "reports:preview-html": "tsx scripts/render-preview.ts",
     "leads:provision": "tsx scripts/provision-leads-project.ts",
-    "test:intent": "tsx scripts/test-intent.ts"
+    "leads:sync": "tsx scripts/sync-jira-leads.ts",
+    "analytics:setup": "tsx scripts/setup-analytics-tab.ts",
+    "sessions:setup": "tsx scripts/setup-session-tab.ts",
+    "test:intent": "tsx scripts/test-intent.ts",
+    "test:intelligence": "tsx --test scripts/intelligence.test.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
+    "@vercel/analytics": "^2.0.1",
     "framer-motion": "^11.3.2",
     "lucide-react": "^0.408.0",
     "react": "^18.3.1",

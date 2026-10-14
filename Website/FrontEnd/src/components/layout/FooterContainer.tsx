@@ -174,16 +174,25 @@ export function FooterContainer() {
           <p className="text-center text-[0.8rem] text-ink-faint sm:text-left">
             © {year} {BUSINESS.name}. {BUSINESS.partnerNote}.
           </p>
-          <button
-            type="button"
-            onClick={() => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              trackEvent('back_to_top');
-            }}
-            className="text-[0.8rem] font-semibold text-ink-muted transition-colors hover:text-emerald-700"
-          >
-            Back to top ↑
-          </button>
+          <div className="flex items-center gap-5">
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event('virya:privacy-settings'))}
+              className="text-[0.8rem] font-semibold text-ink-muted transition-colors hover:text-emerald-700"
+            >
+              Privacy settings
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                trackEvent('back_to_top');
+              }}
+              className="text-[0.8rem] font-semibold text-ink-muted transition-colors hover:text-emerald-700"
+            >
+              Back to top ↑
+            </button>
+          </div>
         </div>
       </div>
     </footer>
