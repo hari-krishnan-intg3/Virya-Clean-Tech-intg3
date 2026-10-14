@@ -76,9 +76,10 @@ export function serviceLabel(service: string): string {
 export function describeLead(lead: LeadInput): { summary: string; createdLine: string } {
   const created = isoNow();
   const who = lead.company ? `${lead.fullName} (${lead.company})` : lead.fullName;
+  const testMarker = lead.source === 'test' ? '[TEST] ' : '';
 
   return {
-    summary: `New lead — ${who}${lead.service ? ` · ${serviceLabel(lead.service)}` : ''}`,
+    summary: `${testMarker}New lead — ${who}${lead.service ? ` · ${serviceLabel(lead.service)}` : ''}`,
     createdLine: `Lead created by ${lead.fullName} on ${created} (IST) from ${lead.source ?? 'website'}.`,
   };
 }
@@ -407,6 +408,7 @@ export async function resolveAssignee(
 
 function labelsFor(lead: LeadInput): string[] {
   const labels = ['lead', 'website'];
+  if (lead.source === 'test') labels.push('test-lead');
   if (lead.service) labels.push(`service-${lead.service}`.slice(0, 40));
   if (lead.company) labels.push('business');
   if (!lead.phone) labels.push('needs-phone');

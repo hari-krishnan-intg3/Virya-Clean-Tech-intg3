@@ -162,7 +162,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   // 2) Sheets — the Leads tab that feeds the KPI counters
-  if (config.sheets?.leadsTab && config.google) {
+  if (lead.source !== 'test' && config.sheets?.leadsTab && config.google) {
     try {
       const tab = config.sheets.leadsTab;
       await ensureTab(config.sheets, config.google, tab);
