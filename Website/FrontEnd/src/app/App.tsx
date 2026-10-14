@@ -1,95 +1,162 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { NavbarContainer } from '@/components/layout/NavbarContainer';
 import { FooterContainer } from '@/components/layout/FooterContainer';
-import { HeroSliderContainer } from '@/components/sections/HeroSliderContainer';
-import { AboutContainer } from '@/components/sections/AboutContainer';
-import { ServicesContainer } from '@/components/sections/ServicesContainer';
+import { ScrollManager } from '@/components/layout/ScrollManager';
+import { getService, type ServiceSlug } from '@/data/services';
+import {
+  installSessionTracking,
+  recordPageView,
+  recordScrollDepth,
+  recordServiceView,
+  addActiveTime,
+  trackingAllowed,
+} from '@/lib/session';
 
-// Below-the-fold sections are code-split to keep the initial bundle light.
-const EnergyEcosystemContainer = lazy(() =>
-  import('@/components/sections/EnergyEcosystemContainer').then((m) => ({
-    default: m.EnergyEcosystemContainer,
-  })),
-);
-const WhyViryaContainer = lazy(() =>
-  import('@/components/sections/WhyViryaContainer').then((m) => ({
-    default: m.WhyViryaContainer,
-  })),
-);
-const ProcessContainer = lazy(() =>
-  import('@/components/sections/ProcessContainer').then((m) => ({
-    default: m.ProcessContainer,
-  })),
-);
-const ApplicationsContainer = lazy(() =>
-  import('@/components/sections/ApplicationsContainer').then((m) => ({
-    default: m.ApplicationsContainer,
-  })),
-);
-const BookingFormContainer = lazy(() =>
-  import('@/components/sections/BookingFormContainer').then((m) => ({
-    default: m.BookingFormContainer,
-  })),
-);
-const ContactContainer = lazy(() =>
-  import('@/components/sections/ContactContainer').then((m) => ({
-    default: m.ContactContainer,
-  })),
-);
-const ChatAssistantContainer = lazy(() =>
-  import('@/components/assistant/ChatAssistantContainer').then((m) => ({
-    default: m.ChatAssistantContainer,
-  })),
+import HomePage from '@/pages/HomePage';
+
+const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
+const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
+const IndustriesPage = lazy(() => import('@/pages/IndustriesPage'));
+const ProcessPage = lazy(() => import('@/pages/ProcessPage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
+const ContactPage = lazy(() => import('@/pages/ContactPage'));
+const ConsultationPage = lazy(() => import('@/pages/ConsultationPage'));
+const CareersPage = lazy(() => import('@/pages/CareersPage'));
+const FaqPage = lazy(() => import('@/pages/FaqPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
+const ChatAssistant = lazy(() =>
+  import('@/components/assistant/ChatAssistant').then((m) => ({ default: m.ChatAssistant })),
 );
 
-function SectionFallback() {
+function RouteFallback() {
   return (
-    <div className="section" aria-hidden="true">
-      <div className="shell">
-        <div className="h-8 w-40 rounded-full bg-mist" />
-        <div className="mt-5 h-12 w-full max-w-2xl rounded-xl bg-mist" />
+    <div className="shell flex min-h-[60vh] items-center justify-center pt-32" aria-busy="true">
+      <div className="flex items-center gap-3 text-ink-faint">
+        <span className="h-2 w-2 animate-dot-pulse rounded-full bg-emerald-500" />
+        <span className="text-sm font-medium">Loading…</span>
       </div>
     </div>
   );
 }
 
-export default function App() {
-  // Keep the document title in sync if the tab is restored from cache.
+/**
+ * Derives the service slug from the path so the assistant can bias every
+ * answer toward the page the visitor is actually reading.
+ */
+function useRouteContext(): { activeService?: ServiceSlug; seenServices: ServiceSlug[] } {
+  const location = useLocation();
+  const [seen, setSeen] = useState<ServiceSlug[]>([]);
+
+  const activeService = useMemo(() => {
+    const match = location.pathname.match(/^\/services\/([a-z-]+)$/);
+    if (!match) return undefined;
+    return getService(match[1])?.slug;
+  }, [location.pathname]);
+
   useEffect(() => {
-    document.documentElement.classList.add('js');
+    if (activeService) {
+      recordServiceView(activeService);
+      setSeen((prev) => (prev.includes(activeService) ? prev : [...prev, activeService]));
+    }
+  }, [activeService]);
+
+  return { activeService, seenServices: seen };
+}
+
+/** Scroll depth + active-time collection for the session layer. */
+function useEngagementTracking() {
+  const location = useLocation();
+  const started = useRef(Date.now());
+
+  useEffect(() => {
+    started.current = Date.now();
+    recordPageView(`${location.pathname}${location.search}`);
+
+    const onScroll = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      recordScrollDepth((window.scrollY / scrollable) * 100);
+    };
+
+    // Active time, not wall-clock: only counts while the tab is visible.
+    const tick = window.setInterval(() => {
+      if (document.visibilityState === 'visible') addActiveTime(5);
+    }, 5000);
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      window.clearInterval(tick);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [location.pathname, location.search]);
+}
+
+export default function App() {
+  const { activeService, seenServices } = useRouteContext();
+  const location = useLocation();
+
+  useEngagementTracking();
+
+  useEffect(() => {
+    installSessionTracking();
   }, []);
+
+  // Capture intent the chatbot discovered so the form can pre-select it.
+  const onAssistantInterest = useCallback((event: Event) => {
+    const slug = (event as CustomEvent<string | null>).detail;
+    if (!slug) return;
+    if (!location.pathname.startsWith('/request-consultation')) {
+      window.dispatchEvent(new CustomEvent('virya:service-intent', { detail: slug }));
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    window.addEventListener('virya:assistant-interest', onAssistantInterest);
+    return () => window.removeEventListener('virya:assistant-interest', onAssistantInterest);
+  }, [onAssistantInterest]);
+
+  // The chatbot is noise on the form page itself — it competes with the form.
+  const showAssistant = !location.pathname.startsWith('/request-consultation') && trackingAllowed();
 
   return (
     <>
       <a
-        href="#about"
+        href="#main"
         className="sr-only-focusable fixed left-4 top-4 z-[70] rounded-lg bg-emerald-500 px-4 py-2 font-heading text-sm font-semibold text-white"
       >
         Skip to content
       </a>
 
       <NavbarContainer />
+      <ScrollManager />
 
       <main id="main">
-        <HeroSliderContainer />
-        <AboutContainer />
-        <ServicesContainer />
-
-        <Suspense fallback={<SectionFallback />}>
-          <EnergyEcosystemContainer />
-          <WhyViryaContainer />
-          <ProcessContainer />
-          <ApplicationsContainer />
-          <BookingFormContainer />
-          <ContactContainer />
+        <Suspense fallback={<RouteFallback />}>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/:slug" element={<ServiceDetailPage />} />
+            <Route path="/industries" element={<IndustriesPage />} />
+            <Route path="/process" element={<ProcessPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/request-consultation" element={<ConsultationPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/faq" element={<FaqPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </Suspense>
       </main>
 
       <FooterContainer />
 
-      <Suspense fallback={null}>
-        <ChatAssistantContainer />
-      </Suspense>
+      {showAssistant && (
+        <Suspense fallback={null}>
+          <ChatAssistant activeService={activeService} seenServices={seenServices} />
+        </Suspense>
+      )}
     </>
   );
 }

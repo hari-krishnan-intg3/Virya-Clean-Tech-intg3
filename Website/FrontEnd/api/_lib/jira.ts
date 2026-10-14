@@ -31,7 +31,7 @@ export interface JiraSnapshot {
   recent: JiraIssue[];
 }
 
-function authHeader(config: JiraConfig): string {
+export function authHeader(config: JiraConfig): string {
   const raw = `${config.email}:${config.apiToken}`;
   return `Basic ${Buffer.from(raw, 'utf8').toString('base64')}`;
 }

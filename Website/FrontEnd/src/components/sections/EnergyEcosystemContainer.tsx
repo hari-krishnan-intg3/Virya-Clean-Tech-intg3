@@ -1,10 +1,8 @@
 import { useState } from 'react';
-import { Battery, Cpu, Info, LineChart, Sun, Zap } from 'lucide-react';
+import { Cpu, Info } from 'lucide-react';
 import { ecosystemFlows, ecosystemNodes, type EcosystemNode } from '@/data/content';
 import { cn } from '@/lib/utils';
 import { Reveal, SectionHeading } from '@/components/ui';
-
-const ICONS = { Sun, Zap, Battery, Cpu, LineChart } as const;
 
 const nodeById = (id: string) => ecosystemNodes.find((n) => n.id === id)!;
 
@@ -90,7 +88,7 @@ export function EnergyEcosystemContainer() {
 
               {/* Nodes */}
               {ecosystemNodes.map((node, index) => {
-                const Icon = ICONS[node.icon];
+                const Icon = node.icon;
                 const isActive = active === node.id;
                 return (
                   <Reveal
@@ -164,7 +162,7 @@ export function EnergyEcosystemContainer() {
           <div className="lg:col-span-5">
             <ul className="space-y-3">
               {ecosystemNodes.map((node) => {
-                const Icon = ICONS[node.icon];
+                const Icon = node.icon;
                 const isActive = active === node.id;
                 return (
                   <li key={node.id}>

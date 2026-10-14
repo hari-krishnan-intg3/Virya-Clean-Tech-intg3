@@ -5,9 +5,10 @@ import type { SwiperRef } from 'swiper/react';
 import type { Swiper as SwiperClass } from 'swiper';
 import { ArrowRight, Play, Pause } from 'lucide-react';
 import { heroSlides } from '@/data/content';
-import { scrollToSection, trackEvent } from '@/lib/utils';
+import { trackEvent } from '@/lib/utils';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import { Button, SmartImage } from '@/components/ui';
+import { SmartImage } from '@/components/ui';
+import { Link } from 'react-router-dom';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -46,12 +47,6 @@ export function HeroSliderContainer() {
     if (next) swiper()?.autoplay?.start();
     else swiper()?.autoplay?.stop();
   }, [playing]);
-
-  const goTo = (id: string, label: string) => {
-    trackEvent('hero_cta_click', { target: id, label });
-    if (id === 'booking') scrollToSection('booking');
-    else scrollToSection(id);
-  };
 
   return (
     <section
@@ -164,18 +159,22 @@ export function HeroSliderContainer() {
             className="hero-stagger mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
             style={{ animationDelay: reduced ? undefined : '270ms' }}
           >
-            <Button size="lg" onClick={() => goTo('services', 'Explore Solutions')}>
+            <Link
+              to="/services"
+              onClick={() => trackEvent('hero_cta_click', { target: '/services', label: 'Explore Solutions' })}
+              className="btn-primary-lg"
+            >
               Explore Solutions
               <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </Button>
+            </Link>
 
-            <button
-              type="button"
-              onClick={() => goTo('booking', 'Book Consultation')}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-7 py-4 font-heading text-base font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/20"
+            <Link
+              to="/request-consultation"
+              onClick={() => trackEvent('hero_cta_click', { target: '/request-consultation', label: 'Request Consultation' })}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-7 py-4 font-heading text-base font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/20"
             >
-              Book Consultation
-            </button>
+              Request Consultation
+            </Link>
           </div>
         </div>
       </div>

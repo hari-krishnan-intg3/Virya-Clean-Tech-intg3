@@ -1,4 +1,4 @@
-import type { IconName } from './services';
+import { BatteryCharging, Cpu, Gauge, Leaf, Sun, Wrench, Zap, type LucideIcon } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
@@ -60,7 +60,7 @@ export interface EcosystemNode {
   id: string;
   label: string;
   description: string;
-  icon: IconName | 'Battery';
+  icon: LucideIcon;
   /** Hex accent used by the SVG connectors. */
   accent: string;
   /** Tailwind gradient classes for the node badge. */
@@ -75,7 +75,7 @@ export const ecosystemNodes: EcosystemNode[] = [
     id: 'solar',
     label: 'Solar Generation',
     description: 'Renewable power generated from photovoltaic systems.',
-    icon: 'Sun',
+    icon: Sun,
     accent: '#F59E0B',
     gradient: 'from-amber-400 to-amber-500',
     x: 50,
@@ -85,7 +85,7 @@ export const ecosystemNodes: EcosystemNode[] = [
     id: 'battery',
     label: 'Battery Technology',
     description: 'Energy stored and released on demand.',
-    icon: 'Battery',
+    icon: BatteryCharging,
     accent: '#8B5CF6',
     gradient: 'from-violet-500 to-violet-600',
     x: 92,
@@ -95,7 +95,7 @@ export const ecosystemNodes: EcosystemNode[] = [
     id: 'ev',
     label: 'EV Charging',
     description: 'Electric mobility infrastructure for any site.',
-    icon: 'Zap',
+    icon: Zap,
     accent: '#0EA5E9',
     gradient: 'from-sky-400 to-sky-500',
     x: 50,
@@ -105,7 +105,7 @@ export const ecosystemNodes: EcosystemNode[] = [
     id: 'systems',
     label: 'Intelligent Systems',
     description: 'Software, IoT devices and live monitoring.',
-    icon: 'Cpu',
+    icon: Cpu,
     accent: '#10B981',
     gradient: 'from-emerald-400 to-emerald-600',
     x: 8,
@@ -128,7 +128,7 @@ export const ecosystemFlows: { from: string; to: string; label: string }[] = [
 export interface Differentiator {
   title: string;
   description: string;
-  icon: IconName | 'Gauge' | 'Leaf' | 'Wrench';
+  icon: LucideIcon;
 }
 
 export const differentiators: Differentiator[] = [
@@ -136,25 +136,25 @@ export const differentiators: Differentiator[] = [
     title: 'Innovation-Led Solutions',
     description:
       'We stay ahead of the curve with breakthrough technologies in EV charging, solar power, and battery systems — engineered for performance and efficiency.',
-    icon: 'Cpu',
+    icon: Cpu,
   },
   {
     title: 'Customized Approach',
     description:
       'No two clients are the same. We offer tailored solutions that align with your unique energy needs, ensuring maximum impact and value.',
-    icon: 'Gauge',
+    icon: Gauge,
   },
   {
     title: 'Technical Excellence',
     description:
       'Backed by a skilled team with deep industry knowledge, we deliver precision-engineered systems that meet the highest standards of quality and reliability.',
-    icon: 'Wrench',
+    icon: Wrench,
   },
   {
     title: 'Sustainability at Heart',
     description:
       'Our commitment goes beyond business — every solution we provide contributes to a cleaner planet and a more sustainable future.',
-    icon: 'Leaf',
+    icon: Leaf,
   },
 ];
 

@@ -1,128 +1,93 @@
-import { ArrowUp, Mail, MapPin } from 'lucide-react';
-import {
-  ADDRESS_LINES,
-  CONTACT,
-  MAP_LINK,
-  SOCIAL_LINKS,
-} from '@/app/siteConfig';
-import { scrollToSection, trackEvent } from '@/lib/utils';
-import { Logo } from '@/components/ui';
-
-const QUICK_LINKS = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About Us' },
-  { id: 'services', label: 'Services' },
-  { id: 'process', label: 'Process' },
-  { id: 'contact', label: 'Contact' },
-];
-
-const SERVICE_LINKS = [
-  { id: 'service-solar', label: 'Solar Power' },
-  { id: 'service-ev-charging', label: 'EV Charging' },
-  { id: 'service-software-iot', label: 'IoT Integration' },
-  { id: 'service-consulting', label: 'Energy Audits' },
-];
+import { Link } from 'react-router-dom';
+import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react';
+import { LogoMark } from '@/components/ui';
+import { ADDRESS_LINES, BUSINESS, CONTACT, FOOTER_LINKS, SOCIAL_LINKS } from '@/app/siteConfig';
+import { insights } from '@/data/insights';
+import { trackEvent } from '@/lib/utils';
 
 export function FooterContainer() {
   const year = new Date().getFullYear();
 
-  const backToTop = () => {
-    trackEvent('back_to_top');
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
-  };
-
   return (
-    <footer className="relative overflow-hidden border-t border-line bg-mist">
-      {/* Decorative energy motif */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <svg
-          className="absolute -right-24 -top-24 h-80 w-80 text-emerald-500/10"
-          viewBox="0 0 200 200"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="0.6"
-        >
-          <circle cx="100" cy="100" r="70" />
-          <circle cx="100" cy="100" r="46" />
-          <circle cx="100" cy="100" r="22" />
-          <path d="M0 100h200M100 0v200" />
-          <path d="M30 30l140 140M170 30L30 170" />
-        </svg>
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white/70 to-transparent" />
-      </div>
+    <footer className="relative overflow-hidden border-t border-line bg-white">
+      {/* Reference-style primary grid motif, faded out at the top. */}
+      <div
+        className="grid-lines mask-fade-b pointer-events-none absolute inset-x-0 top-0 h-64 opacity-60"
+        aria-hidden="true"
+      />
 
-      <div className="shell relative py-16 sm:py-20">
-        <div className="grid gap-12 lg:grid-cols-12">
+      <div className="shell relative pb-10 pt-16 sm:pt-20">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
           {/* Brand */}
           <div className="lg:col-span-4">
-            <Logo />
-            <p className="mt-5 max-w-sm text-[0.95rem] leading-relaxed text-ink-muted">
-              Pioneers innovative, sustainable energy solutions for a cleaner tomorrow.
+            <div className="flex items-center gap-3">
+              <LogoMark />
+              <div>
+                <p className="font-heading text-lg font-extrabold tracking-[0.1em] text-ink">
+                  {BUSINESS.name}
+                </p>
+                <p className="text-[0.6rem] font-semibold uppercase tracking-[0.32em] text-ink-faint">
+                  {BUSINESS.subLabel}
+                </p>
+              </div>
+            </div>
+
+            <p className="mt-5 max-w-xs text-[0.92rem] leading-relaxed text-ink-muted">
+              Solar, EV charging, storage and the software that makes them work
+              together — engineered for industrial and commercial sites.
             </p>
 
             {SOCIAL_LINKS.length > 0 && (
-              <ul className="mt-6 flex flex-wrap gap-2">
+              <ul className="mt-5 flex gap-3">
                 {SOCIAL_LINKS.map((social) => (
                   <li key={social.label}>
                     <a
                       href={social.href}
-                      rel="noopener noreferrer nofollow"
                       target="_blank"
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-line bg-white text-ink-muted transition-colors hover:border-emerald-500/40 hover:text-emerald-600"
+                      rel="noopener noreferrer"
+                      className="grid h-9 w-9 place-items-center rounded-lg border border-line text-ink-muted transition-colors hover:border-emerald-500/40 hover:text-emerald-700"
                     >
-                      <span className="sr-only">{social.label}</span>
+                      {social.label}
                     </a>
                   </li>
                 ))}
               </ul>
             )}
-
-            <p className="mt-6 text-xs text-ink-faint">
-              Solar &amp; Renewable Energy powered by Algobiz Innovations LLP
-            </p>
           </div>
 
-          {/* Links */}
-          <nav className="lg:col-span-2" aria-label="Quick links">
-            <h2 className="font-heading text-sm font-bold uppercase tracking-[0.16em] text-ink">
-              Quick Links
-            </h2>
-            <ul className="mt-4 space-y-2.5">
-              {QUICK_LINKS.map((link) => (
-                <li key={link.id}>
-                  <a
-                    href={`#${link.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollToSection(link.id);
-                    }}
-                    className="text-[0.94rem] text-ink-muted transition-colors hover:text-emerald-600"
+          {/* Company */}
+          <nav className="lg:col-span-2" aria-label="Company">
+            <p className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
+              Company
+            </p>
+            <ul className="space-y-2.5">
+              {FOOTER_LINKS.company.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-[0.92rem] text-ink-muted transition-colors hover:text-emerald-700"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </nav>
 
+          {/* Services */}
           <nav className="lg:col-span-2" aria-label="Services">
-            <h2 className="font-heading text-sm font-bold uppercase tracking-[0.16em] text-ink">
+            <p className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
               Services
-            </h2>
-            <ul className="mt-4 space-y-2.5">
-              {SERVICE_LINKS.map((link) => (
-                <li key={link.id}>
-                  <a
-                    href={`#${link.id}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollToSection(link.id, 96);
-                    }}
-                    className="text-[0.94rem] text-ink-muted transition-colors hover:text-emerald-600"
+            </p>
+            <ul className="space-y-2.5">
+              {FOOTER_LINKS.services.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-[0.92rem] text-ink-muted transition-colors hover:text-emerald-700"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -130,59 +95,95 @@ export function FooterContainer() {
 
           {/* Contact */}
           <div className="lg:col-span-4">
-            <h2 className="font-heading text-sm font-bold uppercase tracking-[0.16em] text-ink">
+            <p className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
               Get in touch
-            </h2>
-
-            <address className="mt-4 space-y-3.5 not-italic text-[0.94rem] text-ink-muted">
-              <a
-                href={CONTACT.emailHref}
-                onClick={() => trackEvent('contact_click', { method: 'email' })}
-                className="flex items-start gap-3 break-all transition-colors hover:text-emerald-600"
-              >
-                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" aria-hidden="true" />
-                {CONTACT.email}
-              </a>
-
-              <a
-                href={MAP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackEvent('contact_click', { method: 'map' })}
-                className="flex items-start gap-3 transition-colors hover:text-emerald-600"
-              >
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" aria-hidden="true" />
-                <span>
+            </p>
+            <ul className="space-y-4">
+              <li>
+                <a
+                  href={CONTACT.phoneHref}
+                  onClick={() => trackEvent('nav_click', { target: 'phone' })}
+                  className="group flex gap-3 text-[0.92rem] text-ink-muted transition-colors hover:text-emerald-700"
+                >
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                  <span className="group-hover:underline">{CONTACT.phoneDisplay}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={CONTACT.emailHref}
+                  onClick={() => trackEvent('nav_click', { target: 'email' })}
+                  className="group flex gap-3 text-[0.92rem] text-ink-muted transition-colors hover:text-emerald-700"
+                >
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                  <span className="group-hover:underline">{CONTACT.email}</span>
+                </a>
+              </li>
+              <li className="flex gap-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                <address className="not-italic">
                   {ADDRESS_LINES.map((line) => (
                     <span key={line} className="block">
                       {line}
                     </span>
                   ))}
-                </span>
-              </a>
-            </address>
+                </address>
+              </li>
+            </ul>
+
+            <Link
+              to="/request-consultation"
+              onClick={() => trackEvent('cta_click', { placement: 'footer' })}
+              className="mt-5 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-emerald-700 hover:underline"
+            >
+              Request a consultation
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center gap-4 border-t border-line pt-8 sm:flex-row sm:justify-between">
-          <p className="text-sm text-ink-muted">
-            &copy; {year} VIRYA CLEANTECH. All rights reserved.
+        {/* Sourced market figures, with attribution. */}
+        <div className="mt-14 rounded-[1.6rem] border border-line bg-mist p-6">
+          <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
+            India energy context — latest published
           </p>
+          <dl className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {insights.slice(0, 4).map((insight) => (
+              <div key={insight.id}>
+                <dt className="text-2xl font-extrabold leading-none text-ink">
+                  {insight.value}
+                  <span className="ml-1 text-sm font-semibold text-emerald-600">
+                    {insight.unit}
+                  </span>
+                </dt>
+                <dd className="mt-2 text-[0.8rem] leading-relaxed text-ink-muted">
+                  {insight.label}
+                  <span className="mt-1 block text-[0.7rem] text-ink-faint">
+                    {insight.source} · {insight.asOf}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
 
-          <div className="flex items-center gap-4">
-            {/*
-              Privacy / Terms links are intentionally omitted: no public URLs are
-              published on the official website yet. Add them here once available.
-            */}
-            <button
-              type="button"
-              onClick={backToTop}
-              className="inline-flex items-center gap-2 rounded-xl border border-line bg-white px-4 py-2.5 font-heading text-sm font-semibold text-ink transition-colors hover:border-emerald-500/40 hover:text-emerald-600"
-            >
-              Back to top
-              <ArrowUp className="h-4 w-4" aria-hidden="true" />
-            </button>
-          </div>
+      {/* Bottom bar */}
+      <div className="border-t border-line">
+        <div className="shell flex flex-col items-center justify-between gap-3 py-6 sm:flex-row">
+          <p className="text-center text-[0.8rem] text-ink-faint sm:text-left">
+            © {year} {BUSINESS.name}. {BUSINESS.partnerNote}.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              trackEvent('back_to_top');
+            }}
+            className="text-[0.8rem] font-semibold text-ink-muted transition-colors hover:text-emerald-700"
+          >
+            Back to top ↑
+          </button>
         </div>
       </div>
     </footer>

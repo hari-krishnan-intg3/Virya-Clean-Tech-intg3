@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#10B981" />
+    <meta name="theme-color" content="#0FA97A" />
 
-    <title>VIRYA CLEANTECH — Solar, EV Charging, Battery &amp; Smart Energy Systems</title>
+    <title>VIRYA CLEANTECH — Solar, EV Charging, Storage &amp; Energy Software for Indian Industry</title>
     <meta
       name="description"
-      content="VIRYA CLEANTECH delivers solar power plant design, EV charging infrastructure, advanced battery technology, and custom IoT energy software. Request a free consultation."
+      content="Virya Clean Tech designs and builds solar power plants, EV charging infrastructure, battery energy storage and smart energy software for industrial, commercial and institutional sites across India. Sized from your interval data."
     />
     <link rel="canonical" href="https://viryacleantech.com/" />
 
@@ -18,54 +18,96 @@
     <meta property="og:url" content="https://viryacleantech.com/" />
     <meta
       property="og:title"
-      content="VIRYA CLEANTECH — Pioneering the Future of Sustainable Energy"
+      content="VIRYA CLEANTECH — Energy systems sized from your actual load"
     />
     <meta
       property="og:description"
-      content="Solar power, EV charging infrastructure, battery technology and intelligent energy systems — engineered for a cleaner, smarter future."
+      content="Solar, EV charging, battery storage and the software that makes them work together. Designed around how your site actually behaves — not a rate card."
     />
     <meta property="og:image" content="https://viryacleantech.com/og-image.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="VIRYA CLEANTECH — Pioneering the Future of Sustainable Energy" />
+    <meta name="twitter:title" content="VIRYA CLEANTECH — Energy systems sized from your actual load" />
     <meta
       name="twitter:description"
-      content="Solar power, EV charging infrastructure, battery technology and intelligent energy systems."
+      content="Solar, EV charging, battery storage and smart energy software for industrial and commercial sites across India."
     />
+    <meta name="twitter:image" content="https://viryacleantech.com/og-image.jpg" />
+    <meta name="robots" content="index,follow" />
 
+    <!--
+      Inter only, 400–800. The design system sets both the heading and body
+      stacks to Inter, so loading a second family only produced synthetic bold.
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "VIRYA CLEANTECH",
-        "url": "https://viryacleantech.com/",
-        "logo": "https://viryacleantech.com/wp-content/uploads/2025/04/cropped-VIRYA-3-01-1-scaled-1.png",
-        "description": "Clean energy company providing solar power plant design and development, EV charging infrastructure, advanced battery technology, custom software and IoT integration, and renewable energy consulting and audits.",
-        "telephone": "+91 8317494969",
-        "email": "connect@viryacleantech.com",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "No. 2, 1st Floor, No. 113, Yogjam Sai Charan Layout",
-          "addressLocality": "Bangalore",
-          "addressRegion": "Karnataka",
-          "postalCode": "560036",
-          "addressCountry": "IN"
-        }
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://viryacleantech.com/#organization",
+            "name": "VIRYA CLEANTECH",
+            "url": "https://viryacleantech.com/",
+            "logo": "https://viryacleantech.com/wp-content/uploads/2025/04/cropped-VIRYA-3-01-1-scaled-1.png",
+            "description": "Clean energy engineering company delivering solar power plant design and development, EV charging infrastructure, battery energy storage, custom software and IoT integration, and renewable energy consulting and audits.",
+            "telephone": "+91 8317494969",
+            "email": "connect@viryacleantech.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "No. 2, 1st Floor, No. 113, Yogjam Sai Charan Layout",
+              "addressLocality": "Bengaluru",
+              "addressRegion": "Karnataka",
+              "postalCode": "560036",
+              "addressCountry": "IN"
+            },
+            "areaServed": { "@type": "Country", "name": "India" },
+            "openingHoursSpecification": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+              ],
+              "opens": "10:00",
+              "closes": "19:00"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://viryacleantech.com/#website",
+            "url": "https://viryacleantech.com/",
+            "name": "VIRYA CLEANTECH",
+            "publisher": { "@id": "https://viryacleantech.com/#organization" },
+            "inLanguage": "en-IN"
+          }
+        ]
       }
     </script>
   </head>
   <body>
     <div id="root"></div>
     <noscript>
-      VIRYA CLEANTECH provides solar power plant design, EV charging infrastructure, battery
-      technology and intelligent energy software. Please enable JavaScript, or reach us on
-      +91 8317494969.
+      <div style="max-width: 40rem; margin: 4rem auto; padding: 0 1.5rem; font-family: system-ui, sans-serif; line-height: 1.6">
+        <h1>VIRYA CLEANTECH</h1>
+        <p>
+          We design and build solar power plants, EV charging infrastructure, battery energy
+          storage and smart energy software for industrial and commercial sites across India.
+        </p>
+        <p>
+          This site needs JavaScript. Please enable it, or reach us directly on
+          <a href="tel:+918317494969">+91 8317494969</a> or
+          <a href="mailto:connect@viryacleantech.com">connect@viryacleantech.com</a>.
+        </p>
+      </div>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>

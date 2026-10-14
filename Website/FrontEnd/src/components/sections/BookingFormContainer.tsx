@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -12,29 +13,30 @@ import {
 } from 'lucide-react';
 import {
   bookingSchema,
+  buildSubmission,
   defaultBookingValues,
   submitBookingRequest,
   type BookingFormValues,
 } from '@/lib/validation';
 import { trackEvent } from '@/lib/utils';
-import { subscribeServiceIntent } from '@/lib/serviceIntent';
+import { readServiceFromQuery, subscribeServiceIntent } from '@/lib/serviceIntent';
+import { services } from '@/data/services';
+import { markFormStarted } from '@/lib/session';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { CONTACT } from '@/app/siteConfig';
 import { BookSlotButton, Button, FieldShell, SectionHeading, fieldA11y } from '@/components/ui';
 
+/** Options are derived from the single service taxonomy. */
 const SERVICE_OPTIONS: { value: BookingFormValues['service']; label: string }[] = [
-  { value: 'solar', label: 'Solar Power' },
-  { value: 'ev-charging', label: 'EV Charging' },
-  { value: 'battery', label: 'Battery Technology' },
-  { value: 'iot', label: 'IoT Integration' },
-  { value: 'consulting', label: 'Energy Audit' },
-  { value: 'other', label: 'Other' },
+  ...services.map((service) => ({ value: service.slug, label: service.label })),
+  { value: 'other', label: 'Something else entirely' },
 ];
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
 export function BookingFormContainer() {
   const reduced = usePrefersReducedMotion();
+  const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -45,7 +47,7 @@ export function BookingFormContainer() {
     handleSubmit,
     reset,
     setValue,
-    getValues,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
@@ -53,20 +55,39 @@ export function BookingFormContainer() {
     mode: 'onBlur',
   });
 
+  // Reactive so the character counter actually ticks.
+  const detailsValue = useWatch({ control, name: 'details' });
+
   // Service cards publish their intent; pre-select the matching option and
   // surface the choice so it is obvious why the dropdown changed.
   const [prefilled, setPrefilled] = useState<string | null>(null);
 
-  useEffect(
-    () =>
-      subscribeServiceIntent((service) => {
-        if (!SERVICE_OPTIONS.some((option) => option.value === service)) return;
-        setValue('service', service, { shouldValidate: true, shouldDirty: true });
-        setPrefilled(SERVICE_OPTIONS.find((o) => o.value === service)!.label);
-        trackEvent('booking_service_prefilled', { service });
-      }),
-    [setValue],
-  );
+  const applyService = (service: string) => {
+    const option = SERVICE_OPTIONS.find((o) => o.value === service);
+    if (!option) return;
+    setValue('service', option.value as BookingFormValues['service'], {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setPrefilled(option.label);
+    trackEvent('booking_service_prefilled', { service });
+  };
+
+  // `?service=solar` from any service page, and the in-app intent event.
+  useEffect(() => {
+    const fromQuery = readServiceFromQuery(searchParams.toString());
+    if (fromQuery) applyService(fromQuery);
+    // Intents arriving after mount (a service card clicked in the same view).
+    return subscribeServiceIntent(applyService);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setValue, searchParams]);
+
+  // First interaction means they are actually filling it in.
+  useEffect(() => {
+    const mark = () => markFormStarted();
+    window.addEventListener('pointerdown', mark, { once: true });
+    return () => window.removeEventListener('pointerdown', mark);
+  }, []);
 
   useEffect(() => {
     if (status === 'success') successRef.current?.focus();
@@ -85,10 +106,7 @@ export function BookingFormContainer() {
     abortRef.current = controller;
 
     try {
-      await submitBookingRequest(
-        { ...values, submittedAt: new Date().toISOString(), source: 'booking-form' },
-        controller.signal,
-      );
+      await submitBookingRequest(buildSubmission(values), controller.signal);
       setStatus('success');
       trackEvent('booking_submit_success', { service: values.service });
     } catch (error) {
@@ -346,23 +364,54 @@ export function BookingFormContainer() {
                         </select>
                       </FieldShell>
 
-                      <FieldShell label="Project location" htmlFor="location" error={errors.location?.message}>
+                      <FieldShell
+                        label="Monthly consumption"
+                        htmlFor="consumption"
+                        hint="Units per month, e.g. 450000 or 4.5 lakh. If you know it, this is the single most useful number you can give us."
+                        error={errors.consumption?.message}
+                      >
                         <input
-                          {...fieldA11y('location', errors.location?.message)}
-                          {...register('location')}
+                          {...fieldA11y('consumption', errors.consumption?.message, 'consumption-hint')}
+                          {...register('consumption')}
                           type="text"
-                          autoComplete="address-level2"
-                          placeholder="City, state"
-                          className={`field ${errors.location ? 'field-error' : ''}`}
+                          inputMode="numeric"
+                          placeholder="450000 units / month"
+                          className={`field ${errors.consumption ? 'field-error' : ''}`}
+                        />
+                      </FieldShell>
+
+                      <FieldShell
+                        label="Roof area or site capacity"
+                        htmlFor="capacity"
+                        hint="Approximate is fine — roof in sq ft, or an existing load in kW."
+                        error={errors.capacity?.message}
+                      >
+                        <input
+                          {...fieldA11y('capacity', errors.capacity?.message, 'capacity-hint')}
+                          {...register('capacity')}
+                          type="text"
+                          placeholder="e.g. 12,000 sq ft roof"
+                          className={`field ${errors.capacity ? 'field-error' : ''}`}
                         />
                       </FieldShell>
                     </div>
+
+                    <FieldShell label="Project location" htmlFor="location" error={errors.location?.message}>
+                      <input
+                        {...fieldA11y('location', errors.location?.message)}
+                        {...register('location')}
+                        type="text"
+                        autoComplete="address-level2"
+                        placeholder="City, state"
+                        className={`field ${errors.location ? 'field-error' : ''}`}
+                      />
+                    </FieldShell>
 
                     <FieldShell
                       label="Project details"
                       htmlFor="details"
                       required
-                      hint={`${getValues('details')?.length ?? 0}/2000 characters`}
+                      hint={`${detailsValue?.length ?? 0}/2000 characters`}
                       error={errors.details?.message}
                     >
                       <textarea

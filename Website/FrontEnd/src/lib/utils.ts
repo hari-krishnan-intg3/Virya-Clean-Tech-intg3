@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { track } from './session';
 
 /** Merge conditional class names, resolving conflicting Tailwind utilities. */
 export function cn(...inputs: ClassValue[]): string {
@@ -17,15 +18,21 @@ export function scrollToSection(id: string, offset = 76): void {
   window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
 }
 
-/** Stable, dependency-free event tracking hook for future analytics wiring. */
+/**
+ * Stable event-tracking hook used by every component.
+ *
+ * Delegates to the session layer, which batches events and ships them to
+ * `/api/session`. The `virya:track` CustomEvent is still dispatched so an
+ * external analytics tool can be attached without touching this file.
+ */
 export function trackEvent(name: string, payload: Record<string, unknown> = {}): void {
   if (typeof window === 'undefined') return;
 
-  const detail = { event: name, ...payload, at: Date.now() };
+  track(name, payload);
 
-  // Default sink: a DOM CustomEvent. Connect GA4 / Plausible / Segment by
-  // listening to `virya:track` on window — no other file needs to change.
-  window.dispatchEvent(new CustomEvent('virya:track', { detail }));
+  window.dispatchEvent(
+    new CustomEvent('virya:track', { detail: { event: name, ...payload, at: Date.now() } }),
+  );
 }
 
 export const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));

@@ -1,6 +1,12 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { loadConfig, missingEnv } from './_lib/config';
-import { createLeadIssue, ensureLeadsProject, type LeadInput } from './_lib/leads';
+import { buildRequestContext } from './_lib/context';
+import {
+  createLeadIssue,
+  ensureLeadsProject,
+  resolveAssignee,
+  type LeadInput,
+} from './_lib/leads';
 import { appendRows, readTab, writeTab } from './_lib/sheets';
 import { ensureTab } from './_lib/tabs';
 
@@ -9,14 +15,19 @@ import { ensureTab } from './_lib/tabs';
  *
  * POST /api/leads
  *   { "fullName":"…", "email":"…", "phone":"…", "company":"…",
- *     "service":"solar", "location":"…", "details":"…" }
+ *     "service":"solar", "consumption":"450000", "capacity":"12000 sq ft",
+ *     "location":"…", "details":"…", "context": { …session snapshot… } }
  *
- * Creates a Task in the dedicated Jira leads project carrying who and when,
- * and appends the same row to the Leads sheet tab so the KPI counters have a
- * real source.
+ * Writes to three places, each idempotent and each allowed to fail without
+ * losing the others:
  *
- * Auth accepts CRON_SECRET (server-side) or LEADS_INGEST_KEY (sent by the
- * browser form as the `x-leads-key` header).
+ *   1. **Jira** — a Task in the leads project, assigned, with the next
+ *      actions as subtasks and the session context in the description.
+ *   2. **Sheets / Leads** — one row per enquiry, for the KPI counters.
+ *   3. **Sheets / Sessions** — the visit itself, upserted by `/api/session`.
+ *
+ * The intent is that a lead is never lost because one integration is down,
+ * and the response always says which parts succeeded.
  */
 
 function authorized(req: VercelRequest, cronSecret: string): boolean {
@@ -24,8 +35,10 @@ function authorized(req: VercelRequest, cronSecret: string): boolean {
   if (typeof header === 'string' && header.replace(/^Bearer\s+/i, '').trim() === cronSecret) {
     return true;
   }
+
   const browserKey = process.env.LEADS_INGEST_KEY;
   if (browserKey && req.headers['x-leads-key'] === browserKey) return true;
+
   return false;
 }
 
@@ -36,10 +49,37 @@ const LEAD_HEADERS = [
   'Phone',
   'Company',
   'Service',
+  'Consumption',
+  'Capacity',
   'Location',
   'Details',
   'Jira Key',
+  'Intent Score',
+  'Source',
+  'Session ID',
+  'Landing Page',
+  'Referrer',
+  'Device',
+  'Timezone',
+  'IP',
+  'City',
+  'Assistant Messages',
 ];
+
+/** Mirrors the client-side score so both systems agree on lead quality. */
+function intentScore(lead: LeadInput): number {
+  const context = (lead.context ?? {}) as Record<string, unknown>;
+
+  let score = 45; // a submitted, consented form
+  score += Math.min(20, Number(context.chatbotMessages ?? 0) * 4);
+  score += Math.round(Math.min(Number(context.maxScrollDepth ?? 0), 100) / 10);
+  score += Math.min(15, Math.round(Number(context.activeSeconds ?? 0) / 30));
+  if (lead.phone) score += 5;
+  if (lead.company) score += 5;
+  if (lead.consumption) score += 5;
+
+  return Math.min(100, score);
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -57,9 +97,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const body = (req.body ?? {}) as Partial<LeadInput>;
+  const body = (req.body ?? {}) as Partial<LeadInput> & {
+    context?: Record<string, unknown>;
+  };
+
   const fullName = String(body.fullName ?? '').trim();
-  const email = String(body.email ?? '').trim();
+  const email = String(body.email ?? '').trim().toLowerCase();
 
   if (!fullName || !email) {
     return res.status(400).json({ error: 'fullName and email are required' });
@@ -71,19 +114,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     phone: body.phone?.trim() || undefined,
     company: body.company?.trim() || undefined,
     service: body.service,
+    consumption: body.consumption?.trim() || undefined,
+    capacity: body.capacity?.trim() || undefined,
     location: body.location?.trim() || undefined,
     details: body.details?.trim() || undefined,
     source: body.source ?? 'website',
+    context: body.context ?? {},
   };
 
+  const request = buildRequestContext(req, { storeRawIp: config.storeRawIp });
   const timestamp = new Date().toISOString();
+  const context = lead.context ?? {};
+  const score = intentScore(lead);
 
   let jira: { key: string; url: string; summary: string } | null = null;
+  let subtasks: { summary: string }[] = [];
   let leadsProjectReady = false;
   let sheetWritten = false;
   const errors: string[] = [];
 
-  // 1) Jira — file the lead as a Task
+  // 1) Jira — the lead of record
   if (config.jira.leadsProjectKey) {
     try {
       const ensured = await ensureLeadsProject(
@@ -94,7 +144,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       if (ensured.exists) {
         leadsProjectReady = true;
-        jira = await createLeadIssue(config.jira, config.jira.leadsProjectKey!, lead);
+        const assigneeId = await resolveAssignee(config.jira, config.leadsAssigneeId);
+        const created = await createLeadIssue(config.jira, config.jira.leadsProjectKey, lead, {
+          assigneeId: assigneeId ?? undefined,
+        });
+        jira = { key: created.key, url: created.url, summary: created.summary };
+        subtasks = created.subtasks.map((s) => ({ summary: s.summary }));
       } else {
         errors.push(ensured.hint ?? 'Leads project missing');
       }
@@ -103,30 +158,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
-  // 2) Sheets — append the row so KPI counters have a source
+  // 2) Sheets — the Leads tab that feeds the KPI counters
   if (config.sheets.leadsTab && !config.dryRun) {
     try {
       const tab = config.sheets.leadsTab;
-
-      // Create the tab on first use so no manual setup is needed.
       await ensureTab(config.sheets, config.google, tab);
 
       const existing = await readTab(config.sheets, config.google, tab, 'A1:A2');
       if (existing.length === 0) {
-        await writeTab(config.sheets, config.google, tab, 'A1:I1', [LEAD_HEADERS]);
+        await writeTab(config.sheets, config.google, tab, 'A1:U1', [LEAD_HEADERS]);
       }
 
-      await appendRows(config.sheets, config.google, tab, 'A:I', [
+      await appendRows(config.sheets, config.google, tab, 'A:U', [
         [
           timestamp,
-          lead.fullName,
-          lead.email,
+          fullName,
+          email,
           lead.phone ?? '',
           lead.company ?? '',
           lead.service ?? '',
+          lead.consumption ?? '',
+          lead.capacity ?? '',
           lead.location ?? '',
           lead.details ?? '',
           jira?.key ?? '',
+          score,
+          lead.source ?? 'website',
+          String(context.sessionId ?? ''),
+          String(context.landingPage ?? ''),
+          String(context.referrer ?? ''),
+          String(context.device ?? ''),
+          String(context.timezone ?? ''),
+          request.ipForStorage ?? '',
+          request.city ?? '',
+          Number(context.chatbotMessages ?? 0),
         ],
       ]);
 
@@ -140,6 +205,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ok: true,
     receivedAt: timestamp,
     jira,
+    subtasks: subtasks.length,
+    intentScore: score,
     leadsProjectReady,
     sheetWritten,
     errors: errors.length ? errors : undefined,

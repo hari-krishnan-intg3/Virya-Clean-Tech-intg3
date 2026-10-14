@@ -11,6 +11,8 @@ import type { GoogleAuthConfig, SheetsConfig } from './config';
  * because serverless jobs have no browser session to reuse.
  */
 
+export type CellValue = string | number | boolean;
+
 interface TokenCache {
   token: string;
   expiresAt: number;
@@ -122,7 +124,7 @@ export async function writeTab(
   google: GoogleAuthConfig,
   tab: string,
   range: string,
-  values: (string | number)[][],
+  values: CellValue[][],
 ): Promise<void> {
   if (values.length === 0) return;
 
@@ -151,7 +153,7 @@ export async function writeRange(
   config: SheetsConfig,
   google: GoogleAuthConfig,
   range: string,
-  values: (string | number)[][],
+  values: CellValue[][],
 ): Promise<void> {
   return writeTab(config, google, config.reportsTab, range, values);
 }
@@ -162,7 +164,7 @@ export async function appendRows(
   google: GoogleAuthConfig,
   tab: string,
   range: string,
-  values: (string | number)[][],
+  values: CellValue[][],
 ): Promise<void> {
   if (values.length === 0) return;
 

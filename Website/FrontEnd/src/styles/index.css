@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
@@ -11,9 +15,10 @@
   body {
     @apply bg-white font-body text-ink antialiased;
     text-rendering: optimizeLegibility;
+    /* The reference guards horizontal overflow on html/body/#root. */
+    overflow-x: hidden;
   }
 
-  /* Contemporary default link treatment. */
   a {
     @apply transition-colors duration-200;
   }
@@ -22,9 +27,9 @@
   h2,
   h3,
   h4 {
-    @apply font-heading text-ink;
+    @apply font-heading font-bold text-ink;
     text-wrap: balance;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.025em;
   }
 
   ::selection {
@@ -34,41 +39,28 @@
   :focus-visible {
     @apply outline-none ring-2 ring-emerald-500 ring-offset-2 ring-offset-white;
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
 }
 
+/* ------------------------------------------------------------------ */
+/* Components                                                          */
+/* ------------------------------------------------------------------ */
+
 @layer components {
+  /* 1400px cap + 32px gutters, matching the reference's container. */
   .shell {
-    @apply mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-10;
+    @apply mx-auto w-full max-w-[1400px] px-5 sm:px-8 lg:px-10;
   }
 
   .section {
-    @apply py-20 sm:py-28 lg:py-36;
+    @apply py-16 sm:py-24 lg:py-32;
   }
 
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-500 sm:text-[0.8rem];
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-600 sm:text-[0.8rem];
   }
 
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-full font-heading text-[0.95rem] font-semibold
-           transition-[background-color,color,box-shadow,transform] duration-300
-           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2
-           active:translate-y-0
-           disabled:cursor-not-allowed disabled:opacity-60;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl font-heading text-[0.95rem] font-semibold transition-[background-color,color,box-shadow,transform,border-color] duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60;
   }
 
   .btn-lg {
@@ -84,27 +76,28 @@
   }
 
   .btn-primary {
-    @apply btn btn-md bg-emerald-500 text-white shadow-soft hover:-translate-y-0.5 hover:bg-emerald-900 hover:shadow-lift;
+    @apply btn btn-md bg-emerald-500 text-white shadow-soft hover:-translate-y-0.5 hover:bg-emerald-600 hover:shadow-lift;
   }
 
   .btn-primary-lg {
-    @apply btn btn-lg bg-emerald-500 text-white shadow-soft hover:-translate-y-0.5 hover:bg-emerald-900 hover:shadow-lift;
+    @apply btn btn-lg bg-emerald-500 text-white shadow-soft hover:-translate-y-0.5 hover:bg-emerald-600 hover:shadow-lift;
   }
 
   .btn-outline {
-    @apply btn btn-md border border-line bg-white text-ink hover:-translate-y-0.5 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-900;
+    @apply btn btn-md border border-line bg-white text-ink hover:-translate-y-0.5 hover:border-emerald-500/50 hover:bg-emerald-50 hover:text-emerald-800;
   }
 
   .btn-outline-lg {
-    @apply btn btn-lg border border-line bg-white text-ink hover:-translate-y-0.5 hover:border-emerald-500/50 hover:bg-emerald-500/5 hover:text-emerald-900;
+    @apply btn btn-lg border border-line bg-white text-ink hover:-translate-y-0.5 hover:border-emerald-500/50 hover:bg-emerald-50 hover:text-emerald-800;
   }
 
   .btn-ghost {
     @apply btn btn-sm text-ink-muted hover:bg-mist hover:text-ink;
   }
 
+  /* Reference card: soft 1.6rem radius, --card-shadow, lift on hover. */
   .card {
-    @apply rounded-3xl border border-line bg-white shadow-soft transition-[transform,box-shadow,border-color] duration-300;
+    @apply rounded-[1.6rem] border border-line bg-white shadow-soft transition-[transform,box-shadow,border-color] duration-300;
   }
 
   .card-hover {
@@ -112,11 +105,7 @@
   }
 
   .field {
-    @apply w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-[0.95rem] text-ink
-           transition-[border-color,box-shadow] duration-200
-           placeholder:text-ink-faint
-           focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/15
-           disabled:bg-mist disabled:text-ink-faint;
+    @apply w-full rounded-xl border border-line bg-white px-4 py-3.5 text-[0.95rem] text-ink transition-colors duration-200 placeholder:text-ink-faint focus:border-emerald-500 focus:outline-none focus:ring-4 focus:ring-emerald-500/15 disabled:bg-mist disabled:text-ink-faint;
   }
 
   .field-error {
@@ -127,23 +116,41 @@
     @apply mb-2 block font-heading text-sm font-semibold text-ink;
   }
 
-  /* Hero copy re-enters on each slide change (elements are keyed per slide). */
   .hero-stagger {
     animation: heroStagger 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
+
+  /* Reference-style surface used by mega menus, popovers and chat panels. */
+  .panel {
+    @apply rounded-[1.6rem] border border-line bg-white shadow-lift;
+  }
+
+  /* Hairline accent rule that sits above section headings. */
+  .rule-accent {
+    @apply h-[2px] w-10 rounded-full bg-emerald-500;
+  }
 }
 
-/* Swiper: we render our own progress tabs, so hide the default bullets. */
+/* ------------------------------------------------------------------ */
+/* Raw CSS                                                             */
+/* ------------------------------------------------------------------ */
+
+@keyframes heroStagger {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Swiper bullets are suppressed in favour of custom progress tabs. */
 .swiper-pagination {
   display: none !important;
 }
 
-/*
- * Hero: force full-bleed.
- * Swiper's core CSS uses `box-sizing: content-box` on `.swiper-wrapper`, and
- * in loop mode it duplicates slides. Without these overrides the wrapper can
- * be wider than the viewport and the last slide leaves a gap on the right.
- */
 .hero-swiper,
 .hero-swiper .swiper-wrapper,
 .hero-swiper .swiper-slide {
@@ -160,7 +167,6 @@
   overflow: hidden;
 }
 
-/* The media layer always fills its slide, whatever the image's ratio. */
 .hero-swiper .swiper-slide > div,
 .hero-swiper .swiper-slide img {
   width: 100%;
@@ -172,22 +178,15 @@
   display: block;
 }
 
-@keyframes heroStagger {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* ------------------------------------------------------------------ */
+/* Utilities                                                           */
+/* ------------------------------------------------------------------ */
 
 @layer utilities {
   .grid-lines {
     background-image:
-      linear-gradient(to right, rgba(16, 185, 129, 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(16, 185, 129, 0.06) 1px, transparent 1px);
+      linear-gradient(to right, rgba(15, 169, 122, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 169, 122, 0.06) 1px, transparent 1px);
     background-size: 56px 56px;
   }
 
@@ -197,10 +196,22 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-emerald-900 via-emerald-500 to-sky-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-emerald-700 via-emerald-500 to-signal-500 bg-clip-text text-transparent;
   }
 
   .sr-only-focusable:not(:focus):not(:focus-within) {
     @apply sr-only;
+  }
+}
+
+/* Honour the OS preference site-wide. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

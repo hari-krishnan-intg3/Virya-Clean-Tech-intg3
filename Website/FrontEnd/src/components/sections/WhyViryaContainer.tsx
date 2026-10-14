@@ -1,9 +1,5 @@
-import { Cpu, Gauge, Leaf, Sun, Wrench, Zap } from 'lucide-react';
 import { differentiators } from '@/data/content';
 import { Reveal, SectionHeading, SmartImage } from '@/components/ui';
-
-// Keyed by the icon names used in data/content.ts.
-const ICONS = { Cpu, Gauge, Leaf, Wrench, Sun, Zap, LineChart: Gauge } as const;
 
 export function WhyViryaContainer() {
   return (
@@ -71,7 +67,7 @@ export function WhyViryaContainer() {
 
             <div className="mt-10 grid gap-4 sm:grid-cols-2">
               {differentiators.map((item, index) => {
-                const Icon = ICONS[item.icon];
+                const Icon = item.icon;
                 return (
                   <Reveal key={item.title} delay={index * 0.08}>
                     <article className="card card-hover h-full p-6">
