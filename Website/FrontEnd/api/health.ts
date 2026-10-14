@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { missingEnv, REPORT_TYPES } from './_lib/config';
+import { missingEnv, REPORT_TYPES } from './_lib/config.js';
 
 /**
  * Liveness / configuration check.

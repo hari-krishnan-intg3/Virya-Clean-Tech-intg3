@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { loadConfig } from './_lib/config';
-import { appendRows, readTab, writeTab } from './_lib/sheets';
-import { ensureTab } from './_lib/tabs';
-import { authHeader } from './_lib/jira';
+import { loadConfig } from './_lib/config.js';
+import { appendRows, readTab, writeTab } from './_lib/sheets.js';
+import { ensureTab } from './_lib/tabs.js';
+import { authHeader } from './_lib/jira.js';
 
 /**
  * Careers applications.

@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { isReportType, loadConfig, missingEnv } from './_lib/config';
-import { getSnapshot } from './_lib/jira';
-import { countLeadsInRange } from './_lib/sheets';
-import { getPeriod } from './_lib/periods';
-import { buildSubject, renderReportText } from './_lib/email';
+import { isReportType, loadConfig, missingEnv } from './_lib/config.js';
+import { getSnapshot } from './_lib/jira.js';
+import { countLeadsInRange } from './_lib/sheets.js';
+import { getPeriod } from './_lib/periods.js';
+import { buildSubject, renderReportText } from './_lib/email.js';
 
 /**
  * Dry-run preview. Builds the report exactly as `reports.ts` would and returns

@@ -1,4 +1,4 @@
-import type { KpiSnapshot } from './kpi';
+import type { KpiSnapshot } from './kpi.js';
 
 /**
  * Executive dispatch panel for the report email.

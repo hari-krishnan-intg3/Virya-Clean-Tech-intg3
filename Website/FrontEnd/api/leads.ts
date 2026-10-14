@@ -1,14 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { loadLeadIntakeConfig } from './_lib/config';
-import { buildRequestContext } from './_lib/context';
+import { loadLeadIntakeConfig } from './_lib/config.js';
+import { buildRequestContext } from './_lib/context.js';
 import {
   createLeadIssue,
   ensureLeadsProject,
   resolveAssignee,
   type LeadInput,
-} from './_lib/leads';
-import { appendRows, readTab, writeTab } from './_lib/sheets';
-import { ensureTab } from './_lib/tabs';
+} from './_lib/leads.js';
+import { appendRows, readTab, writeTab } from './_lib/sheets.js';
+import { ensureTab } from './_lib/tabs.js';
 
 /**
  * Lead intake.

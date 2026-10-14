@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { sessionConfig } from './_lib/config';
-import { buildRequestContext, isVercelInternal } from './_lib/context';
-import { upsertSession, type SessionPayload } from './_lib/session';
+import { sessionConfig } from './_lib/config.js';
+import { buildRequestContext, isVercelInternal } from './_lib/context.js';
+import { upsertSession, type SessionPayload } from './_lib/session.js';
 
 /**
  * Visitor session endpoint.

@@ -1,7 +1,7 @@
-import { readTab, writeTab } from './sheets';
-import { ensureTab } from './tabs';
-import type { GoogleAuthConfig, SheetsConfig } from './config';
-import type { RequestContext } from './context';
+import { readTab, writeTab } from './sheets.js';
+import { ensureTab } from './tabs.js';
+import type { GoogleAuthConfig, SheetsConfig } from './config.js';
+import type { RequestContext } from './context.js';
 
 /**
  * Session persistence.

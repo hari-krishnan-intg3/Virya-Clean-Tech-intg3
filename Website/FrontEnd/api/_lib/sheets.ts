@@ -1,5 +1,5 @@
 import { createSign } from 'node:crypto';
-import type { GoogleAuthConfig, SheetsConfig } from './config';
+import type { GoogleAuthConfig, SheetsConfig } from './config.js';
 
 /**
  * Google Sheets access via a Service Account + JWT (RS256).

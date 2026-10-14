@@ -1,5 +1,5 @@
-import { getAccessToken } from './sheets';
-import type { GoogleAuthConfig, SheetsConfig } from './config';
+import { getAccessToken } from './sheets.js';
+import type { GoogleAuthConfig, SheetsConfig } from './config.js';
 
 /**
  * Tab lifecycle helpers — creates sheets on demand so the workbook doesn't

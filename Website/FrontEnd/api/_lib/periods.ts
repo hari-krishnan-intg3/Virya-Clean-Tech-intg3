@@ -1,4 +1,4 @@
-import type { ReportType } from './config';
+import type { ReportType } from './config.js';
 
 /** Reporting timezone — India, matching the business. */
 export const TZ = 'Asia/Kolkata';

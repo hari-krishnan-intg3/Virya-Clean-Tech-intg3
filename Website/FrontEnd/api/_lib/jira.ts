@@ -1,4 +1,4 @@
-import type { JiraConfig } from './config';
+import type { JiraConfig } from './config.js';
 
 /**
  * Minimal Jira Cloud REST client (API v3).

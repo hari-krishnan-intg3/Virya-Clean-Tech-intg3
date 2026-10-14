@@ -1,4 +1,4 @@
-import type { ReportType } from './config';
+import type { ReportType } from './config.js';
 
 /**
  * Reads and updates the "Reports KPI" tab — the executive dispatch dashboard

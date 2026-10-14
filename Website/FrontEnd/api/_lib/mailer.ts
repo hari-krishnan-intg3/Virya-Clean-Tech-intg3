@@ -1,4 +1,4 @@
-import type { MailConfig } from './config';
+import type { MailConfig } from './config.js';
 
 /**
  * Email delivery via Resend (plain fetch — no SDK).

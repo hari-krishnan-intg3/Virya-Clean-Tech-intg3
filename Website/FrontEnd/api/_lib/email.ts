@@ -1,7 +1,7 @@
-import type { JiraSnapshot } from './jira';
-import type { KpiSnapshot } from './kpi';
-import { kpiPanel, kpiText } from './kpi-email';
-import { formatDateTime, type Period } from './periods';
+import type { JiraSnapshot } from './jira.js';
+import type { KpiSnapshot } from './kpi.js';
+import { kpiPanel, kpiText } from './kpi-email.js';
+import { formatDateTime, type Period } from './periods.js';
 
 /**
  * Report email template.

@@ -5,13 +5,13 @@ import {
   missingEnv,
   REPORT_TYPES,
   type ReportType,
-} from './_lib/config';
-import { getSnapshot } from './_lib/jira';
-import { countLeadsInRange, logReportRun, readTab, writeTab } from './_lib/sheets';
-import { KpiStore } from './_lib/kpi';
-import { getPeriod } from './_lib/periods';
-import { sendEmail } from './_lib/mailer';
-import { buildSubject, renderReportEmail, renderReportText } from './_lib/email';
+} from './_lib/config.js';
+import { getSnapshot } from './_lib/jira.js';
+import { countLeadsInRange, logReportRun, readTab, writeTab } from './_lib/sheets.js';
+import { KpiStore } from './_lib/kpi.js';
+import { getPeriod } from './_lib/periods.js';
+import { sendEmail } from './_lib/mailer.js';
+import { buildSubject, renderReportEmail, renderReportText } from './_lib/email.js';
 
 /**
  * Reports endpoint — daily / weekly / monthly.
