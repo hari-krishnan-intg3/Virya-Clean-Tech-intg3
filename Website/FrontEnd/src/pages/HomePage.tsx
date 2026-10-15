@@ -71,7 +71,7 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <p className="eyebrow">
                 <span className="rule-accent" />
-                Services
+                Offerings
               </p>
               <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl lg:text-[2.9rem]">
                 Comprehensive energy solutions, <span className="text-gradient">in the right order</span>
@@ -145,6 +145,57 @@ export default function HomePage() {
                 </Link>
               </div>
             </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" className="section bg-ink">
+        <div className="shell">
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-16">
+            <Reveal className="lg:col-span-5">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-emerald-300">
+                About Virya Cleantech
+              </p>
+              <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-white sm:text-4xl">
+                Practical energy decisions start with the way a site works.
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-white/70">
+                Virya helps businesses explore solar, EV charging, storage,
+                connected-energy technology and assessments. The team begins
+                with the facility, operating requirements and project objective;
+                suitability depends on site conditions and agreed scope.
+              </p>
+              <Link to="/about" className="btn-outline mt-7 border-white/25 text-white hover:bg-white/10">
+                About Virya
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Reveal>
+
+            <div className="grid gap-4 sm:grid-cols-3 lg:col-span-7">
+              {[
+                {
+                  title: 'Start with context',
+                  body: 'Operating hours, energy use, site layout and existing infrastructure help frame which questions matter. Available data can guide the first review, while gaps are identified before conclusions are drawn.',
+                },
+                {
+                  title: 'Explore connected options',
+                  body: 'Generation, storage, charging and monitoring can interact, but each facility has different needs. Options should be considered against vehicle patterns, electrical capacity, ownership and operational constraints.',
+                },
+                {
+                  title: 'Make scope clear',
+                  body: 'Technical reviews, equipment, approvals, deliverables and ongoing support depend on the agreed engagement. Clarifying responsibilities and assumptions helps everyone understand the next step.',
+                },
+              ].map((item, index) => (
+                <Reveal key={item.title} delay={index * 0.06} as="div">
+                  <article className="h-full border border-white/15 bg-white/[0.04] p-5 sm:p-6">
+                    <h3 className="text-lg font-bold text-white">{item.title}</h3>
+                    <p className="mt-3 text-[0.9rem] leading-relaxed text-white/70">
+                      {item.body}
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -263,7 +314,6 @@ export default function HomePage() {
         title="Have an energy project in mind?"
         body="Tell us about your facility, operating requirements or project question. The team can help identify the information and next step relevant to your enquiry."
         primary={{ label: 'Request a consultation', to: '/request-consultation' }}
-        secondary={{ label: 'Contact the team', to: '/contact' }}
       />
     </>
   );
