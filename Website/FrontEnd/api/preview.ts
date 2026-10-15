@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { matchesSecret } from '../controller/security.js';
 import { isReportType, loadConfig, missingEnv } from './_lib/config.js';
 import { getSnapshot } from './_lib/jira.js';
 import { countLeadsInRange } from './_lib/sheets.js';
@@ -29,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const auth = req.headers.authorization;
   const token = typeof auth === 'string' ? auth.replace(/^Bearer\s+/i, '').trim() : '';
-  if (token !== config.cronSecret) {
+  if (!matchesSecret(token, config.cronSecret)) {
     return res.status(401).json({ error: 'Unauthorized. Send Authorization: Bearer <CRON_SECRET>.' });
   }
 

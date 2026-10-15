@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { matchesSecret } from '../controller/security.js';
 import {
   isReportType,
   loadConfig,
@@ -47,7 +48,7 @@ interface RunResult {
 function authorized(req: VercelRequest, secret: string): boolean {
   const header = req.headers.authorization;
   if (typeof header !== 'string') return false;
-  return header.replace(/^Bearer\s+/i, '').trim() === secret;
+  return matchesSecret(header.replace(/^Bearer\s+/i, '').trim(), secret);
 }
 
 function parseTypes(req: VercelRequest): ReportType[] {
@@ -116,6 +117,7 @@ async function runReport(type: ReportType, testMode: boolean): Promise<RunResult
         }
       } catch (error) {
         analyticsNote = `Vercel Analytics request failed: ${error instanceof Error ? error.message : 'unknown error'}`;
+        if (testMode) throw error;
       }
     }
 
@@ -251,8 +253,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Server is not fully configured', missing });
   }
 
-  const { cronSecret } = loadConfig();
-  if (!authorized(req, cronSecret)) {
+  const config = loadConfig();
+  const testMode = req.query.test === 'true' || req.body?.test === true;
+  if (testMode) {
+    const securityHeader = req.headers['x-vercel-security-controller'];
+    const securityToken = typeof securityHeader === 'string' ? securityHeader : undefined;
+    if (!matchesSecret(securityToken, process.env.VERCEL_SECURITY_CONTROLLER)) {
+      return res.status(process.env.VERCEL_SECURITY_CONTROLLER ? 401 : 503).json({
+        error: process.env.VERCEL_SECURITY_CONTROLLER
+          ? 'Unauthorized test dispatch'
+          : 'Test dispatch is not configured',
+      });
+    }
+    if (!config.vercelAnalytics) {
+      return res.status(503).json({ error: 'Vercel Analytics is not configured for test dispatch' });
+    }
+  } else if (!authorized(req, config.cronSecret)) {
     return res.status(401).json({
       error: 'Unauthorized. Send Authorization: Bearer <CRON_SECRET>.',
     });
@@ -264,8 +280,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   } catch (error) {
     return res.status(400).json({ error: (error as Error).message });
   }
-
-  const testMode = req.query.test === 'true' || req.body?.test === true;
 
   const results: RunResult[] = [];
   for (const type of types) {

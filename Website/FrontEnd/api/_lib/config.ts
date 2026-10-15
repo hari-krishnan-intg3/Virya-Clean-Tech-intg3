@@ -159,6 +159,8 @@ export function missingEnv(): string[] {
 }
 
 export function loadConfig(): AppConfig {
+  const vercelController = process.env.VERCEL_CONTROLLER || process.env.VERCEL_ACCESS_TOKEN;
+
   return {
     jira: {
       baseUrl: required('JIRA_BASE_URL').replace(/\/+$/, ''),
@@ -185,11 +187,11 @@ export function loadConfig(): AppConfig {
       from: process.env.MAIL_FROM || 'Virya Reports <onboarding@resend.dev>',
       to: required('MAIL_TO'),
     },
-    ...(process.env.VERCEL_ACCESS_TOKEN &&
+    ...(vercelController &&
     (process.env.VERCEL_ANALYTICS_PROJECT_ID || process.env.VERCEL_PROJECT_ID)
       ? {
           vercelAnalytics: {
-            accessToken: process.env.VERCEL_ACCESS_TOKEN,
+            accessToken: vercelController,
             projectId:
               process.env.VERCEL_ANALYTICS_PROJECT_ID || process.env.VERCEL_PROJECT_ID!,
             teamId: process.env.VERCEL_TEAM_ID || undefined,
@@ -197,7 +199,7 @@ export function loadConfig(): AppConfig {
           },
         }
       : {}),
-cronSecret: required('CRON_SECRET'),
+    cronSecret: required('CRON_SECRET'),
     siteUrl: (process.env.SITE_URL || 'https://viryacleantech.com').replace(/\/+$/, ''),
     dryRun: process.env.DRY_RUN === 'true',
     sessionsTab: process.env.SHEETS_SESSIONS_TAB ?? 'Sessions',

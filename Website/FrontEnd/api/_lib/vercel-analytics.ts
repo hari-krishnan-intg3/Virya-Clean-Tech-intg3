@@ -1,4 +1,5 @@
 import type { GoogleAuthConfig, SheetsConfig, VercelAnalyticsConfig } from './config.js';
+import { queryVercel } from '../../controller/vercel.js';
 import { appendRows, readTab, writeTab } from './sheets.js';
 import { ensureTab } from './tabs.js';
 
@@ -34,18 +35,6 @@ function analyticsUrl(
   if (config.teamId) url.searchParams.set('teamId', config.teamId);
   if (config.teamSlug) url.searchParams.set('slug', config.teamSlug);
   return url;
-}
-
-async function queryVercel<T>(url: URL, accessToken: string): Promise<T> {
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${accessToken}`, Accept: 'application/json' },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Vercel Web Analytics request failed (${response.status})`);
-  }
-
-  return (await response.json()) as T;
 }
 
 export async function getVercelAnalytics(

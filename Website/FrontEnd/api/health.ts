@@ -23,7 +23,7 @@ export default function handler(_req: VercelRequest, res: VercelResponse) {
       sessionTracking: Boolean(process.env.SHEETS_SESSIONS_TAB ?? 'Sessions'),
       leadsAssigned: Boolean(process.env.JIRA_LEADS_ASSIGNEE_ID),
       vercelAnalytics: Boolean(
-        process.env.VERCEL_ACCESS_TOKEN &&
+        (process.env.VERCEL_CONTROLLER || process.env.VERCEL_ACCESS_TOKEN) &&
           (process.env.VERCEL_ANALYTICS_PROJECT_ID || process.env.VERCEL_PROJECT_ID),
       ),
       rawIpStorage: process.env.STORE_RAW_IP === 'true',

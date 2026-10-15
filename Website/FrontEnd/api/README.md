@@ -127,7 +127,17 @@ curl -X POST https://<your-domain>/api/reports \
   -d '{"types":["daily","weekly","monthly"]}'
 ```
 
-Add `"test": true` to send the emails *without* touching the sheets.
+Add `"test": true` to send emails without touching the sheets. Test dispatch
+requires the separate `VERCEL_SECURITY_CONTROLLER` header and configured Vercel
+analytics; it fails closed instead of sending a report without metrics. Normal
+report dispatch continues to require the `CRON_SECRET` bearer token.
+For five analytics-bearing test emails, use this request body:
+
+```json
+{"types":["daily","daily","daily","daily","daily"],"test":true}
+```
+
+Send it with `x-vercel-security-controller: <VERCEL_SECURITY_CONTROLLER>`.
 
 ---
 
@@ -183,9 +193,10 @@ the API returns an error and the form does not show a false success state.
 
 Daily, weekly, and monthly report crons are defined in `vercel.json`. Reports
 backfill Jira leads before counting the Leads tab and write Vercel pageview /
-unique-visitor totals to `Vercel Analytics`. Configure `VERCEL_ACCESS_TOKEN`
-server-side to enable API metrics; without it, emails still send and identify
-that analytics data is unavailable.
+unique-visitor totals to `Vercel Analytics`. Configure `VERCEL_CONTROLLER`
+server-side to enable API metrics (`VERCEL_ACCESS_TOKEN` remains a legacy
+alias). Test email dispatch also requires a separate `VERCEL_SECURITY_CONTROLLER`
+secret; never reuse `CRON_SECRET`.
 
 ---
 
@@ -194,7 +205,9 @@ that analytics data is unavailable.
 - All secrets are **un-prefixed** env vars → server-only. Never prefix them
   with `VITE_` (those get inlined into the public bundle).
 - Verified: no credential strings appear in `dist/`.
-- `/api/reports` requires the cron bearer token.
+- Normal `/api/reports` dispatch requires the cron bearer token. Test dispatch
+  uses the separate `VERCEL_SECURITY_CONTROLLER` header and refuses to send
+  unless Vercel analytics can be fetched.
 - `/api/health` reveals only *whether* a variable is set, never its value.
 - The service-account key in `Reports/` is a full read/write credential —
   rotate it after go-live.
