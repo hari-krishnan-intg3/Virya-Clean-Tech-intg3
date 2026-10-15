@@ -29,9 +29,13 @@ function analyticsUrl(
   until: string,
 ): URL {
   const url = new URL(`https://api.vercel.com/v1/query/web-analytics/${path}`);
+  const untilDate = new Date(until);
+  untilDate.setUTCHours(0, 0, 0, 0);
+  untilDate.setUTCDate(untilDate.getUTCDate() + 1);
+
   url.searchParams.set('projectId', config.projectId);
   url.searchParams.set('since', String(Date.parse(since)));
-  url.searchParams.set('until', String(Date.parse(until)));
+  url.searchParams.set('until', String(untilDate.getTime()));
   if (config.teamId) url.searchParams.set('teamId', config.teamId);
   if (config.teamSlug) url.searchParams.set('slug', config.teamSlug);
   return url;
