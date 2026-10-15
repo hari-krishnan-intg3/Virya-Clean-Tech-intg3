@@ -19,7 +19,7 @@ export function VercelAnalyticsGate() {
         if (!trackingAllowed()) return null;
         try {
           const url = new URL(event.url, window.location.origin);
-          return { ...event, url: url.pathname };
+          return { ...event, url: `${url.origin}${url.pathname}` };
         } catch {
           return null;
         }
