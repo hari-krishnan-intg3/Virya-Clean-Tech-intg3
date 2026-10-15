@@ -16,5 +16,5 @@ dist-ssr
 npm-debug.log*
 preview.html
 
-# Google service account key — never commit
-*.sage-now-*.json
+# Google service account key ï¿½ never commit
+*sage-now-*.json

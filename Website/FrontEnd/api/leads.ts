@@ -8,6 +8,7 @@ import {
   type LeadInput,
 } from './_lib/leads.js';
 import { upsertLeadRows } from './_lib/lead-sync.js';
+import { subscribeAndSendWelcome, type NewsletterStatus } from './_lib/newsletter.js';
 
 /**
  * Lead intake.
@@ -97,6 +98,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     location: body.location?.trim() || undefined,
     details: body.details?.trim() || undefined,
     source: body.source ?? 'website',
+    newsletterConsent: body.newsletterConsent === true,
     context: body.context ?? {},
   };
 
@@ -109,6 +111,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   let subtasks: { summary: string }[] = [];
   let leadsProjectReady = false;
   let sheetWritten = false;
+  let newsletterStatus: NewsletterStatus = 'not-requested';
   const errors: string[] = [];
 
   // 1) Jira — the lead of record
@@ -172,6 +175,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
   }
 
+  if (jira && lead.newsletterConsent) {
+    if (config.sheets && config.google) {
+      try {
+        newsletterStatus = await subscribeAndSendWelcome(config.sheets, config.google, {
+          email: lead.email,
+          name: lead.fullName,
+          service: lead.service ? lead.service : 'Clean energy solutions',
+        });
+      } catch (error) {
+        console.error('[leads] newsletter subscription failed', error);
+        newsletterStatus = 'pending';
+      }
+    } else {
+      newsletterStatus = 'pending';
+    }
+  }
+
   return res.status(jira ? 200 : 502).json({
     ok: Boolean(jira),
     receivedAt: timestamp,
@@ -180,6 +200,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     intentScore: score,
     leadsProjectReady,
     sheetWritten,
+    newsletterStatus,
     errors: errors.length ? errors : undefined,
     note: jira ? undefined : 'The lead could not be recorded in Jira. Please retry.',
   });

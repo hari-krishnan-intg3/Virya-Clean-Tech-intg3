@@ -43,6 +43,10 @@ export interface BotContext {
   leadInterest: boolean;
   /** Service the visitor has spent most time looking at, if any. */
   primaryInterestHint?: ServiceSlug;
+  /** Heading of the section/card currently in view. */
+  sectionTitle?: string;
+  /** Short visible copy from that section/card. */
+  sectionSummary?: string;
 }
 
 export interface Reply {
@@ -215,6 +219,7 @@ interface Intent {
 
 interface AnswerContext {
   entities: ExtractedEntities;
+  input: string;
   bot: BotContext;
   /** Deep link to the service this answer is about. */
   service?: ServiceSlug;
@@ -256,6 +261,19 @@ const SERVICE_KEYWORDS: Record<ServiceSlug, string[]> = {
     'ac charger',
     'dc charger',
     'charge point',
+    'bus',
+    'buses',
+    'electric bus',
+    'bike',
+    'bikes',
+    'scooter',
+    'scooters',
+    'two wheeler',
+    'two-wheeler',
+    'car',
+    'cars',
+    'van',
+    'vans',
   ],
   battery: [
     'battery',
@@ -306,6 +324,33 @@ const SERVICE_KEYWORDS: Record<ServiceSlug, string[]> = {
     'tariff',
   ],
 };
+
+const EV_VEHICLE_GUIDANCE = [
+  {
+    keywords: ['bus', 'buses', 'electric bus'],
+    title: 'Electric buses',
+    description:
+      'Review route distance, return times, layovers and departure schedules. Depot layout, available connection capacity and whether charging can be staged between trips shape the assessment.',
+  },
+  {
+    keywords: ['bike', 'bikes', 'scooter', 'scooters', 'two wheeler', 'two-wheeler'],
+    title: 'Bikes and two-wheelers',
+    description:
+      'Consider secure parking, charging frequency, shared circuits and user access. Fleet turnaround and the available electrical supply matter when many vehicles return to a site together.',
+  },
+  {
+    keywords: ['car', 'cars', 'workplace charging', 'customer parking'],
+    title: 'Cars and workplace charging',
+    description:
+      'Compare employee, visitor and customer parking patterns, typical dwell time, access requirements and simultaneous use. Those factors help frame charger quantities and the operating model.',
+  },
+  {
+    keywords: ['fleet', 'fleets', 'van', 'vans', 'truck', 'trucks', 'delivery vehicles'],
+    title: 'Commercial and fleet vehicles',
+    description:
+      'Review vehicle mix, routes, daily distance, loading activity and depot return times. Charging windows and existing electrical capacity influence how a fleet plan can be staged.',
+  },
+];
 
 const META_KEYWORDS: Record<string, string[]> = {
   greeting: ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'namaste', 'howdy'],
@@ -564,14 +609,31 @@ function buildIntents(): Intent[] {
     id: `service:${service.slug}`,
     keywords: SERVICE_KEYWORDS[service.slug],
     service: service.slug,
-    answer: ({ entities }) => {
-      const lead = [
-        `${service.title}. ${service.tagline}`,
-        '',
-        service.summary.split(/(?<=\.)\s/)[0],
-        '',
-        `Typically ${service.scale}, and ${service.timeline.toLowerCase()} from signed scope.`,
-      ];
+    answer: ({ entities, input }) => {
+      const normalizedInput = normalise(input);
+      const vehicleUse = service.slug === 'ev-charging'
+        ? EV_VEHICLE_GUIDANCE.find((item) =>
+            item.keywords.some((keyword) => {
+              const term = normalise(keyword);
+              return ` ${normalizedInput} `.includes(` ${term} `);
+            }),
+          )
+        : undefined;
+      const lead = vehicleUse
+        ? [
+            `${service.title}: ${vehicleUse.title}.`,
+            '',
+            vehicleUse.description,
+            '',
+            'The assessment should also consider site layout, available electrical capacity, charging windows and operating responsibilities before equipment is specified.',
+          ]
+        : [
+            `${service.title}. ${service.tagline}`,
+            '',
+            service.summary.split(/(?<=\.)\s/)[0],
+            '',
+            `Typically ${service.scale}, and ${service.timeline.toLowerCase()} from signed scope.`,
+          ];
 
       if (entities.capacity.length) {
         lead.push(
@@ -646,6 +708,18 @@ function buildIntents(): Intent[] {
       patterns: [/^(tell me more|more|explain|go on)\b/i],
       service: undefined,
       answer: ({ bot }) => {
+        if (bot.sectionTitle && bot.sectionSummary) {
+          return [
+            `${bot.sectionTitle}.`,
+            '',
+            bot.sectionSummary,
+            '',
+            bot.activeService
+              ? `This is part of the ${getService(bot.activeService)?.label ?? 'service'} discussion. Site suitability and deliverables depend on the agreed scope.`
+              : 'The section is a starting point; the right next step depends on your facility and project requirements.',
+          ].join('\n');
+        }
+
         const service = bot.activeService ? getService(bot.activeService) : undefined;
         if (service) {
           return [
@@ -665,6 +739,21 @@ function buildIntents(): Intent[] {
         return [...serviceChips(bot.activeService).slice(0, 3), consultChip()];
       },
       weight: 1.5,
+    },
+    {
+      id: 'meta:section-context',
+      keywords: ['this section', 'this card', 'this page', 'this part', 'this area'],
+      patterns: [
+        /\bwhat am i (?:looking at|viewing)\b/i,
+        /\bwhat does (?:this|that) (?:mean|cover|include)\b/i,
+        /\bexplain (?:this|that) (?:section|card|part|area)\b/i,
+      ],
+      answer: ({ bot }) =>
+        bot.sectionTitle && bot.sectionSummary
+          ? `${bot.sectionTitle}\n\n${bot.sectionSummary}\n\nI can help connect this to your site, operating needs or next steps.`
+          : `I can help with ${getService(bot.activeService ?? 'solar')?.label ?? 'the current topic'}, but I need to know which part you mean. Tell me the heading or question you have in mind.`,
+      chips: ({ bot }) => contextualChips(bot),
+      weight: 1.45,
     },
     {
       id: 'meta:process',
@@ -699,6 +788,8 @@ function buildIntents(): Intent[] {
         return `${greeting.line}\n\n${greeting.lead}`;
       },
       chips: ({ bot }) => {
+        const focused = contextualChips(bot);
+        if (focused.length) return [...focused, BOOK_CHIP];
         if (bot.activeService) return [...serviceChips(bot.activeService).slice(0, 3), BOOK_CHIP, CONTACT_CHIP];
         return services.slice(0, 3).map((s) => ({ label: s.label, prompt: s.label })) as Chip[];
       },
@@ -850,6 +941,9 @@ function dedupe(chips: Chip[], limit = 5): Chip[] {
 /* ------------------------------------------------------------------ */
 
 function fallbackChips(context: BotContext): Chip[] {
+  const focused = contextualChips(context);
+  if (focused.length) return [...focused, BOOK_CHIP];
+
   if (context.activeService) {
     const service = getService(context.activeService);
     if (service) {
@@ -934,7 +1028,7 @@ export function respond(input: string, context: BotContext): Reply {
   if (!best || best.score < LOW_CONFIDENCE) return fallbackReply(trimmed, context);
 
   const { intent, score } = best;
-  const answerContext: AnswerContext = { entities, bot: context, service: intent.service };
+  const answerContext: AnswerContext = { entities, input: trimmed, bot: context, service: intent.service };
 
   return {
     text: intent.answer(answerContext),
@@ -957,6 +1051,9 @@ function notedEntities(entities: ExtractedEntities): string[] {
 
 /** Chips shown on first open — biased toward what the visitor is looking at. */
 export function openingChips(context: BotContext): Chip[] {
+  const focused = contextualChips(context);
+  if (focused.length) return [...focused, BOOK_CHIP];
+
   if (context.activeService) {
     const service = getService(context.activeService);
     if (service) {
@@ -972,6 +1069,254 @@ export function openingChips(context: BotContext): Chip[] {
   const ranked = [...services.filter((s) => !seen.has(s.slug)), ...services.filter((s) => seen.has(s.slug))];
 
   return [...ranked.slice(0, 4).map((s) => ({ label: s.label, prompt: s.label })), BOOK_CHIP];
+}
+
+/** Recommendations follow the visible section first, then the current route. */
+function contextualChips(context: BotContext): Chip[] {
+  const title = normalise(context.sectionTitle ?? '');
+  const summary = normalise(context.sectionSummary ?? '');
+  const visible = `${title} ${summary}`;
+
+  if (/vehicle applications|charging plans for cars|cars and workplace|bikes and two wheelers|electric buses|commercial and fleet/.test(visible)) {
+    return [
+      { label: 'What should we review for bus charging?', prompt: 'How should we plan charging for electric buses?' },
+      { label: 'What about bikes and scooters?', prompt: 'What should we consider for charging electric bikes and scooters?' },
+      { label: 'How do we plan car charging?', prompt: 'What should we consider for workplace and customer car charging?' },
+    ];
+  }
+
+  if (context.path === '/insights') {
+    return [
+      { label: 'How does this apply to my site?', prompt: 'How should I apply market figures to my facility?' },
+      { label: 'What affects site feasibility?', prompt: 'What affects clean-energy feasibility at a site?' },
+      { label: 'Explore related offerings', to: '/services' },
+    ];
+  }
+
+  if (context.path === '/' && /explore a smarter energy future|make your next energy decision/.test(title)) {
+    return [
+      { label: 'What offerings are available?', prompt: 'What clean-energy offerings does Virya provide?' },
+      { label: 'What should I prepare?', prompt: 'What information should I prepare for an assessment?' },
+      { label: 'Help me choose a starting point', prompt: 'Which clean-energy offering should I explore for my site?' },
+    ];
+  }
+
+  if (context.path === '/' && /practical energy decisions start|start with context|explore connected options|make scope clear/.test(visible)) {
+    return [
+      { label: 'How do you assess a facility?', prompt: 'What should be reviewed when assessing an energy project?' },
+      { label: 'Which systems can connect?', prompt: 'How can solar, storage, charging and monitoring work together?' },
+      { label: 'What does project scope include?', prompt: 'What should be clarified in a project scope?' },
+    ];
+  }
+
+  if (context.path === '/' && /streamlined path|how we work|initial discussion|assessment scope/.test(visible)) {
+    return [
+      { label: 'What happens after discovery?', prompt: 'What happens after an initial project discussion?' },
+      { label: 'What should I prepare first?', prompt: 'What information should I prepare before an assessment?' },
+      { label: 'What affects timing?', prompt: 'What affects a clean-energy project timeline?' },
+    ];
+  }
+
+  if (context.path === '/' && /operating environments|industries/.test(visible)) {
+    return [
+      { label: 'Explore factory requirements', prompt: 'What should a factory consider about energy?' },
+      { label: 'Explore fleet charging', prompt: 'What should a fleet consider before planning EV charging?' },
+      { label: 'View all industries', to: '/industries' },
+    ];
+  }
+
+  if (context.path === '/' && /numbers behind the conversation|market context|why now/.test(visible)) {
+    return [
+      { label: 'How does this apply to my site?', prompt: 'How should I apply market figures to my facility?' },
+      { label: 'What affects site feasibility?', prompt: 'What affects clean-energy feasibility at a site?' },
+      { label: 'Explore offerings', to: '/services' },
+    ];
+  }
+
+  const industry = industries.find((item) => {
+    const variants = [item.label, item.slug.replace(/-/g, ' '), item.label.split(/[&/]/)[0]]
+      .map(normalise)
+      .filter((value) => value.length > 3);
+    return variants.some((name) => title.includes(name) || summary.includes(name));
+  });
+  if (industry) {
+    const service = getService(industry.entryService);
+    return [
+      { label: 'What matters for this site type?', prompt: `What should ${industry.label.toLowerCase()} consider about energy?` },
+      { label: `Explore ${service?.label ?? 'solutions'}`, to: `/services/${industry.entryService}` },
+      { label: 'What information should I prepare?', prompt: 'What site information should I prepare for an assessment?' },
+    ];
+  }
+
+  const service = services.find((item) => {
+    const variants = [item.title, item.label, item.slug.replace(/-/g, ' ')].map(normalise);
+    return variants.some((name) => title.includes(name) || summary.includes(name));
+  });
+  if (service) {
+    if (service.slug === 'ev-charging') {
+      return [
+        { label: 'What affects charging capacity?', prompt: 'What affects EV charging capacity at a site?' },
+        { label: 'How should we plan for buses?', prompt: 'How should we plan charging for electric buses?' },
+        { label: 'What details should I prepare?', prompt: 'What information should I prepare for an EV charging discussion?' },
+      ];
+    }
+    return [
+      { label: `What affects ${service.label.toLowerCase()} suitability?`, prompt: `What affects ${service.label.toLowerCase()} suitability at a site?` },
+      { label: 'What information should I prepare?', prompt: 'What information should I prepare for an assessment?' },
+      { label: `What can ${service.label.toLowerCase()} include?`, prompt: `What can a ${service.label.toLowerCase()} project include?` },
+    ];
+  }
+
+  if (/prepare for a first discussion|initial assessment|what information/.test(visible)) {
+    return [
+      { label: 'What information should I prepare?', prompt: 'What information should I prepare for an initial assessment?' },
+      { label: 'Can I start without energy bills?', prompt: 'Can I discuss my project before I have energy bills?' },
+      { label: 'How is site suitability checked?', prompt: 'What affects whether a site is suitable?' },
+    ];
+  }
+
+  if (/ecosystem|connected vision|technology ecosystem/.test(visible)) {
+    return [
+      { label: 'How can solar and storage work together?', prompt: 'How can solar and battery storage work together?' },
+      { label: 'Can charging connect with storage?', prompt: 'How can EV charging and storage work together?' },
+      { label: 'What can energy monitoring show?', prompt: 'What can energy monitoring show about a site?' },
+    ];
+  }
+
+  if (/project assessment|before a proposal|project capabilities/.test(visible) || context.path === '/projects') {
+    if (/facility and operations/.test(title)) {
+      return [
+        { label: 'What site details matter?', prompt: 'Which facility and operating details matter for a project review?' },
+        { label: 'What information is useful?', prompt: 'What information should I prepare for an assessment?' },
+        { label: 'How do I discuss this site?', to: '/request-consultation' },
+      ];
+    }
+    if (/energy requirements/.test(title)) {
+      return [
+        { label: 'Can bills help assess the site?', prompt: 'How can energy bills help assess my site?' },
+        { label: 'What if I have limited data?', prompt: 'Can I start an assessment without complete energy data?' },
+        { label: 'What should I prepare?', prompt: 'What information should I prepare for an assessment?' },
+      ];
+    }
+    if (/site conditions/.test(title)) {
+      return [
+        { label: 'What site constraints matter?', prompt: 'Which site conditions affect clean-energy feasibility?' },
+        { label: 'Do approvals affect feasibility?', prompt: 'Which approvals or utility requirements should I consider?' },
+        { label: 'Discuss a site review', to: '/request-consultation' },
+      ];
+    }
+    return [
+      { label: 'What does an assessment cover?', prompt: 'What does an initial project assessment cover?' },
+      { label: 'What site information is useful?', prompt: 'What information should I prepare for an assessment?' },
+      { label: 'How do I discuss a project?', to: '/request-consultation' },
+    ];
+  }
+
+  if (/insight|market context|numbers behind/.test(visible) || context.path === '/insights') {
+    return [
+      { label: 'How does this apply to my site?', prompt: 'How should I apply these market figures to my facility?' },
+      { label: 'What changes site feasibility?', prompt: 'What affects clean-energy feasibility at a site?' },
+      { label: 'Explore the related solutions', to: '/services' },
+    ];
+  }
+
+  if (/process|next steps|project journey/.test(visible) || context.path === '/process') {
+    return [
+      { label: 'What happens after the first discussion?', prompt: 'What happens after an initial project discussion?' },
+      { label: 'What information should I prepare?', prompt: 'What information should I prepare before an assessment?' },
+      { label: 'How long can a project take?', prompt: 'What affects a project timeline?' },
+    ];
+  }
+
+  if (/about|virya cleantech|who we are/.test(visible) || context.path === '/about') {
+    return [
+      { label: 'What offerings are available?', prompt: 'What clean-energy offerings does Virya provide?' },
+      { label: 'Who do you work with?', prompt: 'Which types of businesses and sites do you serve?' },
+      { label: 'How do I start?', to: '/request-consultation' },
+    ];
+  }
+
+  if (context.path === '/industries') {
+    return [
+      { label: 'Explore manufacturing needs', prompt: 'What should a factory consider about energy?' },
+      { label: 'Explore fleet charging', prompt: 'What should a fleet consider before planning EV charging?' },
+      { label: 'Find a relevant solution', to: '/services' },
+    ];
+  }
+
+  if (context.path === '/faq') {
+    if (/cost|price|pricing/.test(title)) {
+      return [
+        { label: 'What affects project cost?', prompt: 'What factors affect clean-energy project cost?' },
+        { label: 'How should I compare proposals?', prompt: 'How can I compare project quotations fairly?' },
+        { label: 'Discuss my project scope', to: '/request-consultation' },
+      ];
+    }
+    if (/performance guarantee/.test(title)) {
+      return [
+        { label: 'How are outcomes measured?', prompt: 'How should project performance be measured?' },
+        { label: 'What assumptions matter?', prompt: 'Which assumptions affect a project estimate?' },
+        { label: 'Ask about my project', to: '/request-consultation' },
+      ];
+    }
+    if (/support outside|where.*based|residential/.test(title)) {
+      return [
+        { label: 'Check service availability', prompt: 'Can Virya support a project at my location?' },
+        { label: 'What details should I share?', prompt: 'What information should I include in my enquiry?' },
+        { label: 'Discuss my enquiry', to: '/request-consultation' },
+      ];
+    }
+    return [
+      { label: 'Ask about project scope', prompt: 'What information should I prepare for an assessment?' },
+      { label: 'Ask about services', prompt: 'What clean-energy offerings does Virya provide?' },
+      { label: 'Discuss a specific site', to: '/request-consultation' },
+    ];
+  }
+
+  if (context.path === '/contact') {
+    return [
+      { label: 'Book a consultation', to: '/request-consultation' },
+      { label: 'What should I include?', prompt: 'What details should I include in my enquiry?' },
+      CONTACT_CHIP,
+    ];
+  }
+
+  if (context.path === '/careers') {
+    return [
+      { label: 'What roles are listed?', prompt: 'What roles are available at Virya?' },
+      { label: 'How does the application work?', prompt: 'What should I expect in the application process?' },
+      { label: 'Contact the hiring team', to: '/careers#apply' },
+    ];
+  }
+
+  if (context.path === '/services') {
+    return [
+      { label: 'Help me choose an offering', prompt: 'Which clean-energy offering should I explore for my site?' },
+      { label: 'What information is useful?', prompt: 'What information should I prepare for an assessment?' },
+      { label: 'Compare EV charging options', prompt: 'What affects EV charging requirements at a business site?' },
+    ];
+  }
+
+  if (context.path === '/' && /offerings|services|energy solutions/.test(visible)) {
+    return [
+      { label: 'Help me choose an offering', prompt: 'Which clean-energy offering should I explore for my site?' },
+      { label: 'Ask about EV charging', prompt: 'What should I consider for EV charging at my site?' },
+      { label: 'What information should I prepare?', prompt: 'What information should I prepare for an assessment?' },
+    ];
+  }
+
+  if (context.activeService) {
+    const service = getService(context.activeService);
+    return service
+      ? [
+          { label: 'What affects site suitability?', prompt: `What affects ${service.label.toLowerCase()} suitability at a site?` },
+          { label: 'What information should I prepare?', prompt: 'What information should I prepare for an assessment?' },
+          { label: 'What can the project include?', prompt: `What can a ${service.label.toLowerCase()} project include?` },
+        ]
+      : [];
+  }
+
+  return [];
 }
 
 /** Closes a conversation when the visitor is clearly ready to act. */

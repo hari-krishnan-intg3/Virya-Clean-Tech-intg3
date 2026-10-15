@@ -39,6 +39,7 @@ export function BookingFormContainer() {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [newsletterStatus, setNewsletterStatus] = useState('not-requested');
   const abortRef = useRef<AbortController | null>(null);
   const successRef = useRef<HTMLDivElement>(null);
 
@@ -106,7 +107,8 @@ export function BookingFormContainer() {
     abortRef.current = controller;
 
     try {
-      await submitBookingRequest(buildSubmission(values), controller.signal);
+      const result = await submitBookingRequest(buildSubmission(values), controller.signal);
+      setNewsletterStatus(result.newsletterStatus);
       setStatus('success');
       trackEvent('booking_submit_success', { service: values.service });
     } catch (error) {
@@ -129,6 +131,7 @@ export function BookingFormContainer() {
   const resetForm = () => {
     reset(defaultBookingValues);
     setPrefilled(null);
+    setNewsletterStatus('not-requested');
     setStatus('idle');
   };
 
@@ -240,6 +243,21 @@ export function BookingFormContainer() {
                       Our team will review your requirements and get back to you shortly.
                       Need to talk sooner? Book a slot or call us directly.
                     </p>
+                    {newsletterStatus === 'sent' && (
+                      <p className="mt-3 text-sm font-medium text-emerald-700">
+                        You&apos;re subscribed. Your welcome email is on its way.
+                      </p>
+                    )}
+                    {newsletterStatus === 'already-subscribed' && (
+                      <p className="mt-3 text-sm font-medium text-emerald-700">
+                        You&apos;re already subscribed to Virya updates.
+                      </p>
+                    )}
+                    {newsletterStatus === 'pending' && (
+                      <p className="mt-3 text-sm text-ink-muted">
+                        Your enquiry was received, but we couldn&apos;t finish the newsletter signup. Please contact us to subscribe.
+                      </p>
+                    )}
 
                     <div className="mt-7 flex flex-col items-center justify-center gap-3">
                       <BookSlotButton placement="success" />
@@ -443,10 +461,24 @@ export function BookingFormContainer() {
                       </div>
                     </FieldShell>
 
+                    <FieldShell label="Newsletter (optional)" htmlFor="newsletterConsent">
+                      <div className="flex items-start gap-3">
+                        <input
+                          id="newsletterConsent"
+                          type="checkbox"
+                          {...register('newsletterConsent')}
+                          className="mt-0.5 h-5 w-5 shrink-0 rounded border-line text-emerald-500 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                        />
+                        <label htmlFor="newsletterConsent" className="text-[0.9rem] leading-relaxed text-ink-muted">
+                          Send me Virya CleanTech product and energy updates by email. I can unsubscribe anytime.
+                        </label>
+                      </div>
+                    </FieldShell>
+
                     <div className="flex flex-col-reverse items-stretch gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
                       <p className="flex items-center gap-2 text-xs text-ink-faint">
                         <Lock className="h-3.5 w-3.5" aria-hidden="true" />
-                        Your details are used only to respond to this enquiry.
+                        Your details are used to respond to this enquiry. Updates are sent only if you opt in.
                       </p>
 
                       <Button

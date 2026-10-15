@@ -70,6 +70,7 @@ export const bookingSchema = z.object({
   consent: z.boolean().refine((value) => value === true, {
     message: 'Please confirm you agree to be contacted about this enquiry.',
   }),
+  newsletterConsent: z.boolean().default(false),
 });
 
 export type BookingFormValues = z.infer<typeof bookingSchema>;
@@ -85,6 +86,7 @@ export const defaultBookingValues: BookingFormValues = {
   location: '',
   details: '',
   consent: false,
+  newsletterConsent: false,
 };
 
 export interface BookingSubmission extends BookingFormValues {
@@ -105,7 +107,7 @@ export const LEADS_ENDPOINT =
 export async function submitBookingRequest(
   payload: BookingSubmission,
   signal?: AbortSignal,
-): Promise<void> {
+): Promise<{ newsletterStatus: string }> {
   const body = JSON.stringify(payload);
 
   const response = await fetch(LEADS_ENDPOINT, {
@@ -114,11 +116,14 @@ export async function submitBookingRequest(
     body,
     signal,
   });
-  const result = (await response.json().catch(() => null)) as { ok?: boolean } | null;
+  const result = (await response.json().catch(() => null)) as
+    | { ok?: boolean; newsletterStatus?: string }
+    | null;
   if (!response.ok || result?.ok !== true) {
     throw new Error(`Lead intake failed (${response.status})`);
   }
   markFormSubmitted(payload.service);
+  return { newsletterStatus: result.newsletterStatus ?? 'not-requested' };
 }
 
 /** Attaches the session snapshot so the server can file an enriched lead. */

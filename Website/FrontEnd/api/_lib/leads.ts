@@ -25,6 +25,7 @@ export interface LeadInput {
   location?: string;
   details?: string;
   source?: string;
+  newsletterConsent?: boolean;
   /** The visitor-session snapshot attached by the browser. */
   context?: Record<string, unknown>;
 }

@@ -22,6 +22,80 @@ interface Message {
   resumePath?: string;
 }
 
+interface VisibleSurface {
+  key: string;
+  title: string;
+  summary: string;
+}
+
+function describeSurface(surface: Element, path: string): VisibleSurface | null {
+  const title =
+    surface.querySelector('h1, h2, h3, summary, dt')?.textContent?.trim() ||
+    Array.from(surface.querySelectorAll('p'))
+      .map((paragraph) => paragraph.textContent?.trim() ?? '')
+      .find((text) => text.length > 3);
+  if (!title) return null;
+
+  const summary = Array.from(surface.querySelectorAll('p'))
+    .map((paragraph) => paragraph.textContent?.trim() ?? '')
+    .find((text) => text.length > 30) ?? '';
+  const anchor = (surface as HTMLElement).id || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+  return { key: `${path}:${anchor}`, title, summary: summary.slice(0, 520) };
+}
+
+function readVisibleSurface(path: string): VisibleSurface | null {
+  const main = document.querySelector('main');
+  if (!main) return null;
+
+  const focusY = Math.max(90, Math.min(window.innerHeight - 90, window.innerHeight * 0.52));
+  const focusXs = [0.32, 0.5, 0.68].map((portion) => window.innerWidth * portion);
+  let section: Element | null = null;
+
+  for (const x of focusXs) {
+    const point = document.elementFromPoint(x, focusY);
+    const card = point?.closest('main details, main article, main .card') ?? null;
+    if (card && main.contains(card)) {
+      const description = describeSurface(card, path);
+      if (description) return description;
+    }
+    const candidate = point?.closest('main section') ?? null;
+    if (candidate && main.contains(candidate)) section ??= candidate;
+  }
+
+  return section ? describeSurface(section, path) : null;
+}
+
+function useVisibleSurface(path: string, enabled: boolean): VisibleSurface | null {
+  const [surface, setSurface] = useState<VisibleSurface | null>(null);
+
+  useEffect(() => {
+    const update = () => {
+      const next = readVisibleSurface(path);
+      setSurface((previous) =>
+        previous?.key === next?.key &&
+        previous?.title === next?.title &&
+        previous?.summary === next?.summary
+          ? previous
+          : next,
+      );
+    };
+
+    update();
+    if (!enabled) return;
+
+    const timer = window.setInterval(update, 400);
+    window.addEventListener('resize', update);
+
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('resize', update);
+    };
+  }, [enabled, path]);
+
+  return surface;
+}
+
 export interface ChatAssistantProps {
   /** Service slug from the current route, used to bias every answer. */
   activeService?: ServiceSlug;
@@ -42,6 +116,7 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
   const reduced = usePrefersReducedMotion();
 
   const [open, setOpen] = useState(false);
+  const activeSurface = useVisibleSurface(location.pathname, open);
   const [messages, setMessages] = useState<Message[]>(() =>
     readChatHistory().map((message) => ({ id: nextId(), ...message })),
   );
@@ -49,11 +124,13 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
   const [typing, setTyping] = useState(false);
   const [unread, setUnread] = useState(true);
   const [input, setInput] = useState('');
+  const [conversationService, setConversationService] = useState<ServiceSlug | undefined>();
 
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timers = useRef<number[]>([]);
   const autoOpenedRef = useRef(false);
+  const promptedSurface = useRef<string | null>(null);
 
   /* ── Context ─────────────────────────────────────────────────── */
 
@@ -78,10 +155,12 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
         greeted: messages.length > 0,
         leadInterest: false,
         primaryInterestHint:
-          rememberedService ?? seenServices[seenServices.length - 1] ?? activeService,
+          conversationService ?? rememberedService ?? seenServices[seenServices.length - 1] ?? activeService,
+        sectionTitle: activeSurface?.title,
+        sectionSummary: activeSurface?.summary,
       };
     },
-    [location.pathname, activeService, seenServices, messages.length, returningVisitor],
+    [location.pathname, activeService, seenServices, messages.length, returningVisitor, activeSurface, conversationService],
   );
 
   const [greeting] = useState(() => buildGreeting());
@@ -118,6 +197,14 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
     setOpen(true);
     setUnread(false);
 
+    const visibleSurface = readVisibleSurface(location.pathname) ?? activeSurface;
+    const pageContext: BotContext = {
+      ...context,
+      sectionTitle: visibleSurface?.title,
+      sectionSummary: visibleSurface?.summary,
+    };
+    const pageChips = openingChips(pageContext);
+
     setMessages((prev) => {
       const fresh = buildGreeting({
         service: activeService ? getService(activeService)?.label : undefined,
@@ -132,16 +219,30 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
               id: nextId(),
               role: 'assistant' as const,
               text: `${fresh.line}\n\n${fresh.lead}`,
-              chips: openingChips({ ...context, greeted: false }),
+              chips: openingChips({ ...pageContext, greeted: false }),
             },
           ];
+
+      const withPageContext = prev.length && visibleSurface && promptedSurface.current !== visibleSurface.key
+        ? [
+            ...initial,
+            {
+              id: nextId(),
+              role: 'assistant' as const,
+              text: `You're viewing ${visibleSurface.title}. Here are questions that may help.`,
+              chips: pageChips,
+            },
+          ]
+        : initial;
+
+      if (visibleSurface) promptedSurface.current = visibleSurface.key;
 
       if (returningVisitor && !resumePromptDismissed && !prev.some((message) => message.resumePath)) {
         const interest = returningVisitor.primaryInterest
           ? getService(returningVisitor.primaryInterest as ServiceSlug)?.label
           : undefined;
         return [
-          ...initial,
+          ...withPageContext,
           {
             id: nextId(),
             role: 'assistant',
@@ -151,7 +252,7 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
         ];
       }
 
-      return initial;
+      return withPageContext;
     });
 
     recordChatbotOpened();
@@ -191,6 +292,7 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
       });
 
       const reply = respond(trimmed, { ...context, greeted: true });
+      if (reply.service) setConversationService(reply.service);
       pushAssistant(reply);
 
       // Persistent engagement across the site, not just in this panel.
@@ -216,28 +318,39 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
 
   /* ── Effects ─────────────────────────────────────────────────── */
 
-  // Keep the panel in step with the page: if the visitor navigates to a
-  // service page while the chat is open, offer that service's questions.
+  // Refresh suggestions when the visitor moves to a new page section or card.
   useEffect(() => {
-    if (!open) return;
-    const service = activeService ? getService(activeService) : undefined;
-    if (!service) return;
+    if (!open || !activeSurface) return;
+    if (promptedSurface.current === activeSurface.key) return;
+
+    const previous = promptedSurface.current;
+    promptedSurface.current = activeSurface.key;
+    const chips = openingChips({ ...context, greeted: true });
 
     setMessages((prev) => {
-      const alreadyMentioned = prev.some((m) => m.text.includes(service.title));
-      if (alreadyMentioned) return prev;
+      if (!previous) {
+        const lastIndex = prev.length - 1;
+        const last = prev[lastIndex];
+        if (last?.role === 'assistant' && !last.resumePath) {
+          const next = [...prev];
+          next[lastIndex] = { ...last, chips };
+          return next;
+        }
+      }
 
       return [
         ...prev,
         {
           id: nextId(),
           role: 'assistant',
-          text: `You have moved to ${service.title}. Anything specific about that one?`,
-          chips: openingChips({ ...context, greeted: true }),
+          text: previous
+            ? `You're viewing ${activeSurface.title}. What would you like to understand about this part?`
+            : `You're viewing ${activeSurface.title}. Here are some questions that may help.`,
+          chips,
         },
       ];
     });
-  }, [activeService, open, context]);
+  }, [activeSurface, open, context]);
 
   useEffect(() => {
     const node = listRef.current;
@@ -302,6 +415,11 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
                   <span className="text-ink-faint">·</span>
                   <span className="tabular-nums">{visitorClock()}</span>
                 </p>
+                {activeSurface?.title && (
+                  <p className="mt-1 truncate text-[0.68rem] text-ink-faint">
+                    Viewing: {activeSurface.title}
+                  </p>
+                )}
               </div>
               <button
                 type="button"
