@@ -134,10 +134,12 @@ report dispatch continues to require the `CRON_SECRET` bearer token.
 For five analytics-bearing test emails, use this request body:
 
 ```json
-{"types":["daily","daily","daily","daily","daily"],"test":true}
+{"types":["daily","daily","daily","daily","daily"],"test":true,"recordAnalytics":true}
 ```
 
 Send it with `x-vercel-security-controller: <VERCEL_SECURITY_CONTROLLER>`.
+`recordAnalytics` writes only the Vercel Analytics snapshot; it does not update
+the report log or KPI counters.
 
 ---
 

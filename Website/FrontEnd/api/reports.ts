@@ -71,9 +71,14 @@ function parseTypes(req: VercelRequest): ReportType[] {
   return valid;
 }
 
-async function runReport(type: ReportType, testMode: boolean): Promise<RunResult> {
+async function runReport(
+  type: ReportType,
+  testMode: boolean,
+  recordAnalytics: boolean,
+): Promise<RunResult> {
   const config = loadConfig();
   const period = getPeriod(type);
+  const writeAnalytics = !config.dryRun && (!testMode || recordAnalytics);
 
   let leads = 0;
   let leadsNote = 'leads source not configured';
@@ -86,7 +91,7 @@ async function runReport(type: ReportType, testMode: boolean): Promise<RunResult
       ? 'Vercel Analytics unavailable for this period'
       : 'Add VERCEL_ACCESS_TOKEN to enable website analytics';
 
-    if (!config.dryRun && !testMode) {
+    if (writeAnalytics) {
       try {
         await ensureVercelAnalyticsTab(
           config.sheets,
@@ -106,7 +111,7 @@ async function runReport(type: ReportType, testMode: boolean): Promise<RunResult
           period.to,
         );
         analyticsNote = '';
-        if (!config.dryRun && !testMode) {
+        if (writeAnalytics) {
           await logVercelAnalytics(
             config.sheets,
             config.google,
@@ -255,6 +260,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const config = loadConfig();
   const testMode = req.query.test === 'true' || req.body?.test === true;
+  const recordAnalytics = testMode && req.body?.recordAnalytics === true && !config.dryRun;
   if (testMode) {
     const securityHeader = req.headers['x-vercel-security-controller'];
     const securityToken = typeof securityHeader === 'string' ? securityHeader : undefined;
@@ -283,14 +289,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const results: RunResult[] = [];
   for (const type of types) {
-    results.push(await runReport(type, testMode));
+    results.push(await runReport(type, testMode, recordAnalytics));
   }
 
   const failed = results.filter((r) => !r.ok);
 
   return res.status(failed.length === results.length ? 500 : 200).json({
     ranAt: new Date().toISOString(),
-    mode: testMode ? 'test (no sheet writes)' : 'live',
+    mode: testMode
+      ? recordAnalytics
+        ? 'test (analytics snapshot only)'
+        : 'test (no sheet writes)'
+      : 'live',
     requested: types,
     sent: results.filter((r) => r.ok).length,
     failed: failed.length,
