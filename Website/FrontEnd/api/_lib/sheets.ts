@@ -171,12 +171,7 @@ export async function appendRows(
   const token = await getAccessToken(google);
 
   const response = await fetch(
-    valuesUrl(
-      config.spreadsheetId,
-      tab,
-      range,
-      '?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS',
-    ),
+    `${valuesUrl(config.spreadsheetId, tab, range)}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`,
     {
       method: 'POST',
       headers: {
