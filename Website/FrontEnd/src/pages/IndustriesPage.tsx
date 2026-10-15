@@ -12,10 +12,10 @@ export default function IndustriesPage() {
         eyebrow="Who we work with"
         title={
           <>
-            We build for sites that <span className="text-gradient">cannot afford to be wrong</span> about energy.
+            Energy considerations for <span className="text-gradient">different operating environments.</span>
           </>
         }
-        description="Our ideal customer has real load, real operating hours and a real cost line — not a residential household or a hobby project. If your site falls into one of these segments, the first call will be useful."
+        description="Facilities have different energy profiles, operating patterns, physical constraints and investment priorities. Use these audience groups to explore relevant questions; project suitability depends on the site and the services confirmed for it."
         primary={{ label: 'Request a consultation', to: '/request-consultation' }}
         secondary={{ label: 'See all services', to: '/services' }}
         trail={[{ label: 'Home', to: '/' }, { label: 'Industries', to: '/industries' }]}
@@ -61,7 +61,7 @@ export default function IndustriesPage() {
                         to={`/services/${service.slug}`}
                         className="mt-7 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-emerald-700 hover:underline"
                       >
-                        Usually starts with {service.label.toLowerCase()}
+                        Explore {service.label.toLowerCase()}
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     )}
@@ -84,12 +84,11 @@ export default function IndustriesPage() {
                   Fit
                 </p>
                 <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
-                  Whether this is worth your time
+                  Questions to consider for your site
                 </h2>
                 <p className="mt-5 text-base leading-relaxed text-ink-muted">
-                  You are a good fit if most of these are true. If none of them
-                  are, we will say so on the first call and point you somewhere
-                  better.
+                  These are useful starting points for a project discussion,
+                  not eligibility rules or a technical recommendation.
                 </p>
 
                 <ul className="mt-8 space-y-4">
@@ -107,10 +106,10 @@ export default function IndustriesPage() {
               <Reveal delay={0.1}>
                 <p className="eyebrow">
                   <span className="rule-accent" />
-                  Who you will be talking to
+                  Roles commonly involved in decisions
                 </p>
                 <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
-                  The roles that decide this
+                  Different priorities, one project discussion
                 </h2>
 
                 <div className="mt-8 space-y-4">
@@ -150,8 +149,8 @@ export default function IndustriesPage() {
       </section>
 
       <CtaBand
-        title="Recognise your site on this page?"
-        body="Send us your monthly consumption and a rough idea of the site. That is enough for us to tell you which of the five capabilities applies and what the first step looks like."
+        title="Recognise your operating environment?"
+        body="Share your facility type, location and project objective. The team can help identify which information may be useful for an initial review."
         secondary={{ label: 'How we work', to: '/process' }}
       />
     </>

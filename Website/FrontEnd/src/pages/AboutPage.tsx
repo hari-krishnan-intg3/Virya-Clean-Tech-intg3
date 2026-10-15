@@ -2,29 +2,29 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, Ruler, Users, Wrench } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
 import { Reveal } from '@/components/ui';
-import { BUSINESS, CONTACT, PENDING_CONFIRMATION } from '@/app/siteConfig';
+import { BUSINESS, CONTACT } from '@/app/siteConfig';
 import { services } from '@/data/services';
 
 const PRINCIPLES = [
   {
     icon: Ruler,
-    title: 'Measured before proposed',
-    body: 'We do not quote from a photograph or a rate card. Twelve months of interval data comes first, because it is the difference between a payback you can defend and one you cannot.',
+    title: 'Site context before assumptions',
+    body: 'Energy use, physical conditions, existing infrastructure and operating needs help shape a useful project discussion.',
   },
   {
     icon: Wrench,
-    title: 'Engineers who build it',
-    body: 'The people in the design review are the people who will be on site. No handoff to a delivery team that has never seen the design.',
+    title: 'Clear scope and responsibilities',
+    body: 'Technical work, deliverables, approvals and follow-up should be defined for the specific project before work proceeds.',
   },
   {
     icon: Leaf,
-    title: 'Sustainability as arithmetic',
-    body: 'We would rather show you a project with a modest carbon number that will actually be built than an ambitious one that will be challenged in year two.',
+    title: 'Claims grounded in evidence',
+    body: 'Savings, performance and environmental outcomes depend on the project and should be supported by stated assumptions and appropriate records.',
   },
   {
     icon: Users,
-    title: 'Long after handover',
-    body: 'Monitoring is handed over, not rented back. You keep the alerting and the data whether or not you engage us again.',
+    title: 'Collaboration by agreement',
+    body: 'Data access, monitoring, maintenance and post-project support are clarified as part of the agreed service scope.',
   },
 ];
 
@@ -35,10 +35,10 @@ export default function AboutPage() {
         eyebrow="About"
         title={
           <>
-            A young engineering team building <span className="text-gradient">the boring parts well</span>
+            A practical approach to <span className="text-gradient">clean-energy progress.</span>
           </>
         }
-        description="Virya Clean Tech designs and builds solar, EV charging, battery storage and the software that makes them work together. We are based in Bengaluru and we work across India on industrial, commercial and institutional sites."
+        description="Virya Cleantech helps businesses explore solar, EV charging, energy storage, connected-energy technology and assessment services. The appropriate solution depends on the facility, operating requirements and confirmed project scope."
         primary={{ label: 'Talk to the team', to: '/contact' }}
         secondary={{ label: 'What we build', to: '/services' }}
         trail={[{ label: 'Home', to: '/' }, { label: 'About', to: '/about' }]}
@@ -56,35 +56,33 @@ export default function AboutPage() {
 
                 <div className="mt-6 space-y-5 text-base leading-relaxed text-ink-muted">
                   <p>
-                    The energy transition in India is not primarily an
-                    engineering problem any more. Solar is cheap, storage is
-                    available, chargers exist. What is missing is the layer that
-                    makes those assets work on a specific site with a specific
-                    tariff and a specific load shape.
+                    Clean-energy decisions involve more than selecting a
+                    technology. Site conditions, energy use, existing
+                    infrastructure, operating requirements and local rules all
+                    influence what may be practical.
                   </p>
                   <p>
-                    That is the gap Virya was formed to work in. We take an
-                    operating site — a plant, a warehouse, a depot, a hospital,
-                    a mall — and we design the whole energy system around how
-                    that site actually behaves: when it draws power, when it
-                    does not, what an outage costs, and what the tariff charges
-                    for the peak.
+                    Virya's published service areas cover solar, EV charging,
+                    storage, energy software and consulting. A first
+                    conversation helps clarify the project objective and the
+                    information needed to assess relevant options for a
+                    particular facility.
                   </p>
                   <p>
-                    It is less glamorous than a technology story and considerably
-                    more useful. Our goal is to change how energy is consumed in
-                    the modern built world, with solutions that are sustainable,
-                    practical, and that survive contact with a finance director.
+                    The aim is to make the decision process clearer: describe
+                    what is known, identify what still needs checking, and agree
+                    on appropriate next steps without assuming a result before
+                    the site has been assessed.
                   </p>
                 </div>
 
                 <blockquote className="mt-10 rounded-[1.6rem] border-l-[3px] border-emerald-500 bg-mist p-7">
                   <p className="text-lg font-semibold leading-relaxed text-ink">
-                    A project that does not clear your own hurdle rate is not a
-                    sustainability project. It is an expense.
+                    A useful project discussion starts with the operating need
+                    and the evidence available, not a promised outcome.
                   </p>
                   <footer className="mt-4 text-[0.85rem] text-ink-faint">
-                    {BUSINESS.name} — engineering principle
+                    {BUSINESS.name} — working principle
                   </footer>
                 </blockquote>
               </Reveal>
@@ -117,13 +115,13 @@ export default function AboutPage() {
                     <div>
                       <dt className="font-semibold text-ink">Geography</dt>
                       <dd className="mt-1 text-ink-muted">
-                        Bengaluru-based, working across India
+                        Bengaluru, Karnataka, India
                       </dd>
                     </div>
                     <div>
                       <dt className="font-semibold text-ink">{BUSINESS.partnerNote}</dt>
                       <dd className="mt-1 text-ink-muted">
-                        Our corporate and technical backbone.
+                        Company association.
                       </dd>
                     </div>
                   </dl>
@@ -173,31 +171,30 @@ export default function AboutPage() {
         <div className="shell">
           <Reveal className="mx-auto max-w-3xl">
             <h2 className="text-center text-2xl font-extrabold text-ink sm:text-3xl">
-              What we will not claim
+              Clear information before a decision
             </h2>
             <p className="mt-5 text-center text-base leading-relaxed text-ink-muted">
-              We are an early-stage team and there are things a visitor should
-              reasonably want to know that we cannot yet evidence. Rather than
-              fill the page, here is the list.
+              Project outcomes and service responsibilities depend on the
+              facility and agreed scope. Before proceeding, clarify the details
+              that matter to your organisation.
             </p>
 
-            <ul className="mt-10 space-y-3">
-              {PENDING_CONFIRMATION.map((item) => (
-                <li
-                  key={item}
-                  className="flex gap-3 rounded-xl border border-line bg-mist px-5 py-4 text-[0.93rem] leading-relaxed text-ink-muted"
-                >
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ink-faint" />
-                  {item}
-                </li>
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              {[
+                ['Service scope', 'Confirm which services, deliverables and responsibilities are included.'],
+                ['Technical assumptions', 'Review site information, constraints, approvals and any assumptions behind estimates.'],
+                ['Evidence and outcomes', 'Use project-specific records for performance, savings or environmental claims.'],
+              ].map(([title, body]) => (
+                <article key={title} className="card h-full p-6 text-left">
+                  <h3 className="font-bold text-ink">{title}</h3>
+                  <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-muted">{body}</p>
+                </article>
               ))}
-            </ul>
+            </div>
 
             <p className="mt-8 text-center text-[0.93rem] leading-relaxed text-ink-muted">
-              What we will give you on a call instead: the technical lead who
-              would run your project, a realistic timeline including the
-              approvals that slip most programmes, and an honest view of whether
-              you need us at all.{' '}
+              A project discussion can help identify the relevant service area
+              and what information may be needed for a closer review.{' '}
               <Link to="/request-consultation" className="font-semibold text-emerald-700 hover:underline">
                 Request that conversation <ArrowRight className="inline h-4 w-4" />
               </Link>
@@ -208,8 +205,8 @@ export default function AboutPage() {
       </section>
 
       <CtaBand
-        title="Come and argue with us about your energy bill"
-        body="The first conversation is a diagnosis, not a pitch. Bring your interval data if you have it, or just bring the problem."
+        title="Discuss your facility and energy requirements"
+        body="Share the site context and the question you are working through. The team can help clarify relevant information and possible next steps."
         secondary={{ label: 'See the process', to: '/process' }}
       />
     </>

@@ -12,12 +12,12 @@ export default function ServicesPage() {
         eyebrow="Capabilities"
         title={
           <>
-            Five capabilities. <span className="text-gradient">Most sites need two.</span>
+            Explore solutions for your <span className="text-gradient">energy requirements.</span>
           </>
         }
-        description="The order you do these in matters more than which ones you pick. An audit first routinely saves money on everything that follows it — and it is the only way to get a payback figure worth quoting to a board."
-        primary={{ label: 'Start with an audit', to: '/services/consulting' }}
-        secondary={{ label: 'Request a consultation', to: '/request-consultation' }}
+        description="Explore Virya Cleantech's solar, EV charging, storage, connected-energy and assessment capabilities. Each project is different; site conditions, technical requirements and the agreed scope determine what is appropriate."
+        primary={{ label: 'Discuss your project', to: '/request-consultation' }}
+        secondary={{ label: 'How we work', to: '/process' }}
         trail={[{ label: 'Home', to: '/' }, { label: 'Services', to: '/services' }]}
       />
 
@@ -110,26 +110,26 @@ export default function ServicesPage() {
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {[
               {
-                when: 'Your bill is rising and nobody can say why',
+                when: 'You want to understand energy use',
                 then: 'Energy audit',
                 because:
-                  'Twelve months of interval data answers most of it before anything is bought.',
+                  'Available bills, meter data and operating context can help frame a review of energy requirements.',
                 to: '/services/consulting',
                 cta: 'Start with an audit',
               },
               {
-                when: 'You already know you need capacity',
+                when: 'You are exploring on-site generation or storage',
                 then: 'Solar or storage design',
                 because:
-                  'An audit can be short — we only need the load profile and the tariff, then we design.',
+                  'Site area, structural conditions, energy use, electrical infrastructure and project objectives influence feasibility.',
                 to: '/services/solar',
                 cta: 'Scope a system',
               },
               {
-                when: 'The vehicles are arriving before the chargers',
+                when: 'Your site is planning for electric vehicles',
                 then: 'EV infrastructure',
                 because:
-                  'Load study first, then charger mix sized to your dwell time rather than fleet size.',
+                  'Vehicle use, parking duration, charging demand and available electrical capacity help shape the discussion.',
                 to: '/services/ev-charging',
                 cta: 'Scope chargers',
               },
@@ -158,8 +158,8 @@ export default function ServicesPage() {
       </section>
 
       <CtaBand
-        title="Not sure which two you need?"
-        body="Tell us what is driving this — a rising bill, a new site, a fleet to electrify — and we will tell you which two services apply, in which order, and roughly what the first step costs."
+        title="Not sure where to begin?"
+        body="Share your facility type, location and project question. The team can help identify which information may be useful and whether a more detailed assessment is appropriate."
         secondary={{ label: 'See how we work', to: '/process' }}
       />
     </>

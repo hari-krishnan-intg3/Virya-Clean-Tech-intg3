@@ -1,5 +1,4 @@
 import { services, industries, type ServiceSlug } from '@/data/services';
-import { roles } from '@/data/careers';
 
 /**
  * Business, contact and navigation architecture.
@@ -105,7 +104,7 @@ const serviceItems: NavChild[] = services.map((service) => ({
 
 export const NAV: NavGroup[] = [
   {
-    label: 'Services',
+    label: 'Solutions',
     to: '/services',
     columns: [
       {
@@ -121,23 +120,33 @@ export const NAV: NavGroup[] = [
             description: 'The full capability set, side by side.',
           },
           {
-            label: 'Energy audit',
-            to: '/services/consulting',
-            description: 'Twelve months of interval data, read properly.',
+            label: 'How we work',
+            to: '/process',
+            description: 'From initial questions to project-specific next steps.',
           },
           {
             label: 'Request a consultation',
             to: '/request-consultation',
-            description: 'Thirty minutes, no obligation, no sales deck.',
+            description: 'Share your site context and project objective.',
+          },
+          {
+            label: 'Common questions',
+            to: '/faq',
+            description: 'Information about services, feasibility and next steps.',
+          },
+          {
+            label: 'Careers',
+            to: '/careers',
+            description: 'Current opportunities and role information.',
           },
         ],
       },
     ],
     feature: {
-      title: 'Not sure which one applies?',
-      body: 'Most sites need exactly two of these, and the right order is rarely the obvious one. Start with the audit.',
+      title: 'Not sure which option to explore?',
+      body: 'Start with your facility, operating needs and project objective. The right next step depends on the site.',
       to: '/services/consulting',
-      cta: 'See how an audit works',
+      cta: 'Explore assessment services',
     },
   },
   {
@@ -170,45 +179,20 @@ export const NAV: NavGroup[] = [
     ],
   },
   {
-    label: 'Approach',
-    to: '/process',
-    columns: [
-      {
-        heading: 'How we work',
-        items: [
-          {
-            label: 'Our process',
-            to: '/process',
-            description: 'Discovery through to monitoring, in four stages.',
-          },
-          {
-            label: 'About Virya',
-            to: '/about',
-            description: 'Who we are and how we are built.',
-          },
-        ],
-      },
-      {
-        heading: 'Before you write',
-        items: [
-          {
-            label: 'Common questions',
-            to: '/faq',
-            description: 'Pricing, timelines, size, NDAs and what we will not do.',
-          },
-          {
-            label: 'Careers',
-            to: '/careers',
-            description: `${roles.length} open roles, and what each one actually involves.`,
-          },
-          {
-            label: 'Talk to us',
-            to: '/contact',
-            description: 'Phone, email and the Bengaluru office.',
-          },
-        ],
-      },
-    ],
+    label: 'Projects',
+    to: '/projects',
+  },
+  {
+    label: 'Insights',
+    to: '/insights',
+  },
+  {
+    label: 'About',
+    to: '/about',
+  },
+  {
+    label: 'Contact',
+    to: '/contact',
   },
 ];
 
@@ -220,6 +204,8 @@ export const FOOTER_LINKS = {
   company: [
     { label: 'About', to: '/about' },
     { label: 'Process', to: '/process' },
+    { label: 'Projects & capabilities', to: '/projects' },
+    { label: 'Insights', to: '/insights' },
     { label: 'Industries', to: '/industries' },
     { label: 'Careers', to: '/careers' },
     { label: 'FAQ', to: '/faq' },

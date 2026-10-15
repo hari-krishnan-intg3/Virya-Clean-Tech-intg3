@@ -21,6 +21,8 @@ import HomePage from '@/pages/HomePage';
 const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
 const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
 const IndustriesPage = lazy(() => import('@/pages/IndustriesPage'));
+const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));
+const InsightsPage = lazy(() => import('@/pages/InsightsPage'));
 const ProcessPage = lazy(() => import('@/pages/ProcessPage'));
 const AboutPage = lazy(() => import('@/pages/AboutPage'));
 const ContactPage = lazy(() => import('@/pages/ContactPage'));
@@ -157,6 +159,8 @@ export default function App() {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/:slug" element={<ServiceDetailPage />} />
             <Route path="/industries" element={<IndustriesPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/insights" element={<InsightsPage />} />
             <Route path="/process" element={<ProcessPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />

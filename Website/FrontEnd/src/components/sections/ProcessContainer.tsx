@@ -37,7 +37,7 @@ export function ProcessContainer() {
               A Streamlined Path to <span className="text-gradient">Smarter Energy</span>
             </>
           }
-          description="From initial consultation to ongoing optimisation, our process is designed to make your clean-energy transition strategic, smooth, and reliable."
+          description="Explore the questions that can help move a project from initial enquiry toward an appropriate, site-specific next step."
           align="center"
         />
 

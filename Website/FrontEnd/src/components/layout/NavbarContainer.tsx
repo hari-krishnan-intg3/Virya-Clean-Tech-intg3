@@ -24,7 +24,7 @@ export function NavbarContainer() {
   const reduced = usePrefersReducedMotion();
   const location = useLocation();
 
-  const condensed = scrolled || menuOpen;
+  const condensed = scrolled || menuOpen || location.pathname !== '/';
 
   // Any navigation closes the mobile sheet.
   useEffect(() => {

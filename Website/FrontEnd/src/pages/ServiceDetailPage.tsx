@@ -108,7 +108,7 @@ export default function ServiceDetailPage() {
                     <Gauge className="h-5 w-5 shrink-0 text-emerald-500" />
                     <div>
                       <dt className="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-ink-faint">
-                        Typical scale
+                        Project context
                       </dt>
                       <dd className="text-[0.95rem] font-semibold text-ink">{service.scale}</dd>
                     </div>
@@ -117,7 +117,7 @@ export default function ServiceDetailPage() {
                     <Clock className="h-5 w-5 shrink-0 text-emerald-500" />
                     <div>
                       <dt className="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-ink-faint">
-                        Lead time
+                        Timing
                       </dt>
                       <dd className="text-[0.95rem] font-semibold text-ink">
                         {service.timeline}
@@ -132,8 +132,8 @@ export default function ServiceDetailPage() {
                       </dt>
                       <dd className="text-[0.95rem] font-semibold text-ink">
                         {service.slug === 'consulting'
-                          ? 'An energy audit on your interval data'
-                          : 'A feasibility study before any commitment'}
+                          ? 'Discuss the site and assessment objective'
+                          : 'Discuss site conditions and requirements'}
                       </dd>
                     </div>
                   </div>
@@ -161,7 +161,12 @@ export default function ServiceDetailPage() {
               </Reveal>
 
               <Reveal delay={0.08} className="mt-12">
-                <h3 className="text-xl font-bold text-ink">Capabilities</h3>
+                  <h3 className="text-xl font-bold text-ink">Potential areas of scope</h3>
+                <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                  The items below describe areas that may be considered. Confirm
+                  availability, responsibilities and deliverables for your project
+                  before proceeding.
+                </p>
                 <ul className="mt-6 space-y-3.5">
                   {service.capabilities.map((capability) => (
                     <li key={capability} className="flex gap-3">
@@ -198,11 +203,12 @@ export default function ServiceDetailPage() {
                 <div className="rounded-[1.6rem] border border-amber-200 bg-amber-50/60 p-7">
                   <p className="flex items-center gap-2 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-amber-700">
                     <FileCheck2 className="h-4 w-4" />
-                    Straight about fit
+                    Site-specific fit
                   </p>
                   <p className="mt-3 text-[0.9rem] leading-relaxed text-amber-900/85">
-                    We turn down work we cannot do well. If that applies, we
-                    would rather tell you now than three weeks into a survey.
+                    A service page can help frame the discussion, but it cannot
+                    confirm technical suitability. Site conditions, approvals,
+                    operating needs and project scope need to be reviewed.
                   </p>
                   <ul className="mt-4 space-y-2">
                     {disqualifiers.map((reason) => (
@@ -224,14 +230,15 @@ export default function ServiceDetailPage() {
           <Reveal className="max-w-2xl">
             <p className="eyebrow">
               <span className="rule-accent" />
-              What you receive
+              Possible project outputs
             </p>
             <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
-              The artefacts, not a brochure
+              Clear outputs for the agreed scope
             </h2>
             <p className="mt-5 text-base leading-relaxed text-ink-muted">
-              Every engagement produces documents you can hand to your board,
-              your lender or your auditor without us in the room.
+              Outputs depend on the agreed work, the information available and
+              any specialist review required. The project scope should state
+              what will be provided and what remains outside it.
             </p>
           </Reveal>
 
@@ -303,12 +310,12 @@ export default function ServiceDetailPage() {
         <div className="shell">
           <Reveal className="max-w-2xl">
             <h2 className="text-2xl font-extrabold text-ink sm:text-3xl">
-              Often combined with
+              Related capabilities
             </h2>
             <p className="mt-4 text-[0.95rem] leading-relaxed text-ink-muted">
-              Most engagements use two of these together. The order matters more
-              than the choice — an audit first frequently saves money on
-              everything that follows it.
+              Some projects involve more than one solution area. Whether they
+              should be combined depends on the site, objectives, technical
+              requirements and commercial review.
             </p>
           </Reveal>
 
@@ -336,7 +343,7 @@ export default function ServiceDetailPage() {
 
       <CtaBand
         title={`Ready to scope ${service.label.toLowerCase()} for your site?`}
-        body="Start with a conversation. We will tell you what we need to look at, roughly what it takes, and whether this is worth doing at your scale."
+        body="Start with a conversation about your site and objectives. The next step depends on the information available and the review your project requires."
         secondary={{ label: 'See all services', to: '/services' }}
       />
     </>

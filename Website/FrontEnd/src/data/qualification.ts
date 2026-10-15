@@ -25,54 +25,54 @@ export const personas: Persona[] = [
     role: 'Facility / Plant Head',
     mandate: 'Uptime, safety and cost control across a physical site.',
     objection: '"I cannot afford an outage to install this."',
-    proof: 'Phased commissioning plans, installation outside production windows.',
+    proof: 'Operating schedules, access restrictions and any planned work windows.',
     goesTo: 'solar',
   },
   {
     role: 'CFO / Finance Director',
     mandate: 'Capital allocation with a defensible payback period.',
     objection: '"Every EPC quotes a different payback. I cannot trust any of them."',
-    proof: 'Modelled payback with stated sensitivity, on your actual interval data.',
+    proof: 'Clear assumptions, scope, cost components and project-specific analysis.',
     goesTo: 'consulting',
   },
   {
     role: 'Sustainability / ESG Lead',
     mandate: 'Scope 2 emissions and green-building credentials.',
     objection: '"The data has to be auditable, not a vendor dashboard."',
-    proof: 'Reporting packs with an audit trail, exportable in the formats auditors ask for.',
+    proof: 'Data sources, calculation methods and reporting requirements.',
     goesTo: 'software-iot',
   },
   {
     role: 'Real Estate Head',
     mandate: 'Asset value, green certification and tenant energy costs.',
     objection: '"Will this add value to the building, or just add maintenance?"',
-    proof: 'Capacity modelling across the asset, phased so each block pays for itself.',
+    proof: 'Building ownership, tenant arrangements and available infrastructure.',
     goesTo: 'solar',
   },
   {
     role: 'Fleet / Mobility Manager',
     mandate: 'Vehicle uptime and diesel-to-electric total cost.',
     objection: '"Can my sanctioned load even take the chargers?"',
-    proof: 'A load study that settles the transformer question before you spend anything.',
+    proof: 'Vehicle patterns, charging windows and available electrical information.',
     goesTo: 'ev-charging',
   },
 ];
 
 /** What makes a visitor worth a conversation, ranked. */
 export const qualificationSignals: string[] = [
-  'Annual consumption above roughly 5 lakh units',
-  'A roof over 5,000 sq ft, or a sanctioned load above 250 kW',
-  'A facility that cannot absorb an unplanned outage',
-  'A fleet of ten or more vehicles, or a plan to electrify one',
-  'An ESG or green-building target with a reporting deadline attached',
-  'A new facility, lease or expansion in the next 12 months',
+  'Energy use or operating complexity that merits a closer review',
+  'Available roof, land, parking or electrical infrastructure relevant to the project',
+  'Continuity, power quality or backup requirements',
+  'A current or planned fleet with defined operating patterns',
+  'A sustainability or reporting objective with clear information needs',
+  'A new facility, lease, expansion or operational change under consideration',
 ];
 
 /** What tells us this is not a fit. Said plainly, on the site, on purpose. */
 export const disqualifiers: string[] = [
-  'Residential homes below 5 kW — we will refer you to the PM Surya Ghar scheme instead',
-  'Enquiries that only want the lowest headline price per watt',
-  'Sites with no usable roof area, yard or grid headroom',
+  'Residential enquiries may fall outside this business-focused service scope; confirm before proceeding',
+  'A request that cannot be assessed without understanding the full project scope',
+  'A site constraint that may prevent the proposed solution from being feasible',
 ];
 
 /**
@@ -111,7 +111,7 @@ export const triggers: Trigger[] = [
       'operating cost',
     ],
     response:
-      'On most commercial and industrial tariffs in India the bill is dominated by the demand charge rather than the per-unit energy rate. That means the first move is usually not "buy solar" — it is to read twelve months of interval data and find which peaks are worth removing. We start there because it is free and it changes the answer.',
+      'Energy costs can reflect several factors, including consumption patterns, tariff structure and demand. Available bills and meter data can help identify questions for a closer review; the right next step depends on the site.',
     goesTo: 'consulting',
   },
   {
@@ -139,7 +139,7 @@ export const triggers: Trigger[] = [
       'greenwashing',
     ],
     response:
-      'Reporting obligations are usually the reason a project gets funded, not the reason it works. We build the measurement layer so your scope 2 numbers come from interval data you can hand to an auditor, rather than from a vendor dashboard nobody outside the company trusts.',
+      'If reporting is part of the objective, identify the required metrics, data sources, calculation method and review process. Software or monitoring options depend on the systems and information available.',
     goesTo: 'software-iot',
   },
   {
@@ -162,7 +162,7 @@ export const triggers: Trigger[] = [
       'commercial vehicle',
     ],
     response:
-      'Fleet electrification fails on power, not on vehicles. The order that works is: measure the interval load, establish what headroom the connection actually has, then size the charger mix to your dwell time. Get that order wrong and you will pay for a transformer you did not need.',
+      'Charging plans should consider vehicle routes, dwell time, charging windows, site layout and available electrical capacity. A technical review is needed to confirm whether upgrades or managed charging should be considered.',
     goesTo: 'ev-charging',
   },
   {
@@ -181,7 +181,7 @@ export const triggers: Trigger[] = [
       'uninterruptible',
     ],
     response:
-      'If a grid interruption stops your operation, storage is usually the answer rather than more generation. The design question is what the critical load actually is, in kW, and how long it has to hold — that sets everything else. Most sites are far smaller than they assume, which makes this cheaper than expected.',
+      'For continuity requirements, identify the loads that need support, the required operating duration and existing backup systems. Storage is one option to assess; suitability and performance depend on project-specific engineering.',
     goesTo: 'battery',
   },
   {
@@ -202,7 +202,7 @@ export const triggers: Trigger[] = [
       'taking on a new',
     ],
     response:
-      'A new site is the cheapest moment to do any of this, because energy design costs almost nothing to include before the plant is built and a great deal to retrofit afterwards. If you are still in design, this conversation is worth ten minutes.',
+      'A new site or expansion can be a useful time to review energy needs, space, electrical supply and future operating plans. The appropriate scope depends on the project stage and available design information.',
     goesTo: 'consulting',
   },
   {
@@ -224,7 +224,7 @@ export const triggers: Trigger[] = [
       'feasible',
     ],
     response:
-      'Payback is entirely a function of your tariff structure, your load shape and what you are comparing against. We will give you a number — but it needs twelve months of interval data to be a real one rather than a rule of thumb.',
+      'Financial outcomes depend on project costs, tariffs, operating patterns, equipment and assumptions. Any estimate should be based on relevant site data and clearly state its limitations; no general payback period can be promised.',
     goesTo: 'consulting',
   },
 ];

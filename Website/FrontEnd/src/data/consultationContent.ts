@@ -10,15 +10,15 @@ export interface InsuranceHone {
 
 export const INSURANCE_HONESTS: InsuranceHone[] = [
   {
-    title: 'A person reads it',
-    body: 'Not an automated sequence. Your submission arrives as a ticket with your requirements attached, so nothing you wrote here gets lost between forms and inboxes.',
+    title: 'Start with what you know',
+    body: 'A site location, facility type and project objective are useful starting points. Share additional details only when they are relevant to your enquiry.',
   },
   {
-    title: 'You will not have to repeat yourself',
-    body: 'The pages you visited, what you asked about, and how long you spent on the site all travel with the enquiry. You are not starting from zero when someone calls.',
+    title: 'Include useful context',
+    body: 'Operating hours, available energy information and existing infrastructure can help explain the requirement. If details are not available yet, say so.',
   },
   {
-    title: 'We say no when it is no',
-    body: 'If your scale is wrong for us, or the numbers do not work, you will hear that plainly. We would rather lose the enquiry than sell you a system that gets challenged in year two.',
+    title: 'Clarify the scope',
+    body: 'Ask which services, deliverables, assumptions and follow-up responsibilities are included before proceeding with a project.',
   },
 ];

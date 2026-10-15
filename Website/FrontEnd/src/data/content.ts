@@ -18,10 +18,10 @@ export interface HeroSlide {
 export const heroSlides: HeroSlide[] = [
   {
     id: 'future',
-    eyebrow: 'Clean energy. Intelligent future.',
-    headline: 'Pioneering the Future of Sustainable Energy',
+    eyebrow: 'Clean energy for business',
+    headline: 'Explore a smarter energy future for your facility.',
     subtext:
-      "We're not just another startup — we're innovators reshaping the renewable energy landscape with EV charging, advanced battery technology, and efficient solar power solutions.",
+      'Explore solar, EV charging, storage and connected-energy options through the lens of your site, operating needs and project goals.',
     image:
       'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/alternative-energy-ecological-concept-2021-08-29-01-16-39-utc-r6meidpw3yeqhqnfbk43plqnob1so02kx2zrxwbiag.jpg',
     imageAlt:
@@ -30,10 +30,10 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 'innovation',
-    eyebrow: 'Innovation meets intelligent energy',
-    headline: 'Empowering the Future Through Clean Innovation',
+    eyebrow: 'Energy systems work together',
+    headline: 'Connect generation, charging and operations.',
     subtext:
-      'Combining technical expertise and bold creativity to deliver smarter, more sustainable alternatives to conventional energy systems.',
+      'Understand how energy demand, available infrastructure and technology choices shape a practical project plan.',
     image:
       'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/ev-charging-station-clean-energy-filling-technology-electric-car-charging-scaled-r6meidpw3yeqhqnfbk43plqnob1so02kx2zrxwbiag.jpg',
     imageAlt: 'Electric vehicle plugged into a smart charging station.',
@@ -41,10 +41,10 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 'solar',
-    eyebrow: 'Solar engineered for tomorrow',
-    headline: 'We Are Ready For Solar Energy',
+    eyebrow: 'Commercial and industrial solar',
+    headline: 'Start with the site. Then assess solar.',
     subtext:
-      'Discover precision-engineered solar solutions designed around your energy needs, operational goals, and a greener tomorrow.',
+      'Roof condition, available area, energy use and electrical infrastructure all influence whether a solar project is suitable.',
     image:
       'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/engineer-electric-woman-checking-and-maintenance-of-solar-cells-1024x684-1-r6meidptx0o0prd40xhzpa0uy2uuax1um815hhjz0g.jpg',
     imageAlt: 'Engineer carrying out maintenance checks across a solar panel array.',

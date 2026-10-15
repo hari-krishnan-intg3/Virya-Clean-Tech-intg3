@@ -38,7 +38,6 @@ export function SmartImage({
         alt={alt}
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
-        fetchPriority={priority ? 'high' : 'auto'}
         sizes={sizes}
         className={cn('absolute inset-0 h-full w-full object-cover', className)}
         style={{ objectPosition: focal ?? 'center' }}
@@ -54,7 +53,6 @@ export function SmartImage({
       height={height}
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}
-      fetchPriority={priority ? 'high' : 'auto'}
       sizes={sizes}
       className={cn('h-auto w-full', className)}
       style={{ objectPosition: focal ?? 'center' }}

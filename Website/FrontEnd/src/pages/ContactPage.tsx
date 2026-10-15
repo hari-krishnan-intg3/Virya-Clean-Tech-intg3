@@ -31,8 +31,8 @@ export default function ContactPage() {
       label: 'Email',
       value: CONTACT.email,
       href: CONTACT.emailHref,
-      note: 'Replies within one working day',
-      live: true,
+      note: 'Send a project question or enquiry',
+      live: false,
     },
     {
       icon: MapPin,
@@ -53,7 +53,7 @@ export default function ContactPage() {
             Talk to an engineer, <span className="text-gradient">not a call centre</span>
           </>
         }
-        description="Every enquiry reaches the same queue and gets a human owner. If you would rather talk than type, book a slot — it goes into the same place."
+        description="Have a project question, a solution enquiry or a potential partnership to discuss? Choose a contact route or share more context through the consultation form."
         primary={{ label: 'Request a consultation', to: '/request-consultation' }}
         secondary={{ label: 'Book a calendar slot', to: '#slots' }}
         trail={[{ label: 'Home', to: '/' }, { label: 'Contact', to: '/contact' }]}
@@ -144,24 +144,25 @@ export default function ContactPage() {
                 Pick a slot, or send the detail
               </h2>
               <p className="mt-5 text-base leading-relaxed text-ink-muted">
-                Booking a slot puts thirty minutes in the diary now. Sending the
-                form lets us come back with a considered answer — which is
-                usually what you want if the question involves numbers.
+                Use the calendar link to review available booking options, or
+                send project details through the consultation form. A written
+                enquiry can include the context needed for a more considered
+                discussion.
               </p>
 
               <ul className="mt-8 space-y-4">
                 {[
                   {
                     title: 'Already know what you need',
-                    body: 'Book a slot. Bring your interval data and we will work through it live.',
+                    body: 'Use the booking link and bring the site context or questions you want to discuss.',
                   },
                   {
                     title: 'Still working out the question',
-                    body: 'Use the form. Tell us the problem in your own words and we will reply with what we would need to look at.',
+                    body: 'Use the form to describe the requirement and share any relevant details you already have.',
                   },
                   {
                     title: 'Comparing several vendors',
-                    body: 'Send the quotes. We will normalise the BOQs so you are comparing the same scope.',
+                    body: 'If you are comparing proposals, clarify which scope items and assumptions you want to review.',
                   },
                 ].map((item) => (
                   <li key={item.title} className="flex gap-3">

@@ -13,16 +13,16 @@ export interface WhyWeStart {
  */
 export const whyWeStart: WhyWeStart[] = [
   {
-    title: 'We start with your interval data',
-    body: 'Twelve months of half-hourly consumption, before any proposal. It is free, and it settles most arguments.',
+    title: 'Start with the information you have',
+    body: 'Site location, facility type, energy bills or usage data, and operating hours can help frame an initial discussion.',
   },
   {
-    title: 'We design for the load you have',
-    body: 'Including headroom you do not have yet. Transformer augmentation is the cost line most proposals forget.',
+    title: 'Consider how the site operates',
+    body: 'Production schedules, occupancy, charging windows and critical loads can change which options are worth assessing.',
   },
   {
-    title: 'We hand over the monitoring',
-    body: 'You keep the data and the alerting whether or not you engage us again. No lock-in by omission.',
+    title: 'Agree on a useful next step',
+    body: 'A preliminary conversation can identify missing information and whether a more detailed technical review is appropriate.',
   },
 ];
 

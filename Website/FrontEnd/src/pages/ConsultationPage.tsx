@@ -14,10 +14,10 @@ export default function ConsultationPage() {
         eyebrow="Request a consultation"
         title={
           <>
-            Thirty minutes, <span className="text-gradient">and a straight answer</span>
+            Start a conversation about <span className="text-gradient">your energy project.</span>
           </>
         }
-        description="This goes straight to a person, not a queue. Tell us what is driving it and we will come back with what we would need to look at — including when the answer is that you do not need us."
+        description="Tell us about your business, facility and energy requirements. The details help the team understand your enquiry and identify what information may be useful for a next step."
         primary={undefined}
         trail={[{ label: 'Home', to: '/' }, { label: 'Request a consultation', to: '/request-consultation' }]}
       />

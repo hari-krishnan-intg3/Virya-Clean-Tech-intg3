@@ -14,47 +14,47 @@ const ICONS = [Compass, DraftingCompass, HardHat, LineChart];
 export default function ProcessPage() {
   const detail = [
     {
-      duration: 'Week 0–1',
+      duration: 'Initial discussion',
       what:
-        'A conversation about the problem, then a request for twelve months of half-hourly meter data and electricity bills. We sign an NDA before you send anything.',
+        'Share the business context, site location, project objective and any information already available. The team can explain what additional details may help.',
       surprise:
-        'If the data shows the project does not work, that is the end of the engagement, and it costs you nothing.',
-      outputs: ['NDA', 'Data request', 'Preliminary feasibility view'],
+        'An initial conversation is not a technical approval or a commitment to a particular solution.',
+      outputs: ['A shared understanding of the enquiry', 'Relevant follow-up questions', 'A suggested next step, if appropriate'],
     },
     {
-      duration: 'Week 1–4',
+      duration: 'Assessment scope',
       what:
-        'Load analysis, site survey, shadow study and structural check where relevant. We model generation, storage or charger demand against your real interval data — not against a rule of thumb.',
+        'If a detailed review is agreed, its scope may cover available energy-use information, site conditions, operating patterns, infrastructure and relevant technical constraints.',
       surprise:
-        'Twelve months of data usually changes the answer. This is the stage where scope moves, and it moves in both directions.',
+        'The information available can affect both the depth of review and the conclusions that can reasonably be drawn.',
       outputs: [
-        'Feasibility report with modelled payback and sensitivity',
-        'Concept design',
-        'Indicative BOQ and vendor comparison',
+        'Findings within the agreed assessment scope',
+        'Assumptions, open questions and relevant constraints',
+        'Potential options for further technical review',
       ],
     },
     {
-      duration: 'Week 4–16',
+      duration: 'Implementation, if agreed',
       what:
-        'Detailed design, procurement, civil and electrical installation, commissioning. DISCOM applications and net-metering are started during design, not after installation.',
+        'Design, procurement, approvals, installation and commissioning may follow where those services are available and explicitly included in the project agreement.',
       surprise:
-        'Grid approval is the single most common cause of slippage. We start it early precisely because it is outside our control.',
+        'Responsibilities, approvals, equipment, site access and programme timing need to be agreed before implementation begins.',
       outputs: [
-        'As-built drawings and test certificates',
-        'Grid interconnection approval',
-        'Monitoring handover and training',
+        'Project-specific deliverables set out in the agreed scope',
+        'Applicable approvals and test records, where included',
+        'Handover arrangements defined for the project',
       ],
     },
     {
-      duration: 'Ongoing',
+      duration: 'Follow-up, if in scope',
       what:
-        'Preventive maintenance on an agreed schedule, remote monitoring with alerting configured for your plant, and performance review against the model we signed.',
+        'Monitoring, maintenance, reporting or other follow-up can be discussed as part of the project scope where those services are offered.',
       surprise:
-        'Monitoring is handed over, not rented back to you. You keep the data and the alerting whether or not you engage us again.',
+        'Ongoing access, response arrangements, data ownership and support responsibilities should be clearly agreed.',
       outputs: [
-        'Performance report against model',
-        'Maintenance schedule and spares list',
-        'Exportable energy and emissions reporting',
+        'Agreed monitoring or maintenance arrangements',
+        'Reporting and access details, if applicable',
+        'Defined support contacts and responsibilities',
       ],
     },
   ];
@@ -65,10 +65,10 @@ export default function ProcessPage() {
         eyebrow="How we work"
         title={
           <>
-            Four stages. <span className="text-gradient">Nothing hidden in between.</span>
+            A clear path from enquiry to <span className="text-gradient">next steps.</span>
           </>
         }
-        description="This is the published Virya process with the parts filled in — what happens in each stage, what you get at the end of it, and the thing clients are most often surprised by."
+        description="Project needs vary. This overview shows the questions to work through, while technical scope, deliverables, timing and responsibilities are confirmed for each engagement."
         primary={{ label: 'Start at stage one', to: '/request-consultation' }}
         secondary={{ label: 'See the services', to: '/services' }}
         trail={[{ label: 'Home', to: '/' }, { label: 'Approach', to: '/process' }]}
@@ -119,7 +119,7 @@ export default function ProcessPage() {
                       {/* Detail */}
                       <div className="card p-7">
                         <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-emerald-600">
-                          Typical window · {extra.duration}
+                          {extra.duration}
                         </p>
 
                         <p className="mt-4 text-[0.93rem] leading-relaxed text-ink-muted">
@@ -157,8 +157,8 @@ export default function ProcessPage() {
       </section>
 
       <CtaBand
-        title="Stage one costs nothing and is the one that matters"
-        body="A conversation and a data request. If the numbers do not work, that is a useful answer and we will tell you so rather than selling a system you do not need."
+        title="Start with your requirement"
+        body="Tell us what you are trying to understand or change. The next step depends on the site information available and the scope your project needs."
         secondary={{ label: 'Read the FAQ first', to: '/faq' }}
       />
     </>

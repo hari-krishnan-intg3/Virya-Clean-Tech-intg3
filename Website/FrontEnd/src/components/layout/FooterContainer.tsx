@@ -33,8 +33,8 @@ export function FooterContainer() {
             </div>
 
             <p className="mt-5 max-w-xs text-[0.92rem] leading-relaxed text-ink-muted">
-              Solar, EV charging, storage and the software that makes them work
-              together — engineered for industrial and commercial sites.
+              Explore solar, EV charging, storage, connected-energy technology
+              and assessment services for business and facility requirements.
             </p>
 
             {SOCIAL_LINKS.length > 0 && (

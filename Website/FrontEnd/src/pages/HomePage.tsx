@@ -4,6 +4,7 @@ import { HeroSliderContainer } from '@/components/sections/HeroSliderContainer';
 import { InsightBand } from '@/components/sections/InsightBand';
 import { EnergyEcosystemContainer } from '@/components/sections/EnergyEcosystemContainer';
 import { ProcessContainer } from '@/components/sections/ProcessContainer';
+import { CtaBand } from '@/components/sections/PageHero';
 import { Reveal } from '@/components/ui';
 import { services, industries } from '@/data/services';
 import { whyWeStart } from '@/data/homeContent';
@@ -32,8 +33,7 @@ export default function HomePage() {
                   What we do
                 </p>
                 <h2 className="mt-5 text-2xl font-extrabold leading-tight text-ink sm:text-3xl">
-                  Energy systems designed around how your site actually
-                  behaves.
+                  Make your next energy decision with a clearer view of the site.
                 </h2>
               </Reveal>
             </div>
@@ -41,11 +41,11 @@ export default function HomePage() {
             <div className="lg:col-span-7">
               <Reveal delay={0.08}>
                 <p className="text-base leading-relaxed text-ink-muted">
-                  Not a rate card applied to a square foot count. We read your
-                  interval data, model it against your tariff, and size the
-                  system to the load you really have — including the part where
-                  most proposals quietly assume you have more grid headroom than
-                  you do.
+                  Clean-energy projects start with how a facility uses energy,
+                  what infrastructure is already in place, and what the business
+                  needs to change. Explore relevant options, understand the
+                  information that can shape an assessment, and decide on a
+                  practical next step with the Virya team.
                 </p>
 
                 <div className="mt-8 grid gap-6 sm:grid-cols-3">
@@ -135,8 +135,8 @@ export default function HomePage() {
                     Not sure where to start?
                   </p>
                   <p className="mt-4 text-xl font-bold leading-snug">
-                    Tell us what is driving this and we will tell you which two
-                    services apply.
+                    Share your facility and project objective to identify what
+                    information may be useful to explore next.
                   </p>
                 </div>
 
@@ -167,12 +167,12 @@ export default function HomePage() {
                 Industries
               </p>
               <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
-                Built for sites where downtime has a price
+                Considerations for real operating environments
               </h2>
               <p className="mt-5 text-base leading-relaxed text-ink-muted">
-                {industries.length} segments we work in repeatedly. Each one
-                arrives with the same underlying pressure — load that peaks when
-                it should not, and a tariff that charges for it.
+                Different facilities have different operating hours, electrical
+                constraints and project objectives. Explore common questions by
+                site type, then assess what is relevant to your location.
               </p>
             </div>
 
@@ -206,6 +206,75 @@ export default function HomePage() {
       </section>
 
       <ProcessContainer />
+
+      <section className="section bg-mist">
+        <div className="shell">
+          <Reveal className="max-w-3xl">
+            <p className="eyebrow">
+              <span className="rule-accent" />
+              Prepare for a first discussion
+            </p>
+            <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
+              The details that help shape an initial assessment.
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-ink-muted">
+              You do not need a complete project specification to get started.
+              Share what is available, and the team can help identify what else
+              may be useful for a more detailed review.
+            </p>
+          </Reveal>
+
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                number: '01',
+                title: 'Site context',
+                body: 'Business type, city or state, facility layout, and whether the site is existing or planned.',
+              },
+              {
+                number: '02',
+                title: 'Energy use',
+                body: 'Electricity bills or consumption data, operating hours, seasonal changes, and known demand peaks.',
+              },
+              {
+                number: '03',
+                title: 'Existing infrastructure',
+                body: 'Available roof or land, electrical supply, current energy systems, and relevant site constraints.',
+              },
+              {
+                number: '04',
+                title: 'Project objective',
+                body: 'The operational challenge, solution areas of interest, decision stage, and target timeline.',
+              },
+            ].map((item, index) => (
+              <Reveal key={item.number} delay={index * 0.06} as="div">
+                <article className="card h-full p-6 sm:p-7">
+                  <span className="font-mono text-xs font-bold text-emerald-700">
+                    {item.number}
+                  </span>
+                  <h3 className="mt-4 text-lg font-bold text-ink">{item.title}</h3>
+                  <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                    {item.body}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+
+          <p className="mt-6 text-sm leading-relaxed text-ink-faint">
+            Share sensitive documents only when needed and through an approved,
+            secure channel. Initial suitability is not a substitute for a site
+            survey or engineering assessment.
+          </p>
+        </div>
+      </section>
+
+      <CtaBand
+        title="Have an energy project in mind?"
+        body="Tell us about your facility, operating requirements or project question. The team can help identify the information and next step relevant to your enquiry."
+        primary={{ label: 'Request a consultation', to: '/request-consultation' }}
+        secondary={{ label: 'Contact the team', to: '/contact' }}
+      />
     </>
   );
 }
