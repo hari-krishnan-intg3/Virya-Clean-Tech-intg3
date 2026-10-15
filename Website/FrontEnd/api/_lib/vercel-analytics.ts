@@ -30,8 +30,8 @@ function analyticsUrl(
 ): URL {
   const url = new URL(`https://api.vercel.com/v1/query/web-analytics/${path}`);
   url.searchParams.set('projectId', config.projectId);
-  url.searchParams.set('since', since);
-  url.searchParams.set('until', until);
+  url.searchParams.set('since', String(Date.parse(since)));
+  url.searchParams.set('until', String(Date.parse(until)));
   if (config.teamId) url.searchParams.set('teamId', config.teamId);
   if (config.teamSlug) url.searchParams.set('slug', config.teamSlug);
   return url;
