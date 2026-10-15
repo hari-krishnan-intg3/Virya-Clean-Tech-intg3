@@ -44,7 +44,7 @@ export function ServiceCard({
       </h3>
 
       <p className="mt-3 flex-1 text-[0.9rem] leading-relaxed text-ink-muted">
-        {service.tagline}
+        {service.cardSummary}
       </p>
 
       <ul className="mt-5 space-y-2">

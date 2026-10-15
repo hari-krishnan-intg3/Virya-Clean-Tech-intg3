@@ -24,6 +24,8 @@ export default function ContactPage() {
       value: CONTACT.phoneDisplay,
       href: CONTACT.phoneHref,
       note: status.open ? 'Answered now' : `Returns ${status.nextOpenLabel}`,
+      detail:
+        'Call when you want to discuss a facility, a current project question or the right contact route. The status above reflects Bengaluru business hours; outside that window, email or the consultation form remains available.',
       live: status.open,
     },
     {
@@ -32,6 +34,8 @@ export default function ContactPage() {
       value: CONTACT.email,
       href: CONTACT.emailHref,
       note: 'Send a project question or enquiry',
+      detail:
+        'Email works well for a written project summary, site location and the solution area you are exploring. Include only information relevant to the enquiry, and do not send confidential documents until a suitable sharing method is agreed.',
       live: false,
     },
     {
@@ -40,6 +44,8 @@ export default function ContactPage() {
       value: ADDRESS_LINES[2] ?? CONTACT.address.locality,
       href: MAP_LINK,
       note: 'Visits by appointment',
+      detail:
+        'The office is in Bengaluru, Karnataka. Use the map link for directions and arrange any in-person discussion in advance so the right people and meeting details can be confirmed.',
       live: false,
     },
   ];
@@ -91,6 +97,9 @@ export default function ContactPage() {
                     {channel.value}
                   </p>
                   <p className="mt-2 text-[0.85rem] text-ink-muted">{channel.note}</p>
+                  <p className="mt-3 flex-1 text-[0.85rem] leading-relaxed text-ink-muted">
+                    {channel.detail}
+                  </p>
                 </a>
               </Reveal>
             ))}

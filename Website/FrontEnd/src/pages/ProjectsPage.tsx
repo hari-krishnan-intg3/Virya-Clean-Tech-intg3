@@ -7,22 +7,22 @@ const ASSESSMENT_AREAS = [
   {
     icon: Building2,
     title: 'Facility and operations',
-    body: 'Understand the site type, operating schedule, access requirements and any constraints that could affect project planning.',
+    body: 'Understand what the facility does, when it operates and who manages the site. Access rules, planned changes, ownership and operational constraints can affect what information is available and how a project could be reviewed.',
   },
   {
     icon: Gauge,
     title: 'Energy requirements',
-    body: 'Review available bills or usage data, load patterns, critical equipment and the business objective behind the enquiry.',
+    body: 'Review available bills or usage data alongside schedules, seasonal changes and equipment that must remain in service. Connect those details to the business objective so questions about demand, continuity or generation have useful context.',
   },
   {
     icon: MapPin,
     title: 'Site conditions',
-    body: 'Consider roof or land availability, parking, electrical infrastructure, location-specific requirements and approvals.',
+    body: 'Consider roof or land area, structural condition, shading, parking layout and the existing electrical connection. Local utility rules, permissions, site access and safety requirements may need specialist review before feasibility is confirmed.',
   },
   {
     icon: ClipboardList,
     title: 'Scope and next steps',
-    body: 'Identify relevant options, open questions and what further technical or commercial review may be needed.',
+    body: 'Identify service areas that may be relevant, what remains unknown and who needs to review it. Agree whether the next step is more data, a site visit, technical assessment or a separate commercial discussion.',
   },
 ];
 
@@ -87,9 +87,9 @@ export default function ProjectsPage() {
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {[
-              ['Share the context', 'Facility type, location, operating patterns and the challenge you want to address.'],
-              ['Review relevant options', 'Explore service areas that may relate to the site without assuming feasibility.'],
-              ['Agree on a next step', 'Confirm the information, specialist review or project scope needed to continue.'],
+              ['Share the context', 'Describe the facility, location, operating patterns and challenge. Mention what is changing and which teams will be involved in evaluating a possible project.'],
+              ['Review relevant options', 'Compare service areas against site conditions and the objective. A preliminary discussion can identify questions, but it cannot replace an engineering review.'],
+              ['Agree on a next step', 'Confirm what information, site access or specialist input is needed. Define the scope and responsibilities before committing to further work.'],
             ].map(([title, body], index) => (
               <Reveal key={title} delay={index * 0.06} as="div">
                 <article className="card h-full p-6">

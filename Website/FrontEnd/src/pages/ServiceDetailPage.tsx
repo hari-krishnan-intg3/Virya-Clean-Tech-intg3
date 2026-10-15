@@ -1,17 +1,48 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import {
   ArrowRight,
+  Bike,
+  Bus,
   CalendarDays,
+  Car,
   CheckCircle2,
   ClipboardList,
   Clock,
   FileCheck2,
   Gauge,
+  Truck,
 } from 'lucide-react';
 import { CtaBand } from '@/components/sections/PageHero';
 import { Reveal } from '@/components/ui';
 import { getService, services } from '@/data/services';
 import { disqualifiers } from '@/data/qualification';
+
+const VEHICLE_APPLICATIONS = [
+  {
+    icon: Car,
+    title: 'Cars and workplace charging',
+    description:
+      'Employee, visitor and customer parking can involve different dwell times and access needs. Review when vehicles are parked, how many may charge together, where spaces are located and whether access should be private or public.',
+  },
+  {
+    icon: Bike,
+    title: 'Bikes and two-wheelers',
+    description:
+      'Electric bikes and scooters often need charging close to regular parking or fleet turnaround areas. Consider secure locations, charging frequency, shared circuits, available power and how users will access the equipment.',
+  },
+  {
+    icon: Bus,
+    title: 'Electric buses',
+    description:
+      'Bus depots need charging plans that reflect route distance, return times, layovers and departure schedules. Depot layout, high-power demand, connection capacity and staged charging all need assessment before equipment is specified.',
+  },
+  {
+    icon: Truck,
+    title: 'Commercial and fleet vehicles',
+    description:
+      'Vans, delivery vehicles and other commercial fleets have operating windows tied to routes and service commitments. Review daily distance, vehicle mix, loading activity, time at depot and the electrical capacity available for charging.',
+  },
+];
 
 /**
  * Service detail page.
@@ -224,6 +255,43 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
+      {service.slug === 'ev-charging' && (
+        <section className="section bg-mist">
+          <div className="shell">
+            <Reveal className="max-w-3xl">
+              <p className="eyebrow">
+                <span className="rule-accent" />
+                Vehicle applications
+              </p>
+              <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
+                Charging plans for cars, bikes, buses and fleets.
+              </h2>
+              <p className="mt-5 text-base leading-relaxed text-ink-muted">
+                Vehicle type is only one part of the design. Parking duration,
+                usage patterns, electrical capacity and site operations determine
+                what should be explored for each location.
+              </p>
+            </Reveal>
+
+            <div className="mt-10 grid gap-5 sm:grid-cols-2">
+              {VEHICLE_APPLICATIONS.map((application, index) => (
+                <Reveal key={application.title} delay={index * 0.06} as="div">
+                  <article className="card h-full p-6 sm:p-7">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-white text-emerald-700">
+                      <application.icon className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <h3 className="mt-5 text-lg font-bold text-ink">{application.title}</h3>
+                    <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                      {application.description}
+                    </p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Deliverables */}
       <section className="section bg-mist">
         <div className="shell">
@@ -327,7 +395,7 @@ export default function ServiceDetailPage() {
                     {other.label}
                   </p>
                   <p className="mt-2 text-[0.86rem] leading-relaxed text-ink-muted">
-                    {other.tagline}
+                    {other.cardSummary}
                   </p>
                 </Link>
               </Reveal>

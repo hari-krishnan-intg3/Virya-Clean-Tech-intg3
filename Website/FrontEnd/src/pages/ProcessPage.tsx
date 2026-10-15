@@ -16,7 +16,7 @@ export default function ProcessPage() {
     {
       duration: 'Initial discussion',
       what:
-        'Share the business context, site location, project objective and any information already available. The team can explain what additional details may help.',
+        'Share the business context, site location, project objective and any information already available. Explain current operations, the change being considered and who is involved in the decision. The team can then identify useful follow-up questions without treating the conversation as a technical approval.',
       surprise:
         'An initial conversation is not a technical approval or a commitment to a particular solution.',
       outputs: ['A shared understanding of the enquiry', 'Relevant follow-up questions', 'A suggested next step, if appropriate'],
@@ -24,7 +24,7 @@ export default function ProcessPage() {
     {
       duration: 'Assessment scope',
       what:
-        'If a detailed review is agreed, its scope may cover available energy-use information, site conditions, operating patterns, infrastructure and relevant technical constraints.',
+        'If a detailed review is agreed, its scope may cover energy-use information, site conditions, operating patterns, existing infrastructure and relevant technical constraints. The agreed work should state what will be assessed, what information is missing and which conclusions remain provisional.',
       surprise:
         'The information available can affect both the depth of review and the conclusions that can reasonably be drawn.',
       outputs: [

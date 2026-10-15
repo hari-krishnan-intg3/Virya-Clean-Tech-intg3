@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Cpu, Info } from 'lucide-react';
+import { Info } from 'lucide-react';
 import { ecosystemFlows, ecosystemNodes, type EcosystemNode } from '@/data/content';
 import { cn } from '@/lib/utils';
 import { Reveal, SectionHeading } from '@/components/ui';
@@ -18,7 +18,9 @@ function flowPath(from: EcosystemNode, to: EcosystemNode): string {
 }
 
 export function EnergyEcosystemContainer() {
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState<string>('solar');
+  const activeNode = nodeById(active);
+  const ActiveIcon = activeNode.icon;
 
   return (
     <section
@@ -68,22 +70,27 @@ export function EnergyEcosystemContainer() {
                   </linearGradient>
                 </defs>
 
-                {ecosystemFlows.map((flow, index) => (
+                {ecosystemFlows.map((flow, index) => {
+                  const highlighted = flow.from === active || flow.to === active;
+                  return (
                   <path
                     key={`${flow.from}-${flow.to}`}
                     d={flowPath(nodeById(flow.from), nodeById(flow.to))}
                     fill="none"
                     stroke="url(#eco-stroke)"
                     strokeWidth={1.6}
+                    strokeOpacity={highlighted ? 0.95 : 0.16}
                     strokeLinecap="round"
-                    strokeDasharray="4 4"
+                    strokeDasharray={highlighted ? '4 4' : '2 7'}
                     vectorEffect="non-scaling-stroke"
                     style={{
-                      animation: `flowDash 2.8s linear infinite`,
-                      animationDelay: `${index * 0.45}s`,
+                      animation: highlighted
+                        ? `flowDash 2.8s linear ${index * 0.45}s infinite`
+                        : 'none',
                     }}
                   />
-                ))}
+                  );
+                })}
               </svg>
 
               {/* Nodes */}
@@ -102,7 +109,7 @@ export function EnergyEcosystemContainer() {
                     >
                       <button
                         type="button"
-                        onClick={() => setActive(isActive ? null : node.id)}
+                        onClick={() => setActive(node.id)}
                         aria-pressed={isActive}
                         className={cn(
                           'group flex h-20 w-20 flex-col items-center justify-center gap-1.5 rounded-2xl border bg-white shadow-soft transition-all duration-300',
@@ -141,17 +148,20 @@ export function EnergyEcosystemContainer() {
 
               {/* Central hub */}
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                <div className="relative flex h-28 w-28 flex-col items-center justify-center rounded-full border border-emerald-500/30 bg-gradient-to-br from-emerald-500/12 to-sky-500/12 text-center shadow-soft backdrop-blur-sm sm:h-32 sm:w-32">
-                  <Cpu className="h-6 w-6 text-emerald-600" aria-hidden="true" />
-                  <p className="mt-1.5 font-heading text-[0.7rem] font-extrabold leading-tight text-ink sm:text-xs">
-                    Smart Energy
-                    <br />
-                    Ecosystem
+                <div
+                  aria-live="polite"
+                  className="relative flex h-36 w-36 flex-col items-center justify-center rounded-2xl border border-emerald-500/40 bg-white/95 px-3 text-center shadow-lift backdrop-blur-sm sm:h-40 sm:w-40"
+                >
+                  <ActiveIcon className="h-6 w-6 text-emerald-600" aria-hidden="true" />
+                  <p className="mt-2 font-heading text-[0.75rem] font-extrabold leading-tight text-ink sm:text-sm">
+                    {activeNode.label}
+                  </p>
+                  <p className="mt-1 text-[0.62rem] leading-snug text-ink-muted sm:text-[0.68rem]">
+                    Selected system
                   </p>
                   <span
                     aria-hidden="true"
-                    className="absolute inset-0 rounded-full border border-emerald-500/40"
-                    style={{ animation: 'floatY 4s ease-in-out infinite' }}
+                    className="absolute inset-0 rounded-2xl border border-emerald-500/35"
                   />
                 </div>
               </div>
@@ -168,7 +178,7 @@ export function EnergyEcosystemContainer() {
                   <li key={node.id}>
                     <button
                       type="button"
-                      onClick={() => setActive(isActive ? null : node.id)}
+                      onClick={() => setActive(node.id)}
                       aria-pressed={isActive}
                       className={cn(
                         'flex w-full items-start gap-4 rounded-2xl border border-line bg-white p-5 text-left transition-all duration-300',
@@ -195,21 +205,19 @@ export function EnergyEcosystemContainer() {
 
                         <span
                           className={cn(
-                            'mt-2 block overflow-hidden text-xs transition-all duration-300',
-                            isActive ? 'max-h-24 opacity-100' : 'max-h-0 opacity-0',
+                            'mt-2 block overflow-hidden text-xs leading-relaxed transition-all duration-300',
+                            isActive ? 'max-h-56 opacity-100' : 'max-h-0 opacity-0',
                           )}
                         >
-                          <span className="inline-flex flex-wrap items-center gap-1.5">
+                          <span className="mt-2 inline-flex flex-wrap items-center gap-1.5">
                             {ecosystemFlows
                               .filter((f) => f.from === node.id || f.to === node.id)
                               .map((f) => {
                                 const other = nodeById(f.from === node.id ? f.to : f.from);
                                 return (
-                                  <span
-                                    key={f.from + f.to}
-                                    className="inline-flex items-center gap-1 rounded-full bg-mist px-2 py-0.5 text-ink-muted"
-                                  >
-                                    {f.label} · {other.label.split(' ')[0]}
+                                  <span key={f.from + f.to} className="block text-[0.72rem]">
+                                    <span className="font-semibold text-ink">{f.label} · {other.label}:</span>{' '}
+                                    {f.description}
                                   </span>
                                 );
                               })}

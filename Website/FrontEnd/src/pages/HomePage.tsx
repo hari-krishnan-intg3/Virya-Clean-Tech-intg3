@@ -104,7 +104,7 @@ export default function HomePage() {
                   </h3>
 
                   <p className="mt-3 flex-1 text-[0.9rem] leading-relaxed text-ink-muted">
-                    {service.tagline}
+                    {service.cardSummary}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -193,7 +193,7 @@ export default function HomePage() {
                     {item.label}
                   </p>
                   <p className="mt-2 text-[0.83rem] leading-relaxed text-ink-muted">
-                    {industries.find((i) => i.slug === item.slug)?.signals[0]}
+                    {industries.find((i) => i.slug === item.slug)?.cardSummary}
                   </p>
                 </Link>
               </Reveal>
@@ -225,19 +225,19 @@ export default function HomePage() {
             {[
               {
                 title: 'Site context',
-                body: 'Business type, city or state, facility layout, and whether the site is existing or planned.',
+                body: 'Describe the business, site location and facility type. Note whether it is operating, under construction or still being planned, and mention any access or ownership constraints that may affect a review.',
               },
               {
                 title: 'Energy use',
-                body: 'Electricity bills or consumption data, operating hours, seasonal changes, and known demand peaks.',
+                body: 'Recent bills or meter data can show how usage changes through the day and across seasons. Operating hours, production schedules and known demand peaks help put those figures into context.',
               },
               {
                 title: 'Existing infrastructure',
-                body: 'Available roof or land, electrical supply, current energy systems, and relevant site constraints.',
+                body: 'Share what is known about roof or land availability, the electrical connection and existing generation or backup systems. Structural records, parking layout, utility requirements and site access restrictions may also affect the technical review.',
               },
               {
                 title: 'Project objective',
-                body: 'The operational challenge, solution areas of interest, decision stage, and target timeline.',
+                body: 'Explain what the business is trying to change and which solution areas are under consideration. Include the decision stage, stakeholders involved and any target dates that influence the discussion.',
               },
             ].map((item, index) => (
               <Reveal key={item.title} delay={index * 0.06} as="div">

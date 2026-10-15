@@ -57,7 +57,7 @@ export default function ServicesPage() {
 
                   <div className="lg:col-span-7">
                     <p className="text-[0.93rem] leading-relaxed text-ink-muted">
-                      {service.summary.split(/(?<=\.)\s/)[0]}
+                      {service.cardSummary}
                     </p>
 
                     <ul className="mt-6 grid gap-2.5 sm:grid-cols-2">
@@ -110,7 +110,7 @@ export default function ServicesPage() {
                 when: 'You want to understand energy use',
                 then: 'Energy audit',
                 because:
-                  'Available bills, meter data and operating context can help frame a review of energy requirements.',
+                  'Available bills, meter data and operating context can help frame a review of energy requirements. Operating hours and known changes can reveal what information is missing before options are compared.',
                 to: '/services/consulting',
                 cta: 'Start with an audit',
               },
@@ -118,7 +118,7 @@ export default function ServicesPage() {
                 when: 'You are exploring on-site generation or storage',
                 then: 'Solar or storage design',
                 because:
-                  'Site area, structural conditions, energy use, electrical infrastructure and project objectives influence feasibility.',
+                  'Site area, structural conditions, energy use, electrical infrastructure and project objectives influence feasibility. Clarify ownership, roof or land access and any connection constraints before a system is sized.',
                 to: '/services/solar',
                 cta: 'Scope a system',
               },
@@ -126,7 +126,7 @@ export default function ServicesPage() {
                 when: 'Your site is planning for electric vehicles',
                 then: 'EV infrastructure',
                 because:
-                  'Vehicle use, parking duration, charging demand and available electrical capacity help shape the discussion.',
+                  'Vehicle use, parking duration, charging demand and available electrical capacity help shape the discussion. Routes, dwell windows, site layout and charging operations also affect what should be assessed.',
                 to: '/services/ev-charging',
                 cta: 'Scope chargers',
               },

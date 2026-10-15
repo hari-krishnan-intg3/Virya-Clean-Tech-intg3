@@ -9,22 +9,22 @@ const PRINCIPLES = [
   {
     icon: Ruler,
     title: 'Site context before assumptions',
-    body: 'Energy use, physical conditions, existing infrastructure and operating needs help shape a useful project discussion.',
+    body: 'Energy use, physical conditions, existing infrastructure and operating needs help shape a useful project discussion. Reviewing these together can surface constraints early and make it easier to ask the right technical questions.',
   },
   {
     icon: Wrench,
     title: 'Clear scope and responsibilities',
-    body: 'Technical work, deliverables, approvals and follow-up should be defined for the specific project before work proceeds.',
+    body: 'Technical work, deliverables, approvals and follow-up should be defined for the specific project before work proceeds. Clear boundaries help both teams understand what is included, what remains open and who owns each next step.',
   },
   {
     icon: Leaf,
     title: 'Claims grounded in evidence',
-    body: 'Savings, performance and environmental outcomes depend on the project and should be supported by stated assumptions and appropriate records.',
+    body: 'Savings, performance and environmental outcomes depend on the project and should be supported by stated assumptions and appropriate records. Estimates should distinguish measured results from forecasts and explain any limits on the available data.',
   },
   {
     icon: Users,
     title: 'Collaboration by agreement',
-    body: 'Data access, monitoring, maintenance and post-project support are clarified as part of the agreed service scope.',
+    body: 'Data access, monitoring, maintenance and post-project support are clarified as part of the agreed service scope. Customers should know which systems are included, who can access information and how ongoing responsibilities are handled.',
   },
 ];
 
@@ -181,9 +181,9 @@ export default function AboutPage() {
 
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               {[
-                ['Service scope', 'Confirm which services, deliverables and responsibilities are included.'],
-                ['Technical assumptions', 'Review site information, constraints, approvals and any assumptions behind estimates.'],
-                ['Evidence and outcomes', 'Use project-specific records for performance, savings or environmental claims.'],
+                ['Service scope', 'Confirm which services, deliverables and responsibilities are included. Clarify exclusions, decision points and any work that needs a separate agreement.'],
+                ['Technical assumptions', 'Review site information, constraints, approvals and the assumptions behind estimates. Ask which details have been measured and which still need validation.'],
+                ['Evidence and outcomes', 'Use project-specific records for performance, savings or environmental claims. Agree on the measurement period, data source and method before comparing results.'],
               ].map(([title, body]) => (
                 <article key={title} className="card h-full p-6 text-left">
                   <h3 className="font-bold text-ink">{title}</h3>

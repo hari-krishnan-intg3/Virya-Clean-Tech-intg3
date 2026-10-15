@@ -74,7 +74,8 @@ export const ecosystemNodes: EcosystemNode[] = [
   {
     id: 'solar',
     label: 'Solar Generation',
-    description: 'Renewable power generated from photovoltaic systems.',
+    description:
+      'Solar generation converts site sunlight into electricity for facility use or export, subject to system design and local connection rules. Roof condition, shading, orientation and the site load help determine what can be assessed.',
     icon: Sun,
     accent: '#F59E0B',
     gradient: 'from-amber-400 to-amber-500',
@@ -84,7 +85,8 @@ export const ecosystemNodes: EcosystemNode[] = [
   {
     id: 'battery',
     label: 'Battery Technology',
-    description: 'Energy stored and released on demand.',
+    description:
+      'Storage may hold energy for use at a different time or support selected operating needs. Its role depends on power requirements, duration, controls, safety measures and how it connects with the facility.',
     icon: BatteryCharging,
     accent: '#8B5CF6',
     gradient: 'from-violet-500 to-violet-600',
@@ -94,7 +96,8 @@ export const ecosystemNodes: EcosystemNode[] = [
   {
     id: 'ev',
     label: 'EV Charging',
-    description: 'Electric mobility infrastructure for any site.',
+    description:
+      'Charging infrastructure serves vehicles according to their routes, dwell time and charging windows. Site layout, available electrical capacity, user access and network requirements influence the approach.',
     icon: Zap,
     accent: '#0EA5E9',
     gradient: 'from-sky-400 to-sky-500',
@@ -104,7 +107,8 @@ export const ecosystemNodes: EcosystemNode[] = [
   {
     id: 'systems',
     label: 'Intelligent Systems',
-    description: 'Software, IoT devices and live monitoring.',
+    description:
+      'Connected systems can bring selected energy and equipment data into a shared operational view. Device compatibility, data access, connectivity and security requirements shape which monitoring or alerting functions are practical.',
     icon: Cpu,
     accent: '#10B981',
     gradient: 'from-emerald-400 to-emerald-600',
@@ -114,11 +118,31 @@ export const ecosystemNodes: EcosystemNode[] = [
 ];
 
 /* Directed flows powering the animated connectors. */
-export const ecosystemFlows: { from: string; to: string; label: string }[] = [
-  { from: 'solar', to: 'battery', label: 'Charge' },
-  { from: 'battery', to: 'ev', label: 'Supply' },
-  { from: 'ev', to: 'systems', label: 'Report' },
-  { from: 'systems', to: 'solar', label: 'Optimise' },
+export const ecosystemFlows: { from: string; to: string; label: string; description: string }[] = [
+  {
+    from: 'solar',
+    to: 'battery',
+    label: 'Store',
+    description: 'Depending on system design, available solar generation may be stored for later use.',
+  },
+  {
+    from: 'battery',
+    to: 'ev',
+    label: 'Support',
+    description: 'Storage may support charging in some applications, subject to capacity, controls and operating requirements.',
+  },
+  {
+    from: 'ev',
+    to: 'systems',
+    label: 'Monitor',
+    description: 'Compatible charging equipment can provide session or status data for operational monitoring.',
+  },
+  {
+    from: 'systems',
+    to: 'solar',
+    label: 'Review',
+    description: 'Monitoring can help operators review generation and consumption data where the sources are connected.',
+  },
 ];
 
 /* ------------------------------------------------------------------ */

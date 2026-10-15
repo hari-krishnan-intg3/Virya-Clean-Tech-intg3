@@ -39,9 +39,9 @@ export const roles: Role[] = [
     location: 'Bengaluru — with site travel across South India',
     type: 'Full time',
     level: 'Mid',
-    summary: 'Size, design and document commercial rooftop and ground-mount PV systems from real interval data.',
+    summary: 'Review facility and energy information before shaping commercial rooftop or ground-mounted PV designs. The work spans load analysis, yield modelling, site surveys, drawings and equipment scope. Engineering decisions should reflect roof or land conditions, electrical interfaces, local requirements and each project’s agreed responsibilities.',
     mandate:
-      'Most solar proposals in India are generated from a rule of thumb. Ours start with the customer\'s half-hourly consumption, which changes the answer often enough to be worth doing properly.',
+      'Solar proposals can change when actual consumption, site conditions and connection details are reviewed. This role exists to bring those inputs into design early, explain the assumptions and identify where structural or utility questions require further review.',
     responsibilities: [
       'Run load analysis and yield modelling for commercial and industrial sites',
       'Produce single-line diagrams, array layouts and cable schedules',
@@ -61,7 +61,7 @@ export const roles: Role[] = [
       'Exposure to storage or hybrid PV design',
     ],
     firstNinetyDays:
-      'You will own one live design end to end, from data request through to an approved interconnection — with an engineer reviewing your drawings, not replacing them.',
+      'You will contribute to a live design from initial data review through drawings and interconnection questions. A senior engineer will review the work, explain the reasoning and help you take on more ownership as the project scope and readiness allow.',
   },
   {
     slug: 'ev-charging-engineer',
@@ -70,9 +70,9 @@ export const roles: Role[] = [
     location: 'Bengaluru — with depot and forecourt site visits',
     type: 'Full time',
     level: 'Mid',
-    summary: 'Design charging infrastructure for sites with real constraints — grid headroom, dwell time, tariff structure.',
+    summary: 'Plan EV charging around cars, two-wheelers, buses and commercial vehicle patterns. The work includes load studies, charger selection, electrical design and delivery coordination. Site layout, dwell time, grid capacity and operating schedules all affect what can be proposed; you will document the assumptions behind those decisions.',
     mandate:
-      'Fleet electrification projects fail on power, not on vehicles. This role exists to make sure we find that out before the customer buys anything.',
+      'Fleet charging depends on more than vehicle choice. This role examines routes, dwell windows, electrical capacity and site operations so infrastructure questions can be surfaced before equipment decisions are made.',
     responsibilities: [
       'Carry out load studies and establish available transformer headroom',
       'Size charger mixes to measured dwell time rather than fleet size',
@@ -92,7 +92,7 @@ export const roles: Role[] = [
       'Familiarity with DC fast charging standards and thermal design',
     ],
     firstNinetyDays:
-      'You will lead the load study on two live sites and defend the resulting headroom findings to clients who expected a different answer.',
+      'You will work through a charging assessment from site information and load data to documented findings. The team will review the assumptions with you and help communicate what the results mean for charger planning and any remaining technical questions.',
   },
   {
     slug: 'energy-software-engineer',
@@ -101,9 +101,9 @@ export const roles: Role[] = [
     location: 'Bengaluru — hybrid, with field commissioning travel',
     type: 'Full time',
     level: 'Mid to senior',
-    summary: 'Build the monitoring layer that makes solar, storage and charging assets operable rather than merely installed.',
+    summary: 'Build software and integrations that help operators understand connected energy assets. The role spans device telemetry, data pipelines, monitoring interfaces, alerting and reporting. Compatibility, access permissions, data quality, security and the needs of daily users shape the work.',
     mandate:
-      'Hardware gets commissioned and then quietly degrades because nobody is watching the data. This role closes that gap, and it is the part of the energy transition that is consistently under-specified.',
+      'Connected assets produce useful information only when the data can be accessed, understood and acted on. This role helps clarify those requirements and build software that supports operators without implying that monitoring alone prevents equipment issues.',
     responsibilities: [
       'Integrate inverter, meter and charger telemetry across Modbus, MQTT and OCPP',
       'Build dashboards for CFO, facility and operations audiences',
@@ -123,7 +123,7 @@ export const roles: Role[] = [
       'Experience building multi-tenant or white-label portals',
     ],
     firstNinetyDays:
-      'You will take ownership of telemetry for one live asset class, find out what it is actually reporting, and fix the parts that were lying.',
+      'You will examine telemetry from an asset class, document what the devices report and identify data-quality gaps. Together with the team, you will prioritize fixes and agree how operators can use the resulting information.',
   },
   {
     slug: 'project-manager',
@@ -132,9 +132,9 @@ export const roles: Role[] = [
     location: 'Bengaluru',
     type: 'Full time',
     level: 'Senior',
-    summary: 'Run solar, storage and charging projects from signed scope to energisation without the schedule slipping quietly.',
+    summary: 'Coordinate energy projects from agreed scope through delivery milestones. The role brings together schedules, budgets, site teams, suppliers, approvals and client communication. Clear records and early risk escalation help teams understand changes to timing, responsibilities or deliverables.',
     mandate:
-      'Grid approval and equipment lead times are the two things that derail energy projects. This role exists to see them coming and to tell the client before they become a surprise.',
+      'Project schedules can depend on approvals, equipment availability, site access and coordination across multiple teams. This role exists to track those dependencies, communicate uncertainty and keep decisions visible before a delay becomes difficult to manage.',
     responsibilities: [
       'Own schedule, cost and risk across concurrent energy projects',
       'Coordinate contractors, DISCOMs, clients and internal engineering',
@@ -154,7 +154,7 @@ export const roles: Role[] = [
       'Familiarity with Indian DISCOM and state approval bodies',
     ],
     firstNinetyDays:
-      'You will take over one live project mid-flight, write down its true state, and present the recovery plan to the client in week six.',
+      'You will learn the project records, meet the delivery stakeholders and identify current dependencies. With support from the team, you will document risks, agree follow-up owners and communicate any schedule or scope questions clearly.',
   },
   {
     slug: 'field-supervisor',
@@ -163,9 +163,9 @@ export const roles: Role[] = [
     location: 'South India — site based',
     type: 'Full time',
     level: 'Mid',
-    summary: 'Run installation crews safely, to drawing, on sites where safety outcomes are not negotiable.',
+    summary: 'Coordinate field work for solar and storage projects with safety, quality and drawing compliance in focus. The role supports crews, checks work against approved documents and records site conditions. Clear reporting helps engineers review deviations before they become installation or handover issues.',
     mandate:
-      'A design that reaches site incorrectly is a design failure with a safety dimension. This role is the last line of that defence.',
+      'Installation quality and site safety depend on clear drawings, safe work practices and timely communication. This role provides field oversight, documents deviations and raises issues so they can be reviewed by the appropriate engineering and project leads.',
     responsibilities: [
       'Supervise installation, earthing, testing and commissioning on site',
       'Enforce permit-to-work, PPE and electrical safety discipline without exception',
@@ -185,7 +185,7 @@ export const roles: Role[] = [
       'Exposure to battery systems commissioning',
     ],
     firstNinetyDays:
-      'You will run one site to completion and own the safety plan, the quality checklist and the handover documentation for it.',
+      'You will become familiar with site procedures, approved drawings and reporting expectations. Responsibilities grow with site readiness and role scope, with a focus on safe coordination, documented quality checks and clear handover information.',
   },
   {
     slug: 'energy-consultant',
@@ -194,9 +194,9 @@ export const roles: Role[] = [
     location: 'Bengaluru — with client site visits',
     type: 'Full time',
     level: 'Mid',
-    summary: 'Turn interval data into a payback number a CFO can defend in a board meeting.',
+    summary: 'Review energy information and project assumptions for organisations considering clean-energy options. The role translates technical findings into decision material that explains data gaps, constraints, options and risks. Recommendations should distinguish evidence from estimates and identify when more review is needed.',
     mandate:
-      'We are as happy to tell a client the project does not work. That is only credible because the audit team is measured on the quality of its negative findings, not the volume of proposals it produces.',
+      'An assessment should be useful even when an option is not suitable. This role exists to examine evidence, communicate uncertainty and document why a recommendation does or does not fit the requirements and information available.',
     responsibilities: [
       'Lead detailed energy audits using half-hourly interval data',
       'Model solar, storage and charging feasibility with stated assumptions',
@@ -216,7 +216,7 @@ export const roles: Role[] = [
       'Experience supporting green-building certification',
     ],
     firstNinetyDays:
-      'You will lead one audit from data request to presentation and defend the recommendation to the client directly.',
+      'You will support an assessment from information review through findings and discussion. The team will help you communicate assumptions and limitations clearly, and build confidence presenting project considerations to client stakeholders.',
   },
 ];
 
@@ -273,31 +273,31 @@ export const hiringStages: HiringStage[] = [
   {
     stage: 'Application review',
     detail:
-      'Read properly, by a person in the relevant discipline. If the role is filled we will not reply — but you will get an answer either way.',
+      'A person in the relevant discipline reviews your experience against the actual work in the role. Share project examples and the part you owned so the team can understand your decisions. If a position has already closed, the page may no longer reflect its status.',
     duration: 'Within 5 working days',
   },
   {
     stage: 'Conversation',
     detail:
-      'Thirty to forty-five minutes with the team lead. Bring questions — this is the stage where you find out whether the role is honest.',
+      'A conversation with the team lead covers the responsibilities, working context and the problems the role is expected to address. Bring questions about the team and expectations so both sides can decide whether the opportunity is a useful fit.',
     duration: '1 week',
   },
   {
     stage: 'Technical session',
     detail:
-      'A real problem from our work, discussed together. Not a puzzle with a hidden answer, and nobody is testing whether you have memorised a textbook.',
+      'Discuss a relevant work problem and explain how you would approach it. The focus is on assumptions, trade-offs, safety and communication, rather than guessing a hidden answer or reciting a textbook. Ask for context if the problem statement needs clarification.',
     duration: '2–3 days after the conversation',
   },
   {
     stage: 'Site or team meet',
     detail:
-      'Half a day on a live site or with the delivery team, whichever suits the role. Paid at your day rate.',
+      'Where relevant to the role, spend time with the delivery team or visit a site to understand the operating environment. The format depends on location and site access; any required visit is paid at the agreed day rate.',
     duration: 'Within 2 weeks',
   },
   {
     stage: 'Offer',
     detail:
-      'Written, with the band stated openly. We would rather you decline because the number is wrong than spend three months finding out.',
+      'An offer is provided in writing with compensation and role expectations stated. Review the responsibilities, work location, employment terms and any questions before accepting; it is better to clarify a mismatch early than discover it after joining.',
     duration: 'Decision within 48 hours of the site visit',
   },
 ];
@@ -310,27 +310,27 @@ export interface Benefit {
 export const benefits: Benefit[] = [
   {
     title: 'Paid site visits',
-    body: 'Travel for project work is reimbursed the same month. Site visits are paid work, not unpaid development.',
+    body: 'Travel for project work is reimbursed the same month. Site visits are part of paid project work, not unpaid development time. The work can include observing site conditions, coordinating with the delivery team and documenting what needs to be followed up.',
   },
   {
     title: 'Certification funded',
-    body: 'Safety training, professional registration and technical certifications are paid for and scheduled during working hours.',
+    body: 'Safety training, professional registration and technical certifications are funded and scheduled during working hours. Relevant learning can be discussed with the manager so it supports the responsibilities of the role and the work being delivered.',
   },
   {
     title: 'Real ownership',
-    body: 'Small team, no layers. Your drawing is the drawing that goes to site, and you are named on it.',
+    body: 'In a small team, design work stays connected to implementation. Your drawing is the document used by the site team, and you are named on it. That creates a clear feedback loop between design decisions and installation conditions.',
   },
   {
     title: 'No billable-only culture',
-    body: 'Nobody here is measured on how many proposals went out. The audit team is measured on whether the recommendations held up.',
+    body: 'The focus is not simply how many proposals are sent. For assessment work, recommendations should remain useful when the site, available data and project constraints are reviewed. The reasoning and assumptions matter as much as the document itself.',
   },
   {
     title: 'Exposure across the stack',
-    body: 'Solar, storage, charging and monitoring in one company. Engineers here see the whole system, which is rarer than it should be.',
+    body: 'The published service areas include solar, storage, charging and monitoring. Depending on the role, engineers can learn how these systems interact with site operations, electrical infrastructure and data rather than viewing each device in isolation.',
   },
   {
     title: 'Honest written feedback',
-    body: 'Including when the answer is no, and specifically why. We would rather you learn something from the process.',
+    body: 'Feedback should be specific enough to explain the decision and point to what could improve. That applies when the answer is no as well as when an application progresses, so candidates can understand the process rather than guess at it.',
   },
 ];
 
@@ -340,7 +340,7 @@ export const CAREERS = {
   subjectPrefix: 'Application — Virya Clean Tech',
   location: 'Bengaluru, Karnataka',
   openApplicationNote:
-    'Nothing here that fits? Send an open application. We read speculative applications properly — several of our current engineers arrived without an advertised role.',
+    'Nothing here that fits? Send an open application with the area of work you are interested in, relevant experience and examples of your work. Explain what kind of projects you want to contribute to and where your experience is strongest. We review applications when there is a suitable need, though an opening or response time cannot be guaranteed.',
 } as const;
 
 export const ROLE_SLUGS = roles.map((r) => r.slug);

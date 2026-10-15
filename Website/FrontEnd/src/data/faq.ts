@@ -16,61 +16,61 @@ export const faqs: FaqItem[] = [
   {
     question: 'Where is Virya Clean Tech based, and where do you work?',
     answer:
-      'Virya Cleantech is based in Bengaluru, Karnataka. Service availability and the ability to support a project in another location should be confirmed with the team.',
+      'Virya Cleantech is based in Bengaluru, Karnataka. Service availability and the ability to support a project elsewhere should be confirmed with the team. Location, site access and any travel needs can affect the practical scope of an enquiry.',
     category: 'Commercial',
   },
   {
     question: 'Do you work on residential projects?',
     answer:
-      'This website focuses on business and organisational energy requirements. Please contact the team to confirm whether a residential enquiry is within the current service scope.',
+      'This website focuses on business and organisational energy requirements. Please contact the team to confirm whether a residential enquiry is within the current service scope. The site type, project size and requested service can affect whether it is appropriate to proceed.',
     category: 'Commercial',
   },
   {
     question: 'What size of project do you take on?',
     answer:
-      'There is no single project size that applies to every service. Requirements depend on the site, operating objective, available infrastructure and the scope the team can support.',
+      'There is no single project size that applies to every service. Requirements depend on the site, operating objective, available infrastructure and the scope the team can support. Share the scale you have in mind so feasibility can be discussed in context.',
     category: 'Commercial',
   },
   {
     question: 'How does an engagement usually start?',
     answer:
-      'Start by sharing your business context, site location and project objective. If a further review is appropriate, the team can discuss what information, scope and next steps may be needed.',
+      'Start by sharing your business context, site location and project objective. If a further review is appropriate, the team can discuss what information, scope and next steps may be needed. Bills, operating hours and existing infrastructure can help frame that conversation when available.',
     category: 'Process',
   },
   {
     question: 'Do you sign NDAs?',
     answer:
-      'Ask the team about confidentiality arrangements before sharing sensitive information. Avoid submitting confidential documents unless they are needed and an appropriate channel has been agreed.',
+      'Ask the team about confidentiality arrangements before sharing sensitive information. Avoid submitting confidential documents unless they are needed and an appropriate channel has been agreed. Begin with a high-level description if you are unsure what is safe to send.',
     category: 'Process',
   },
   {
     question: 'How do you price?',
     answer:
-      'Pricing depends on the service, site conditions, design, equipment, approvals and responsibilities included. A written quotation should make the scope and exclusions clear so options can be compared fairly.',
+      'Pricing depends on the service, site conditions, design, equipment, approvals and responsibilities included. A written quotation should make scope and exclusions clear so options can be compared fairly. Confirm whether taxes, civil works, utility work, commissioning or ongoing support are included.',
     category: 'Commercial terms',
   },
   {
     question: 'Do you offer performance guarantees?',
     answer:
-      'Do not assume a particular performance guarantee. Any performance commitments, measurement method, assumptions and exclusions must be stated in the project agreement.',
+      'Do not assume a particular performance guarantee. Any performance commitments, measurement method, assumptions and exclusions must be stated in the project agreement. Actual outcomes depend on site conditions, equipment, operation and the agreed measurement period.',
     category: 'Commercial terms',
   },
   {
     question: 'What happens to the system after handover?',
     answer:
-      'Monitoring, maintenance, data access and support after handover depend on the agreed project scope. Confirm access, responsibilities, service levels and any ongoing charges before work begins.',
+      'Monitoring, maintenance, data access and support after handover depend on the agreed project scope. Confirm access, responsibilities, service levels and ongoing charges before work begins. Also clarify who owns the data and how users can retrieve it if an arrangement ends.',
     category: 'Process',
   },
   {
     question: 'Can we get support outside Bengaluru?',
     answer:
-      'Support outside Bengaluru depends on project location, service scope and available arrangements. Confirm coverage, travel requirements and response expectations with the team.',
+      'Support outside Bengaluru depends on project location, service scope and available arrangements. Confirm coverage, travel requirements and response expectations with the team. Remote coordination, site visits and local approvals may involve different responsibilities.',
     category: 'Process',
   },
   {
     question: 'How quickly can you start?',
     answer:
-      'Start timing depends on the information available, the requested scope, site access and any approvals or specialist reviews required. The team can discuss a project-specific schedule after learning more.',
+      'Start timing depends on the information available, requested scope, site access and any approvals or specialist reviews required. The team can discuss a project-specific schedule after learning more. Equipment lead times and utility processes may also affect a delivery programme.',
     category: 'Process',
     relatedService: 'consulting',
   },

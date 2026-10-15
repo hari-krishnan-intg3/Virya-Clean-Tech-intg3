@@ -45,6 +45,10 @@ export default function IndustriesPage() {
                       {industry.pressure}
                     </p>
 
+                    <p className="mt-3 text-[0.9rem] leading-relaxed text-ink-muted">
+                      {industry.cardSummary}
+                    </p>
+
                     <ul className="mt-6 flex flex-wrap gap-2">
                       {industry.signals.map((signal) => (
                         <li
