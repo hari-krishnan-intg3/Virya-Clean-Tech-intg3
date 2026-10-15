@@ -104,7 +104,15 @@ const serviceItems: NavChild[] = services.map((service) => ({
 
 export const NAV: NavGroup[] = [
   {
-    label: 'Solutions',
+    label: 'Home',
+    to: '/',
+  },
+  {
+    label: 'About',
+    to: '/about',
+  },
+  {
+    label: 'Offerings',
     to: '/services',
     columns: [
       {
@@ -185,14 +193,6 @@ export const NAV: NavGroup[] = [
   {
     label: 'Insights',
     to: '/insights',
-  },
-  {
-    label: 'About',
-    to: '/about',
-  },
-  {
-    label: 'Contact',
-    to: '/contact',
   },
 ];
 
