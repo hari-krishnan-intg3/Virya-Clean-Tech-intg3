@@ -46,7 +46,7 @@ export async function getVercelAnalytics(
   const until = end.toISOString();
   const countUrl = analyticsUrl('visits/count', config, since, until);
   const pageUrl = analyticsUrl('visits/aggregate', config, since, until);
-  pageUrl.searchParams.set('by', JSON.stringify(['requestPath']));
+  pageUrl.searchParams.set('by', 'requestPath');
   pageUrl.searchParams.set('limit', '10');
 
   const [countResult, pageResult] = await Promise.all([
