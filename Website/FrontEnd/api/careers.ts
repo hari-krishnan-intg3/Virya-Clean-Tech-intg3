@@ -105,6 +105,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const errors: string[] = [];
   let jiraKey = '';
   let sheetWritten = false;
+  const followUps = [
+    {
+      summary: 'Acknowledge within 2 working days',
+      description:
+        'Reply either way — including when the role is filled. Silence is the one outcome we never want.',
+    },
+    {
+      summary: 'Read properly and log a verdict',
+      description:
+        'Shortlist, hold, or decline — with one line of reasoning. The reasoning is what makes the decision reviewable.',
+    },
+  ];
 
   // ── Jira ──────────────────────────────────────────────────────────
   if (projectKey) {
@@ -159,52 +171,48 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               ],
             },
             ...(config.leadsAssigneeId ? { assignee: { accountId: config.leadsAssigneeId } } : {}),
-            subtasks: [
-              {
-                issuetype: { name: 'Subtask' },
-                summary: 'Acknowledge within 2 working days',
-                description: {
-                  type: 'doc',
-                  version: 1,
-                  content: [
-                    {
-                      type: 'paragraph',
-                      content: [
-                        {
-                          type: 'text',
-                          text: 'Reply either way — including when the role is filled. Silence is the one outcome we never want.',
-                        },
-                      ],
-                    },
-                  ],
-                },
-              },
-              {
-                issuetype: { name: 'Subtask' },
-                summary: 'Read properly and log a verdict',
-                description: {
-                  type: 'doc',
-                  version: 1,
-                  content: [
-                    {
-                      type: 'paragraph',
-                      content: [
-                        {
-                          type: 'text',
-                          text: 'Shortlist, hold, or decline — with one line of reasoning. The reasoning is what makes the decision reviewable.',
-                        },
-                      ],
-                    },
-                  ],
-                },
-              },
-            ],
           },
         }),
       });
 
       if (response.ok) {
         jiraKey = ((await response.json()) as { key: string }).key;
+        for (const followUp of followUps) {
+          try {
+            const subtaskResponse = await fetch(`${config.jira.baseUrl}/rest/api/3/issue`, {
+              method: 'POST',
+              headers: {
+                Authorization: authHeader(config.jira),
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                fields: {
+                  project: { key: projectKey },
+                  parent: { key: jiraKey },
+                  issuetype: { name: 'Subtask' },
+                  summary: followUp.summary,
+                  description: {
+                    type: 'doc',
+                    version: 1,
+                    content: [
+                      {
+                        type: 'paragraph',
+                        content: [{ type: 'text', text: followUp.description }],
+                      },
+                    ],
+                  },
+                },
+              }),
+            });
+
+            if (!subtaskResponse.ok) {
+              errors.push(`jira subtask: ${subtaskResponse.status}`);
+            }
+          } catch (error) {
+            errors.push(`jira subtask: ${error instanceof Error ? error.message : String(error)}`);
+          }
+        }
       } else {
         const detail = await response.text();
         errors.push(`jira: ${response.status} ${detail.slice(0, 160)}`);
