@@ -93,7 +93,6 @@ export default function ProjectsPage() {
             ].map(([title, body], index) => (
               <Reveal key={title} delay={index * 0.06} as="div">
                 <article className="card h-full p-6">
-                  <span className="font-mono text-xs font-bold text-emerald-700">0{index + 1}</span>
                   <h3 className="mt-3 text-lg font-bold text-ink">{title}</h3>
                   <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-muted">{body}</p>
                 </article>

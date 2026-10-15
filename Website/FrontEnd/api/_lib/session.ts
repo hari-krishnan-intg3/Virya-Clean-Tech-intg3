@@ -180,6 +180,54 @@ function toRow(record: SessionRecord): (string | number | boolean)[] {
   return row;
 }
 
+export interface ReturningSessionSummary {
+  lastSeenAt: string;
+  lastPath: string;
+  primaryInterest: string | null;
+  servicesViewed: string[];
+}
+
+function safeSessionPath(value: string): string | null {
+  const path = value.split(/[?#]/, 1)[0];
+  if (!path.startsWith('/') || path.startsWith('//')) return null;
+  return /^\/(?:[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*)?$/.test(path) ? path : null;
+}
+
+/** Returns only the minimal prior-session context needed for a consented welcome-back prompt. */
+export async function findReturningSession(
+  sheets: SheetsConfig,
+  google: GoogleAuthConfig,
+  tab: string,
+  visitorId: string,
+): Promise<ReturningSessionSummary | null> {
+  const rows = await readTab(sheets, google, tab, 'A:I');
+  const matching = rows
+    .slice(1)
+    .filter((row) => (row[1] ?? '').trim() === visitorId)
+    .map((row) => ({ row, seenAt: Date.parse(row[3] ?? '') }))
+    .filter(({ seenAt }) => Number.isFinite(seenAt))
+    .sort((left, right) => right.seenAt - left.seenAt);
+
+  const latest = matching[0];
+  if (!latest) return null;
+
+  const pages = (latest.row[5] ?? '').split(' → ').reverse();
+  const lastPath = pages.map(safeSessionPath).find((path) => path !== null) ?? '/';
+  const servicesViewed = (latest.row[7] ?? '')
+    .split(',')
+    .map((service) => service.trim())
+    .filter((service) => /^[a-z-]{1,40}$/.test(service))
+    .slice(0, 10);
+  const rawInterest = (latest.row[8] ?? '').trim();
+
+  return {
+    lastSeenAt: new Date(latest.seenAt).toISOString(),
+    lastPath,
+    primaryInterest: /^[a-z-]{1,40}$/.test(rawInterest) ? rawInterest : null,
+    servicesViewed,
+  };
+}
+
 /** Builds column A index for the tab. Returns id → row number (1-based). */
 async function indexSessions(
   sheets: SheetsConfig,

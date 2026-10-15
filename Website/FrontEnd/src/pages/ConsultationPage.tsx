@@ -28,11 +28,8 @@ export default function ConsultationPage() {
       <section className="section bg-mist">
         <div className="shell">
           <div className="grid gap-6 sm:grid-cols-3">
-            {INSURANCE_HONESTS.map((item, index) => (
+            {INSURANCE_HONESTS.map((item) => (
               <div key={item.title} className="card p-7">
-                <span className="font-mono text-[0.8rem] font-bold text-ink-faint">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
                 <h2 className="mt-4 text-[1.05rem] font-bold text-ink">{item.title}</h2>
                 <p className="mt-2.5 text-[0.9rem] leading-relaxed text-ink-muted">{item.body}</p>
               </div>

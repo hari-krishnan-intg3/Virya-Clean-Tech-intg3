@@ -76,10 +76,6 @@ export function ProcessContainer() {
                     <Icon className="h-5 w-5 text-emerald-600" />
                   </span>
 
-                  <span className="block font-heading text-xs font-extrabold tracking-[0.24em] text-emerald-500">
-                    {step.number}
-                  </span>
-
                   <h3 className="mt-2 font-heading text-lg font-bold leading-snug tracking-tight">
                     {step.title}
                   </h3>

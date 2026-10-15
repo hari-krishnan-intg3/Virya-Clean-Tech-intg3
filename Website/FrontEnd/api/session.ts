@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { sessionConfig } from './_lib/config.js';
 import { buildRequestContext, isVercelInternal } from './_lib/context.js';
-import { upsertSession, type SessionPayload } from './_lib/session.js';
+import { findReturningSession, upsertSession, type SessionPayload } from './_lib/session.js';
 
 /**
  * Visitor session endpoint.
@@ -17,6 +17,29 @@ import { upsertSession, type SessionPayload } from './_lib/session.js';
 const MAX_BODY_BYTES = 24_000;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === 'GET' && req.query?.returning === '1') {
+    res.setHeader('Cache-Control', 'no-store');
+    const visitorId = typeof req.query.visitorId === 'string' ? req.query.visitorId : '';
+    if (!/^vis_[a-f0-9]{24}$/.test(visitorId)) {
+      return res.status(400).json({ returning: false });
+    }
+
+    try {
+      const config = sessionConfig();
+      if (!config.sessionsTab) return res.status(200).json({ returning: false });
+
+      const summary = await findReturningSession(
+        config.sheets,
+        config.google,
+        config.sessionsTab,
+        visitorId,
+      );
+      return res.status(200).json(summary ? { returning: true, ...summary } : { returning: false });
+    } catch {
+      return res.status(503).json({ returning: false });
+    }
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });

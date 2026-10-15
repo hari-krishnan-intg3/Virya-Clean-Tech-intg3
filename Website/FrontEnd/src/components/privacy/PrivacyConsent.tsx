@@ -29,11 +29,11 @@ export function PrivacyConsent() {
     >
       <h2 className="font-heading text-base font-bold text-ink">Choose session insights</h2>
       <p className="mt-2 max-w-prose text-sm leading-relaxed text-ink-muted">
-        With your permission, we remember the pages and services you visit and your assistant
-        conversation on this browser, so you can continue next time. Session details such as
-        timezone, device, and coarse location are sent to our reporting sheet, and pageview totals
-        and non-sensitive interaction events go to Vercel Analytics. Chat text is kept in this
-        browser only. You can change this choice in the footer.
+        With your permission, a random browser ID links your visits so we can remember the pages
+        and services you viewed and offer a welcome-back assistant message. Session details such
+        as timezone, device and coarse location are stored in our reporting sheet. This tracking
+        does not collect your name or email; assistant chat text stays in this browser. You can
+        change this choice in the footer.
       </p>
       <div className="mt-4 flex flex-wrap gap-3">
         <button type="button" onClick={() => choose(true)} className="btn-primary btn-sm">

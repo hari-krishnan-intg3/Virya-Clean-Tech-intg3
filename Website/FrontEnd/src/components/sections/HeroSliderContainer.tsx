@@ -182,10 +182,8 @@ export function HeroSliderContainer() {
       {/* Controls */}
       <div className="shell absolute inset-x-0 bottom-8 z-20 flex items-center justify-between gap-6">
         <div className="flex items-center gap-3">
-          <span className="font-mono text-sm tabular-nums text-white/70">
-            0{active + 1}
-            <span className="mx-1 text-white/30">/</span>
-            0{heroSlides.length}
+          <span className="sr-only" aria-live="polite">
+            Slide {active + 1} of {heroSlides.length}
           </span>
 
           <div className="hidden gap-1.5 sm:flex" role="tablist" aria-label="Slides">

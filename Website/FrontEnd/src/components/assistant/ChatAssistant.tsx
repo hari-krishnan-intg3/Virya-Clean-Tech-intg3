@@ -53,6 +53,7 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const timers = useRef<number[]>([]);
+  const autoOpenedRef = useRef(false);
 
   /* ── Context ─────────────────────────────────────────────────── */
 
@@ -124,7 +125,9 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
 
       const initial = prev.length
         ? prev
-        : [
+        : returningVisitor
+          ? []
+          : [
             {
               id: nextId(),
               role: 'assistant' as const,
@@ -142,7 +145,7 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
           {
             id: nextId(),
             role: 'assistant',
-            text: `Welcome back${interest ? ` — you were exploring ${interest}` : ''}. Would you like to continue where you left off?`,
+            text: `${greeting.salutation}, welcome back${interest ? ` — you were exploring ${interest}` : ''}. Would you like to continue where you left off?`,
             resumePath: returningVisitor.lastPath,
           },
         ];
@@ -153,7 +156,25 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
 
     recordChatbotOpened();
     trackEvent('assistant_open', { path: location.pathname, service: activeService ?? 'none' });
-  }, [activeService, context, location.pathname, returningVisitor, resumePromptDismissed]);
+  }, [activeService, context, greeting.salutation, location.pathname, returningVisitor, resumePromptDismissed]);
+
+  useEffect(() => {
+    if (!returningVisitor || autoOpenedRef.current) return;
+
+    const key = 'virya.returning-welcome';
+    try {
+      if (sessionStorage.getItem(key) === returningVisitor.visitorId) {
+        autoOpenedRef.current = true;
+        return;
+      }
+      sessionStorage.setItem(key, returningVisitor.visitorId);
+    } catch {
+      // Auto-open once in this component lifetime if storage is unavailable.
+    }
+
+    autoOpenedRef.current = true;
+    openPanel();
+  }, [openPanel, returningVisitor]);
 
   const send = useCallback(
     (text: string) => {
@@ -248,7 +269,6 @@ export function ChatAssistant({ activeService, seenServices, returningVisitor }:
   const officeLabel = greeting.officeClosed
     ? `Team offline · back ${greeting.nextOpenLabel}`
     : 'Team online now';
-
   return (
     <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3 sm:bottom-7 sm:right-7">
       <AnimatePresence>

@@ -608,9 +608,6 @@ export default function CareersPage() {
             {hiringStages.map((item, index) => (
               <Reveal key={item.stage} delay={index * 0.05} as="li">
                 <div className="card flex flex-wrap items-start gap-5 p-6 sm:gap-7 sm:p-7">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-500 text-sm font-bold text-white">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
                   <div className="min-w-0 flex-1">
                     <h3 className="text-[1.05rem] font-bold text-ink">{item.stage}</h3>
                     <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-muted">{item.detail}</p>

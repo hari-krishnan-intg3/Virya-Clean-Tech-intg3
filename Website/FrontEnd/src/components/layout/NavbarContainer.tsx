@@ -170,7 +170,7 @@ export function NavbarContainer() {
               className="fixed inset-x-0 top-[4.25rem] z-40 max-h-[calc(100vh-5rem)] overflow-y-auto rounded-b-[1.6rem] border-b border-line bg-white shadow-lift lg:hidden"
             >
               <div className="shell flex flex-col gap-1 py-6">
-                {NAV.map((group, index) => {
+                {NAV.map((group) => {
                   const expanded = openGroup === group.label;
 
                   return (
@@ -181,9 +181,6 @@ export function NavbarContainer() {
                           onClick={() => trackEvent('nav_click', { target: group.to })}
                           className="flex flex-1 items-center gap-3 py-4 text-[1.05rem] font-bold text-ink"
                         >
-                          <span className="font-mono text-[0.7rem] text-ink-faint">
-                            0{index + 1}
-                          </span>
                           {group.label}
                         </Link>
                         {group.columns && (

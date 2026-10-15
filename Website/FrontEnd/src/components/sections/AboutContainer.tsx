@@ -23,7 +23,6 @@ function EnergyLoop() {
           </span>
           <span className="min-w-0">
             <span className="block font-heading text-sm font-bold text-ink">{stage.label}</span>
-            <span className="block text-xs text-ink-faint">Stage 0{index + 1}</span>
           </span>
           {index < stages.length - 1 && (
             <span className="ml-auto hidden h-px w-full max-w-10 bg-gradient-to-r from-line to-transparent sm:block lg:hidden" />

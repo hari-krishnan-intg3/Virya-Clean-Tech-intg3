@@ -14,7 +14,12 @@ import {
   recordServiceView,
   addActiveTime,
 } from '@/lib/session';
-import { readVisitorMemory, saveVisitorProgress, type VisitorMemory } from '@/lib/visitorMemory';
+import {
+  readReturningVisitorFromSheet,
+  readVisitorMemory,
+  saveVisitorProgress,
+  type VisitorMemory,
+} from '@/lib/visitorMemory';
 
 import HomePage from '@/pages/HomePage';
 
@@ -101,7 +106,8 @@ function useEngagementTracking() {
 export default function App() {
   const { activeService, seenServices } = useRouteContext();
   const location = useLocation();
-  const [returningVisitor, setReturningVisitor] = useState<VisitorMemory | null>(readVisitorMemory);
+  const [priorVisitorMemory] = useState<VisitorMemory | null>(readVisitorMemory);
+  const [returningVisitor, setReturningVisitor] = useState<VisitorMemory | null>(null);
 
   useEngagementTracking();
 
@@ -118,10 +124,13 @@ export default function App() {
   }, [activeService, location.hash, location.pathname]);
 
   useEffect(() => {
-    const refreshMemory = () => setReturningVisitor(readVisitorMemory());
+    const refreshMemory = () => {
+      void readReturningVisitorFromSheet(priorVisitorMemory).then(setReturningVisitor);
+    };
+    refreshMemory();
     window.addEventListener('virya:tracking-preference', refreshMemory);
     return () => window.removeEventListener('virya:tracking-preference', refreshMemory);
-  }, []);
+  }, [priorVisitorMemory]);
 
   // Capture intent the chatbot discovered so the form can pre-select it.
   const onAssistantInterest = useCallback((event: Event) => {

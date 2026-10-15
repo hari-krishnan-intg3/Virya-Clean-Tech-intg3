@@ -103,9 +103,6 @@ export default function ProcessPage() {
                           <span className="relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-emerald-500 text-white shadow-glow">
                             <Icon className="h-5 w-5" />
                           </span>
-                          <span className="font-mono text-[0.85rem] font-bold text-ink-faint">
-                            {step.number}
-                          </span>
                         </div>
 
                         <h2 className="mt-6 text-2xl font-extrabold leading-tight text-ink sm:text-3xl">

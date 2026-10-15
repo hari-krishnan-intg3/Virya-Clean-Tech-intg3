@@ -97,9 +97,6 @@ export default function HomePage() {
                     >
                       <service.icon className="h-5 w-5" />
                     </span>
-                    <span className="font-mono text-[0.8rem] font-bold text-ink-faint">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
                   </div>
 
                   <h3 className="mt-6 text-xl font-bold leading-snug text-ink transition-colors group-hover:text-emerald-700">
@@ -227,31 +224,24 @@ export default function HomePage() {
           <div className="mt-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             {[
               {
-                number: '01',
                 title: 'Site context',
                 body: 'Business type, city or state, facility layout, and whether the site is existing or planned.',
               },
               {
-                number: '02',
                 title: 'Energy use',
                 body: 'Electricity bills or consumption data, operating hours, seasonal changes, and known demand peaks.',
               },
               {
-                number: '03',
                 title: 'Existing infrastructure',
                 body: 'Available roof or land, electrical supply, current energy systems, and relevant site constraints.',
               },
               {
-                number: '04',
                 title: 'Project objective',
                 body: 'The operational challenge, solution areas of interest, decision stage, and target timeline.',
               },
             ].map((item, index) => (
-              <Reveal key={item.number} delay={index * 0.06} as="div">
+              <Reveal key={item.title} delay={index * 0.06} as="div">
                 <article className="card h-full p-6 sm:p-7">
-                  <span className="font-mono text-xs font-bold text-emerald-700">
-                    {item.number}
-                  </span>
                   <h3 className="mt-4 text-lg font-bold text-ink">{item.title}</h3>
                   <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
                     {item.body}

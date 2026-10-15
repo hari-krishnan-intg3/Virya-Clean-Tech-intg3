@@ -35,9 +35,6 @@ export default function ServicesPage() {
                       >
                         <service.icon className="h-6 w-6" />
                       </span>
-                      <span className="font-mono text-[0.8rem] font-bold text-ink-faint">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
                     </div>
 
                     <h2 className="mt-6 text-2xl font-extrabold leading-tight text-ink transition-colors group-hover:text-emerald-700 sm:text-3xl">

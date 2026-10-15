@@ -246,11 +246,6 @@ export default function ServiceDetailPage() {
             {service.deliverables.map((item, index) => (
               <Reveal key={item.title} delay={index * 0.07} as="div">
                 <article className="card card-hover h-full p-7">
-                  <span
-                    className={`inline-grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br ${service.gradient} text-sm font-bold text-white`}
-                  >
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
                   <h3 className="mt-5 text-lg font-bold text-ink">{item.title}</h3>
                   <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
                     {item.description}

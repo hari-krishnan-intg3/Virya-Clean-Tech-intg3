@@ -83,6 +83,65 @@ export function readVisitorMemory(): VisitorMemory | null {
   }
 }
 
+/** Confirms a prior visit against the consented server-side Sessions sheet. */
+export async function readReturningVisitorFromSheet(
+  memory: VisitorMemory | null = readVisitorMemory(),
+): Promise<VisitorMemory | null> {
+  if (!trackingAllowed()) return null;
+  if (!memory) return null;
+
+  const configuredEndpoint = (import.meta.env.VITE_SESSION_ENDPOINT as string | undefined) ?? '';
+  const endpoint = new URL(configuredEndpoint || '/api/session', window.location.origin);
+  endpoint.searchParams.set('returning', '1');
+  endpoint.searchParams.set('visitorId', memory.visitorId);
+
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 3500);
+
+  try {
+    const response = await fetch(endpoint, {
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin',
+      signal: controller.signal,
+    });
+    if (!response.ok) return null;
+
+    const result = (await response.json()) as {
+      returning?: unknown;
+      lastSeenAt?: unknown;
+      lastPath?: unknown;
+      primaryInterest?: unknown;
+      servicesViewed?: unknown;
+    };
+    const lastSeen = Date.parse(typeof result.lastSeenAt === 'string' ? result.lastSeenAt : '');
+    if (
+      result.returning !== true ||
+      !Number.isFinite(lastSeen) ||
+      Date.now() - lastSeen > MEMORY_TTL_MS ||
+      lastSeen > Date.now() + 5 * 60_000
+    ) {
+      return null;
+    }
+
+    return {
+      ...memory,
+      lastPath: safePath(result.lastPath) ?? memory.lastPath,
+      lastSeenAt: new Date(lastSeen).toISOString(),
+      primaryInterest:
+        typeof result.primaryInterest === 'string' ? result.primaryInterest : null,
+      servicesViewed: Array.isArray(result.servicesViewed)
+        ? result.servicesViewed
+            .filter((service): service is string => typeof service === 'string')
+            .slice(0, 10)
+        : [],
+    };
+  } catch {
+    return null;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
 export function saveVisitorProgress(path: string, primaryInterest: string | null): void {
   if (!trackingAllowed()) return;
   const lastPath = safePath(path);
