@@ -441,7 +441,12 @@ export function BookingFormContainer() {
                       />
                     </FieldShell>
 
-                    <FieldShell label="Consent" htmlFor="consent" error={errors.consent?.message}>
+                    <FieldShell
+                      label="Consent"
+                      htmlFor="consent"
+                      required
+                      error={errors.consent?.message}
+                    >
                       <div className="flex items-start gap-3">
                         <input
                           id="consent"
