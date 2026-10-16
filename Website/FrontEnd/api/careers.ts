@@ -3,6 +3,8 @@ import { loadConfig } from './_lib/config.js';
 import { appendRows, readTab, writeTab } from './_lib/sheets.js';
 import { ensureTab } from './_lib/tabs.js';
 import { authHeader } from './_lib/jira.js';
+import { generateCareerApplicationEmail } from './_lib/career-email.js';
+import { sendEmail } from './_lib/mailer.js';
 
 /**
  * Careers applications.
@@ -260,12 +262,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 
+  let emailStatus: 'sent' | 'pending' = 'pending';
+  try {
+    const confirmation = generateCareerApplicationEmail({
+      siteUrl: config.siteUrl,
+      fullName,
+      role: roleLabel,
+      message,
+    });
+    await sendEmail({ ...config.mail, to: email }, confirmation);
+    emailStatus = 'sent';
+  } catch (error) {
+    errors.push(`email: ${error instanceof Error ? error.message : String(error)}`);
+  }
+
   return res.status(200).json({
     ok: true,
     receivedAt: received,
     role: roleLabel,
     jiraKey: jiraKey || null,
     sheetWritten,
+    emailStatus,
     errors: errors.length ? errors : undefined,
   });
 }

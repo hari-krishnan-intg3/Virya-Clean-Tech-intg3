@@ -1,9 +1,65 @@
-import { readTab } from '../Website/FrontEnd/api/_lib/sheets.js';
 import { sendEmail } from '../Website/FrontEnd/api/_lib/mailer.js';
-import type { GoogleAuthConfig, MailConfig, SheetsConfig } from '../Website/FrontEnd/api/_lib/config.js';
+import type { MailConfig } from '../Website/FrontEnd/api/_lib/config.js';
 import { featuredInsights } from '../Website/FrontEnd/src/data/insights.js';
 import { services, type Service } from '../Website/FrontEnd/src/data/services.js';
 import { generateViryaEmailHTML, generateViryaEmailText } from './emailTemplate.js';
+
+interface TestProfile {
+  recipientName: string;
+  recipientRole: string;
+  subject: string;
+  headline: string;
+  personalizedMessage: string;
+  serviceSlug: Service['slug'];
+}
+
+const TEST_PROFILES: TestProfile[] = [
+  {
+    recipientName: 'Priya',
+    recipientRole: 'Facility / Plant Head',
+    subject: 'Solar planning around facility operations',
+    headline: 'Explore solar without losing sight of site operations.',
+    personalizedMessage:
+      'A solar review can start with your operating hours, access rules, roof conditions and the equipment that cannot be interrupted. These details help shape a practical assessment and identify work windows before a design is discussed.',
+    serviceSlug: 'solar',
+  },
+  {
+    recipientName: 'Arjun',
+    recipientRole: 'CFO / Finance Director',
+    subject: 'Compare energy project assumptions with confidence',
+    headline: 'Make project comparisons easier to evaluate.',
+    personalizedMessage:
+      'When proposals use different assumptions, compare the included scope, energy baseline, cost components and exclusions before weighing projected returns. A project-specific review can distinguish measured inputs from estimates without treating a forecast as a guarantee.',
+    serviceSlug: 'consulting',
+  },
+  {
+    recipientName: 'Meera',
+    recipientRole: 'Sustainability / ESG Lead',
+    subject: 'Build a clearer energy-data picture for reporting',
+    headline: 'Start with data you can explain and review.',
+    personalizedMessage:
+      'For sustainability reporting, define the reporting boundary, source systems, calculation method and review requirements first. Monitoring options depend on available meters, data quality, access rights and the evidence your team needs to retain.',
+    serviceSlug: 'software-iot',
+  },
+  {
+    recipientName: 'Nikhil',
+    recipientRole: 'Real Estate Head',
+    subject: 'Assess energy options across your property portfolio',
+    headline: 'Account for tenants, assets and building operations.',
+    personalizedMessage:
+      'A property review can map roof and electrical capacity alongside lease terms, tenant responsibilities, building operations and maintenance ownership. That context helps identify who can approve work and which sites merit a closer technical assessment.',
+    serviceSlug: 'solar',
+  },
+  {
+    recipientName: 'Kavya',
+    recipientRole: 'Fleet / Mobility Manager',
+    subject: 'Plan EV charging around routes and depot demand',
+    headline: 'Shape charging around how your fleet actually runs.',
+    personalizedMessage:
+      'Vehicle types, routes, dwell time, charging windows and site electrical capacity are useful starting points for depot planning. Reviewing these together helps frame charger quantities and power needs before equipment is specified.',
+    serviceSlug: 'ev-charging',
+  },
+];
 
 function required(name: string): string {
   const value = process.env[name]?.trim();
@@ -17,49 +73,6 @@ function getMailConfig(): MailConfig {
     from: process.env.MAIL_FROM || 'Virya CleanTech <onboarding@resend.dev>',
     to: required('MAIL_TO'),
   };
-}
-
-function getSheetConfig(): { google: GoogleAuthConfig; sheets: SheetsConfig; leadsTab: string } {
-  const leadsTab = process.env.SHEETS_LEADS_TAB || 'Leads';
-  return {
-    google: {
-      clientEmail: required('GOOGLE_CLIENT_EMAIL'),
-      privateKey: required('GOOGLE_PRIVATE_KEY').replace(/\\n/g, '\n'),
-    },
-    sheets: {
-      spreadsheetId: required('SHEETS_SPREADSHEET_ID'),
-      reportsTab: process.env.SHEETS_REPORTS_TAB || 'Reports',
-      kpiTab: process.env.SHEETS_KPI_TAB || 'Reports KPI',
-      leadsTab,
-    },
-    leadsTab,
-  };
-}
-
-function normalize(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-}
-
-async function getFeaturedService(): Promise<Service> {
-  const { google, sheets, leadsTab } = getSheetConfig();
-  const serviceRows = await readTab(sheets, google, leadsTab, 'F2:F');
-  const counts = new Map<string, number>();
-
-  for (const [cell] of serviceRows) {
-    if (!cell?.trim()) continue;
-    const value = normalize(cell);
-    const service = services.find(
-      (candidate) =>
-        value === normalize(candidate.slug) ||
-        value === normalize(candidate.label) ||
-        value === normalize(candidate.title),
-    );
-    if (service) counts.set(service.slug, (counts.get(service.slug) ?? 0) + 1);
-  }
-
-  return [...services].sort(
-    (left, right) => (counts.get(right.slug) ?? 0) - (counts.get(left.slug) ?? 0),
-  )[0];
 }
 
 function formatNow(): { date: string; time: string } {
@@ -94,32 +107,46 @@ async function main(): Promise<void> {
     throw new Error('Use --send-test with a count from 1 to 5.');
   }
 
-  const featuredService = await getFeaturedService();
-  const data = {
-    ...formatNow(),
-    recipientName: 'Valued Partner',
-    featuredService,
-    updates: services.filter((service) => service.slug !== featuredService.slug),
-    insight: featuredInsights[0],
-  };
-  const html = generateViryaEmailHTML(data);
-  const text = generateViryaEmailText(data);
+  const timestamp = formatNow();
+  const previews = TEST_PROFILES.map((profile) => {
+    const featuredService = services.find((service) => service.slug === profile.serviceSlug);
+    if (!featuredService) throw new Error(`No service found for ${profile.serviceSlug}`);
+
+    const data = {
+      ...timestamp,
+      recipientName: profile.recipientName,
+      recipientRole: profile.recipientRole,
+      headline: profile.headline,
+      personalizedMessage: profile.personalizedMessage,
+      featuredService,
+      updates: services.filter((service) => service.slug !== featuredService.slug),
+      insight: featuredInsights[0],
+    };
+
+    return { profile, data };
+  });
 
   if (testCount === 0) {
-    console.log(`Preview ready: ${data.featuredService.title}`);
-    console.log(`HTML: ${html.length} characters; text: ${text.length} characters.`);
-    console.log('No email was sent. Use --send-test 5 to send five test messages to MAIL_TO.');
+    console.log('Five personalized role previews ready. No email was sent.');
+    for (const [index, { profile, data }] of previews.entries()) {
+      const html = generateViryaEmailHTML(data);
+      const text = generateViryaEmailText(data);
+      console.log(`${index + 1}. ${profile.recipientRole} — ${profile.subject}`);
+      console.log(`   HTML: ${html.length} characters; text: ${text.length} characters.`);
+    }
+    console.log('Use --send-test 5 to send all five versions to MAIL_TO.');
     return;
   }
 
   const mail = getMailConfig();
   for (let index = 1; index <= testCount; index += 1) {
+    const { profile, data } = previews[index - 1];
     const result = await sendEmail(mail, {
-      subject: `[TEST ${index}/${testCount}] Smarter Energy Update | ${data.date}`,
-      html,
-      text,
+      subject: `[TEST ${index}/${testCount}] ${profile.subject} | ${data.date}`,
+      html: generateViryaEmailHTML(data),
+      text: generateViryaEmailText(data),
     });
-    console.log(`Test ${index}/${testCount} sent. Resend ID: ${result.id}`);
+    console.log(`${profile.recipientRole} test ${index}/${testCount} sent. Resend ID: ${result.id}`);
   }
 }
 

@@ -1,10 +1,21 @@
 import type { Insight } from '../Website/FrontEnd/src/data/insights.js';
 import type { Service } from '../Website/FrontEnd/src/data/services.js';
 
+const BANNER_BASE_URL = 'https://virya-clean-tech-intg3.vercel.app/email-banners';
+
+function chooseBanners(): [number, number] {
+  const header = Math.floor(Math.random() * 6) + 1;
+  const footer = Math.floor(Math.random() * 5) + 1;
+  return [header, footer >= header ? footer + 1 : footer];
+}
+
 export interface NewsletterData {
   date: string;
   time: string;
   recipientName: string;
+  recipientRole: string;
+  headline: string;
+  personalizedMessage: string;
   featuredService: Service;
   updates: Service[];
   insight: Insight;
@@ -37,6 +48,7 @@ function serviceCard(service: Service): string {
 export function generateViryaEmailHTML(data: NewsletterData): string {
   const insightUrl = data.insight.href ? escapeHtml(data.insight.href) : '';
   const insightLabel = `${data.insight.value}${data.insight.unit ? ` ${data.insight.unit}` : ''}`;
+  const [headerBanner, footerBanner] = chooseBanners();
 
   return `<!doctype html>
 <html lang="en">
@@ -49,33 +61,17 @@ export function generateViryaEmailHTML(data: NewsletterData): string {
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color:#F1F5F9;">
     <tr><td align="center" style="padding:28px 12px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;background-color:#FFFFFF;border:1px solid #E2E8F0;border-radius:10px;overflow:hidden;">
-        <tr><td height="6" style="background-color:#10B981;font-size:0;line-height:0;">&nbsp;</td></tr>
-        <tr><td style="padding:24px 28px;border-bottom:1px solid #F1F5F9;">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
-            <td valign="middle">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr>
-                <td valign="middle" style="padding-right:10px;">
-                  <a href="https://virya-clean-tech-intg3.vercel.app/" style="text-decoration:none;">
-                    <img src="https://virya-clean-tech-intg3.vercel.app/favicon.svg" alt="Virya CleanTech" width="38" height="38" style="display:block;border:0;">
-                  </a>
-                </td>
-                <td valign="middle">
-                  <a href="https://virya-clean-tech-intg3.vercel.app/" style="text-decoration:none;">
-                    <span style="display:block;font-size:16px;font-weight:800;color:#0F172A;">VIRYA CLEANTECH</span>
-                    <span style="display:block;margin-top:3px;font-size:10px;font-weight:700;letter-spacing:1px;color:#059669;">CLEAN TECHNOLOGY</span>
-                  </a>
-                </td>
-              </tr></table>
-            </td>
-            <td align="right" valign="middle" style="font-size:12px;line-height:1.6;color:#64748B;">${escapeHtml(data.date)}<br>${escapeHtml(data.time)}</td>
-          </tr></table>
+        <tr><td style="padding:0;">
+          <a href="https://virya-clean-tech-intg3.vercel.app/" style="display:block;text-decoration:none;">
+            <img src="${BANNER_BASE_URL}/banner-${headerBanner}.png" alt="Virya CleanTech" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+          </a>
         </td></tr>
 
         <tr><td style="padding:28px 28px 12px;">
-          <p style="display:inline-block;margin:0 0 12px;padding:5px 10px;background-color:#ECFDF5;border-radius:20px;font-size:11px;font-weight:700;color:#047857;">ENERGY &amp; PRODUCT UPDATE</p>
-          <h1 style="margin:0 0 12px;font-size:24px;line-height:1.3;color:#0F172A;">Explore a smarter energy future for your facility.</h1>
+          <p style="display:inline-block;margin:0 0 12px;padding:5px 10px;background-color:#ECFDF5;border-radius:20px;font-size:11px;font-weight:700;color:#047857;">A NOTE FOR ${escapeHtml(data.recipientRole)}</p>
+          <h1 style="margin:0 0 12px;font-size:24px;line-height:1.3;color:#0F172A;">${escapeHtml(data.headline)}</h1>
           <p style="margin:0;font-size:15px;line-height:1.7;color:#475569;">Hello ${escapeHtml(data.recipientName)},</p>
-          <p style="margin:10px 0 0;font-size:15px;line-height:1.7;color:#475569;">Energy decisions start with how a site operates. We help businesses explore solar, EV charging, storage, connected-energy technology and assessments against facility needs, available information and project goals.</p>
+          <p style="margin:10px 0 0;font-size:15px;line-height:1.7;color:#475569;">${escapeHtml(data.personalizedMessage)}</p>
         </td></tr>
 
         <tr><td style="padding:16px 28px;">
@@ -130,6 +126,9 @@ export function generateViryaEmailHTML(data: NewsletterData): string {
           </p>
           <p style="margin:0;font-size:11px;color:#94A3B8;">Copyright &copy; 2026 VIRYA CLEANTECH. All rights reserved.</p>
         </td></tr>
+        <tr><td style="padding:0;">
+          <img src="${BANNER_BASE_URL}/banner-${footerBanner}.png" alt="" width="600" style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+        </td></tr>
       </table>
     </td></tr>
   </table>
@@ -145,8 +144,8 @@ export function generateViryaEmailText(data: NewsletterData): string {
   return [
     `Hello ${data.recipientName},`,
     '',
-    'Explore a smarter energy future for your facility.',
-    'Virya helps businesses explore solar, EV charging, storage, connected-energy technology and assessments against facility needs and project goals.',
+    `A note for ${data.recipientRole}: ${data.headline}`,
+    data.personalizedMessage,
     '',
     `Featured focus: ${data.featuredService.title}`,
     data.featuredService.cardSummary,
