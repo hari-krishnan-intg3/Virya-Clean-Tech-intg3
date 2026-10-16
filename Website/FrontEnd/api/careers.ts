@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { authorizeJiraOperation, isSameOriginRequest } from '../controller/security.js';
 import { loadConfig } from './_lib/config.js';
 import { appendRows, readTab, writeTab } from './_lib/sheets.js';
 import { ensureTab } from './_lib/tabs.js';
@@ -65,6 +66,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
+  if (!isSameOriginRequest(req.headers.origin, req.headers.host)) {
+    return res.status(403).json({ error: 'Requests must come from this site' });
+  }
 
   const body = (req.body ?? {}) as Application;
 
@@ -89,7 +93,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const phone = text(body.phone, 40);
   const portfolio = text(body.portfolio, 400);
   const experience = text(body.experience, 40);
-  const projectKey = process.env.JIRA_CAREERS_PROJECT_KEY ?? process.env.JIRA_LEADS_PROJECT_KEY;
+  const projectKey =
+    process.env.JIRA_CAREERS_PROJECT_KEY ||
+    process.env.JIRA_LEADS_PROJECT_KEY ||
+    process.env.JIRA_PROJECT_KEY;
 
   let config;
   try {
@@ -121,7 +128,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   ];
 
   // ── Jira ──────────────────────────────────────────────────────────
-  if (projectKey) {
+  const allowedCareersProject =
+    process.env.JIRA_CAREERS_PROJECT_KEY ||
+    process.env.JIRA_LEADS_PROJECT_KEY ||
+    process.env.JIRA_PROJECT_KEY;
+  if (projectKey && authorizeJiraOperation('create', projectKey, allowedCareersProject)) {
     try {
       const response = await fetch(`${config.jira.baseUrl}/rest/api/3/issue`, {
         method: 'POST',
@@ -222,6 +233,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } catch (error) {
       errors.push(`jira: ${error instanceof Error ? error.message : String(error)}`);
     }
+  } else if (projectKey) {
+    errors.push('security: Jira issue creation was rejected by the security controller');
   }
 
   // ── Sheets ────────────────────────────────────────────────────────

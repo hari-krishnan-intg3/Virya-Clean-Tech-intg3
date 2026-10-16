@@ -21,11 +21,14 @@
     "analytics:setup": "tsx scripts/setup-analytics-tab.ts",
     "sessions:setup": "tsx scripts/setup-session-tab.ts",
     "test:intent": "tsx scripts/test-intent.ts",
-    "test:intelligence": "tsx --test scripts/intelligence.test.ts"
+    "test:intelligence": "tsx --test scripts/intelligence.test.ts",
+    "test:controller-auth": "tsx --test scripts/controller-auth.test.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
+    "@neondatabase/serverless": "^1.2.0",
     "@vercel/analytics": "^2.0.1",
+    "bcryptjs": "^3.0.3",
     "framer-motion": "^11.3.2",
     "lucide-react": "^0.408.0",
     "react": "^18.3.1",

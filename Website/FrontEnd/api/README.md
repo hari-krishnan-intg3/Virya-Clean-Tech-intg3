@@ -193,6 +193,39 @@ consultation-form submission then:
 The API checks the browser request's origin. If Jira rejects issue creation,
 the API returns an error and the form does not show a false success state.
 
+## Controller accounts
+
+Controller users are stored in PostgreSQL in `controller_users`; the table is
+created on first use and its migration is in `db/migrations/001_controller_users.sql`.
+Configure `DATABASE_URL`, a random `CONTROLLER_SESSION_SECRET` of at least 32
+bytes, and separate random `CONTROLLER_REGISTRATION_SECRET` and optional
+`CONTROLLER_ADMIN_REGISTRATION_SECRET` values in local env and Vercel. Keep all
+of them server-side. `JIRA_AUTOMATION_CONTROLLER=CON` and
+`JIRA_SECURITY_CONTROLLER=SEQ` are controller identifiers, not credentials.
+
+Registration accepts an invite key in `x-controller-registration-key`; the
+operator key creates an `operator`, while the separate admin key creates an
+`admin`. The client cannot choose its role. Passwords are bcrypt-hashed before
+insertion. Login sets an eight-hour, signed, HttpOnly, SameSite=Strict cookie;
+logout clears it. `POST /api/controller/issues` requires that session and
+allows scoped lead creation. Update and delete requests are denied to operators
+and remain unimplemented for admins until dedicated Jira workflows exist.
+
+Website lead and careers forms remain public endpoints so visitors can submit
+them; they only create issues in their configured projects using the separate
+server-side `JIRA_API_TOKEN`. They do not accept Jira credentials or arbitrary
+project/operation requests from the browser.
+
+Example registration request (replace values locally; never commit them):
+
+```bash
+curl -i -c controller.cookies -X POST https://<your-domain>/api/controller-auth/register \
+  -H 'Origin: https://<your-domain>' \
+  -H 'x-controller-registration-key: <invite-key>' \
+  -H 'Content-Type: application/json' \
+  -d '{"username":"operator1","password":"use-a-unique-12-character-or-longer-password"}'
+```
+
 Daily, weekly, and monthly report crons are defined in `vercel.json`. Reports
 backfill Jira leads before counting the Leads tab and write Vercel pageview /
 unique-visitor totals to `Vercel Analytics`. Configure `VERCEL_CONTROLLER`

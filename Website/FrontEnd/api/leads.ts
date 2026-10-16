@@ -1,12 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { runLeadAutomation } from '../controller/automation.js';
+import { isSameOriginRequest, validateLeadPayload } from '../controller/security.js';
 import { loadLeadIntakeConfig } from './_lib/config.js';
 import { buildRequestContext } from './_lib/context.js';
-import {
-  createLeadIssue,
-  ensureLeadsProject,
-  resolveAssignee,
-  type LeadInput,
-} from './_lib/leads.js';
+import type { LeadInput } from './_lib/leads.js';
 import { upsertLeadRows } from './_lib/lead-sync.js';
 import { subscribeAndSendWelcome, type NewsletterStatus } from './_lib/newsletter.js';
 
@@ -29,18 +26,6 @@ import { subscribeAndSendWelcome, type NewsletterStatus } from './_lib/newslette
  * The intent is that a lead is never lost because one integration is down,
  * and the response always says which parts succeeded.
  */
-
-function sameOrigin(req: VercelRequest): boolean {
-  const origin = req.headers.origin;
-  const host = req.headers.host;
-  if (typeof origin !== 'string' || typeof host !== 'string') return false;
-
-  try {
-    return new URL(origin).host.toLowerCase() === host.toLowerCase();
-  } catch {
-    return false;
-  }
-}
 
 /** Mirrors the client-side score so both systems agree on lead quality. */
 function intentScore(lead: LeadInput): number {
@@ -70,7 +55,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(500).json({ error: 'Jira lead intake is not configured', missing });
   }
 
-  if (!sameOrigin(req)) {
+  if (!isSameOriginRequest(req.headers.origin, req.headers.host)) {
     return res.status(403).json({ error: 'Requests must come from this site' });
   }
 
@@ -80,12 +65,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     context?: Record<string, unknown>;
   };
 
+  const validationErrors = validateLeadPayload(body as Record<string, unknown>);
+  if (validationErrors.length > 0) {
+    return res.status(400).json({ error: 'Invalid lead details', details: validationErrors });
+  }
+
   const fullName = String(body.fullName ?? '').trim();
   const email = String(body.email ?? '').trim().toLowerCase();
-
-  if (!fullName || !email) {
-    return res.status(400).json({ error: 'fullName and email are required' });
-  }
 
   const lead: LeadInput = {
     fullName,
@@ -117,22 +103,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // 1) Jira — the lead of record
   if (config.jira.leadsProjectKey) {
     try {
-      const ensured = await ensureLeadsProject(
+      const automation = await runLeadAutomation(
         config.jira,
         config.jira.leadsProjectKey,
-        'Virya Leads',
+        lead,
+        config.leadsAssigneeId,
       );
 
-      if (ensured.exists) {
-        leadsProjectReady = true;
-        const assigneeId = await resolveAssignee(config.jira, config.leadsAssigneeId);
-        const created = await createLeadIssue(config.jira, config.jira.leadsProjectKey, lead, {
-          assigneeId: assigneeId ?? undefined,
-        });
+      if (automation.projectReady && automation.issue) {
+        leadsProjectReady = automation.projectReady;
+        const created = automation.issue;
         jira = { key: created.key, url: created.url, summary: created.summary };
         subtasks = created.subtasks.map((s) => ({ summary: s.summary }));
       } else {
-        errors.push(ensured.hint ?? 'Leads project missing');
+        errors.push(automation.hint ?? 'Leads project missing');
       }
     } catch (error) {
       errors.push(`jira: ${error instanceof Error ? error.message : String(error)}`);

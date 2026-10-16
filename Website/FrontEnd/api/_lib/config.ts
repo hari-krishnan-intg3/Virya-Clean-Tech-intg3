@@ -103,13 +103,14 @@ export interface LeadIntakeConfig {
 
 /** Loads only the integrations required by website lead intake. */
 export function loadLeadIntakeConfig(): LeadIntakeConfig {
-  const projectKey = 'VCT';
+  const projectKey = process.env.JIRA_PROJECT_KEY || 'VCT';
+  const leadsProjectKey = process.env.JIRA_LEADS_PROJECT_KEY || projectKey;
   const jira: JiraConfig = {
     baseUrl: required('JIRA_BASE_URL').replace(/\/+$/, ''),
     email: required('JIRA_EMAIL'),
     apiToken: required('JIRA_API_TOKEN'),
     projectKey,
-    leadsProjectKey: projectKey,
+    leadsProjectKey,
   };
 
   const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
