@@ -1,9 +1,16 @@
 import { Compass, DraftingCompass, HardHat, LineChart } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
-import { Reveal } from '@/components/ui';
+import { Reveal, SmartImage } from '@/components/ui';
 import { processSteps } from '@/data/process';
+import { visualAssets } from '@/data/visuals';
 
 const ICONS = [Compass, DraftingCompass, HardHat, LineChart];
+const STAGE_VISUALS = [
+  visualAssets.engineering,
+  visualAssets.solarInstallation,
+  visualAssets.industrial,
+  visualAssets.storage,
+];
 
 /**
  * Process page.
@@ -114,14 +121,26 @@ export default function ProcessPage() {
                       </div>
 
                       {/* Detail */}
-                      <div className="card p-7">
-                        <p className="text-[0.72rem] font-bold uppercase tracking-[0.16em] text-emerald-600">
-                          {extra.duration}
-                        </p>
+                      <div className="card overflow-hidden">
+                        <div className="relative h-40 overflow-hidden">
+                          <SmartImage
+                            src={STAGE_VISUALS[index].src}
+                            alt={STAGE_VISUALS[index].alt}
+                            width={1200}
+                            height={600}
+                            fill
+                            sizes="(min-width: 1024px) 50vw, 100vw"
+                          />
+                          <span className="absolute inset-0 bg-gradient-to-t from-[#07110f]/75 to-transparent" />
+                          <p className="absolute bottom-4 left-6 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-white">
+                            {extra.duration}
+                          </p>
+                        </div>
+                        <div className="p-7">
 
-                        <p className="mt-4 text-[0.93rem] leading-relaxed text-ink-muted">
-                          {extra.what}
-                        </p>
+                          <p className="text-[0.93rem] leading-relaxed text-ink-muted">
+                            {extra.what}
+                          </p>
 
                         <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50/60 p-4">
                           <p className="text-[0.72rem] font-bold uppercase tracking-[0.14em] text-amber-700">
@@ -143,6 +162,7 @@ export default function ProcessPage() {
                             </li>
                           ))}
                         </ul>
+                        </div>
                       </div>
                     </div>
                   </Reveal>

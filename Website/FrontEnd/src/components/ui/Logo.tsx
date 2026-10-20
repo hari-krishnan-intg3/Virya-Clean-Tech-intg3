@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { BUSINESS } from '@/app/siteConfig';
 
@@ -31,10 +32,17 @@ export function Logo({
   className?: string;
   tone?: 'dark' | 'light';
 }) {
+  const [showGreeting, setShowGreeting] = useState(true);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => setShowGreeting(false), 4000);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
   return (
     <span className={cn('inline-flex items-center gap-2.5', className)}>
       <LogoMark />
-      <span className="flex flex-col leading-none">
+      <span className="relative flex flex-col leading-none">
         <span
           className={cn(
             'font-heading text-base font-extrabold tracking-[0.16em] sm:text-lg',
@@ -51,6 +59,14 @@ export function Logo({
         >
           Clean Technology
         </span>
+        {showGreeting && (
+          <span
+            role="status"
+            className="absolute left-0 top-full mt-1 whitespace-nowrap text-[0.62rem] font-medium tracking-normal text-emerald-300"
+          >
+            Namaste, welcome to Virya
+          </span>
+        )}
       </span>
     </span>
   );

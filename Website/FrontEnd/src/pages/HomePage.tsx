@@ -5,9 +5,10 @@ import { InsightBand } from '@/components/sections/InsightBand';
 import { EnergyEcosystemContainer } from '@/components/sections/EnergyEcosystemContainer';
 import { ProcessContainer } from '@/components/sections/ProcessContainer';
 import { CtaBand } from '@/components/sections/PageHero';
-import { Reveal, ServiceCard } from '@/components/ui';
+import { CardImage, Reveal, ServiceCard, SmartImage } from '@/components/ui';
 import { services, industries } from '@/data/services';
 import { whyWeStart } from '@/data/homeContent';
+import { industryVisuals, visualAssets } from '@/data/visuals';
 
 const SPOTLIGHT = [
   { slug: 'manufacturing', label: 'Manufacturing', icon: Factory },
@@ -35,6 +36,17 @@ export default function HomePage() {
                 <h2 className="mt-5 text-2xl font-extrabold leading-tight text-ink sm:text-3xl">
                   Clear energy decisions start with your site.
                 </h2>
+                <div className="relative mt-6 h-36 overflow-hidden rounded-xl border border-line sm:h-44">
+                  <SmartImage
+                    src={visualAssets.solar.src}
+                    alt={visualAssets.solar.alt}
+                    width={1200}
+                    height={600}
+                    fill
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                  />
+                  <span className="absolute inset-0 bg-gradient-to-t from-[#07110f]/55 to-transparent" />
+                </div>
               </Reveal>
             </div>
 
@@ -139,22 +151,28 @@ export default function HomePage() {
                 {
                   title: 'Start with context',
                   body: 'Operating hours, energy use and existing infrastructure frame the questions to review first.',
+                  image: visualAssets.industrial,
                 },
                 {
                   title: 'Explore connected options',
                   body: 'Compare generation, storage, charging and monitoring against capacity, schedules and site constraints.',
+                  image: visualAssets.storage,
                 },
                 {
                   title: 'Make scope clear',
                   body: 'Confirm deliverables, approvals and responsibilities before committing to further work.',
+                  image: visualAssets.engineering,
                 },
               ].map((item, index) => (
                 <Reveal key={item.title} delay={index * 0.06} as="div">
-                  <article className="h-full border border-white/15 bg-white/[0.04] p-5 sm:p-6">
-                    <h3 className="text-lg font-bold text-white">{item.title}</h3>
-                    <p className="mt-3 text-[0.9rem] leading-relaxed text-white/70">
-                      {item.body}
-                    </p>
+                  <article className="h-full overflow-hidden border border-white/15 bg-white/[0.04]">
+                    <CardImage image={item.image} className="aspect-[16/9]" />
+                    <div className="p-5 sm:p-6">
+                      <h3 className="text-lg font-bold text-white">{item.title}</h3>
+                      <p className="mt-3 text-[0.9rem] leading-relaxed text-white/70">
+                        {item.body}
+                      </p>
+                    </div>
                   </article>
                 </Reveal>
               ))}
@@ -197,17 +215,31 @@ export default function HomePage() {
               <Reveal key={item.slug} delay={index * 0.05} as="li">
                 <Link
                   to={`/industries#${item.slug}`}
-                  className="card card-hover group flex h-full flex-col p-6"
+                  className="card card-hover group flex h-full flex-col overflow-hidden"
                 >
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
-                    <item.icon className="h-5 w-5" />
-                  </span>
-                  <p className="mt-4 text-[0.98rem] font-bold text-ink transition-colors group-hover:text-emerald-700">
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-[0.83rem] leading-relaxed text-ink-muted">
-                    {industries.find((i) => i.slug === item.slug)?.cardSummary}
-                  </p>
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <SmartImage
+                      src={industryVisuals[item.slug].src}
+                      alt={industryVisuals[item.slug].alt}
+                      width={960}
+                      height={600}
+                      fill
+                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
+                      className="transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute inset-0 bg-gradient-to-t from-[#07110f]/75 via-transparent to-transparent" />
+                    <span className="absolute bottom-4 left-4 grid h-10 w-10 place-items-center rounded-xl border border-white/20 bg-[#07110f]/55 text-emerald-300 backdrop-blur">
+                      <item.icon className="h-5 w-5" />
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <p className="text-[0.98rem] font-bold text-ink transition-colors group-hover:text-emerald-700">
+                      {item.label}
+                    </p>
+                    <p className="mt-2 text-[0.83rem] leading-relaxed text-ink-muted">
+                      {industries.find((i) => i.slug === item.slug)?.cardSummary}
+                    </p>
+                  </div>
                 </Link>
               </Reveal>
             ))}
@@ -238,26 +270,33 @@ export default function HomePage() {
               {
                 title: 'Site context',
                 body: 'Share the facility type, location, operating status and any access or ownership constraints.',
+                image: visualAssets.industrial,
               },
               {
                 title: 'Energy use',
                 body: 'Bills or meter data, operating hours and demand peaks help show when the site uses power.',
+                image: visualAssets.solar,
               },
               {
                 title: 'Existing infrastructure',
                 body: 'Note available roof or land, the electrical connection, existing generation and backup systems.',
+                image: visualAssets.storage,
               },
               {
                 title: 'Project objective',
                 body: 'Describe the decision, solution areas, stakeholders and timeline you are working toward.',
+                image: visualAssets.engineering,
               },
             ].map((item, index) => (
               <Reveal key={item.title} delay={index * 0.06} as="div">
-                <article className="card h-full p-6 sm:p-7">
-                  <h3 className="mt-4 text-lg font-bold text-ink">{item.title}</h3>
-                  <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
-                    {item.body}
-                  </p>
+                <article className="card h-full overflow-hidden">
+                  <CardImage image={item.image} className="aspect-[16/9]" />
+                  <div className="p-6 sm:p-7">
+                    <h3 className="text-lg font-bold text-ink">{item.title}</h3>
+                    <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                      {item.body}
+                    </p>
+                  </div>
                 </article>
               </Reveal>
             ))}

@@ -13,7 +13,8 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
-import { Reveal } from '@/components/ui';
+import { CardImage, Reveal } from '@/components/ui';
+import { visualAssets } from '@/data/visuals';
 import {
   CAREERS,
   ROLE_SLUGS,
@@ -314,6 +315,14 @@ export default function CareersPage() {
     () => (team === 'All teams' ? roles : roles.filter((r) => r.team === team)),
     [team],
   );
+  const careerVisuals = [
+    visualAssets.solar,
+    visualAssets.ev,
+    visualAssets.storage,
+    visualAssets.industrial,
+    visualAssets.engineering,
+    visualAssets.wind,
+  ];
 
   const applyTo = (role: Role) => {
     setFocusedRole(role.slug);
@@ -363,6 +372,9 @@ export default function CareersPage() {
                     hold it to a standard that is a century old. Very few jobs offer both.
                   </p>
                 </div>
+                <div className="mt-7 overflow-hidden rounded-xl border border-line">
+                  <CardImage image={visualAssets.engineering} className="aspect-[16/9]" />
+                </div>
               </Reveal>
             </div>
 
@@ -370,11 +382,14 @@ export default function CareersPage() {
               <div className="grid gap-5 sm:grid-cols-2">
                 {benefits.map((benefit, index) => (
                   <Reveal key={benefit.title} delay={index * 0.05} as="div">
-                    <article className="card h-full p-6">
-                      <h3 className="text-[1rem] font-bold text-ink">{benefit.title}</h3>
-                      <p className="mt-2 text-[0.89rem] leading-relaxed text-ink-muted">
-                        {benefit.body}
-                      </p>
+                    <article className="card h-full overflow-hidden">
+                      <CardImage image={careerVisuals[index % careerVisuals.length]} className="aspect-[16/9]" />
+                      <div className="p-6">
+                        <h3 className="text-[1rem] font-bold text-ink">{benefit.title}</h3>
+                        <p className="mt-2 text-[0.89rem] leading-relaxed text-ink-muted">
+                          {benefit.body}
+                        </p>
+                      </div>
                     </article>
                   </Reveal>
                 ))}
@@ -403,14 +418,17 @@ export default function CareersPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {employerValues.map((value, index) => (
               <Reveal key={value.title} delay={index * 0.05} as="div">
-                <article className="card h-full p-7">
-                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
-                    <value.icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-5 text-[1.05rem] font-bold text-ink">{value.title}</h3>
-                  <p className="mt-2.5 text-[0.9rem] leading-relaxed text-ink-muted">
-                    {value.body}
-                  </p>
+                <article className="card h-full overflow-hidden">
+                  <CardImage image={careerVisuals[index % careerVisuals.length]} className="aspect-[16/9]" />
+                  <div className="p-7">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+                      <value.icon className="h-5 w-5" />
+                    </span>
+                    <h3 className="mt-5 text-[1.05rem] font-bold text-ink">{value.title}</h3>
+                    <p className="mt-2.5 text-[0.9rem] leading-relaxed text-ink-muted">
+                      {value.body}
+                    </p>
+                  </div>
                 </article>
               </Reveal>
             ))}
@@ -461,6 +479,7 @@ export default function CareersPage() {
                     focusedRole === role.slug && 'border-emerald-500/40 ring-2 ring-emerald-500/20',
                   )}
                 >
+                  <CardImage image={careerVisuals[index % careerVisuals.length]} className="aspect-[16/5]" />
                   {/* Header */}
                   <div className="flex flex-wrap items-start justify-between gap-5 p-7 pb-5">
                     <div className="min-w-0">
@@ -607,12 +626,13 @@ export default function CareersPage() {
           <ol className="mt-14 space-y-4">
             {hiringStages.map((item, index) => (
               <Reveal key={item.stage} delay={index * 0.05} as="li">
-                <div className="card flex flex-wrap items-start gap-5 p-6 sm:gap-7 sm:p-7">
-                  <div className="min-w-0 flex-1">
+                <div className="card flex flex-wrap items-start gap-5 overflow-hidden sm:gap-7">
+                  <CardImage image={careerVisuals[index % careerVisuals.length]} className="aspect-[16/5] w-full" />
+                  <div className="min-w-0 flex-1 px-6 pb-6 sm:px-7 sm:pb-7">
                     <h3 className="text-[1.05rem] font-bold text-ink">{item.stage}</h3>
                     <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-muted">{item.detail}</p>
                   </div>
-                  <span className="shrink-0 rounded-full border border-line bg-white px-3 py-1.5 text-[0.75rem] font-medium text-ink-muted">
+                  <span className="mr-6 mt-6 shrink-0 rounded-full border border-line bg-white px-3 py-1.5 text-[0.75rem] font-medium text-ink-muted sm:mr-7">
                     {item.duration}
                   </span>
                 </div>
@@ -648,6 +668,9 @@ export default function CareersPage() {
                 <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
                   Send it to the person who will read it
                 </h2>
+                <div className="mt-6 overflow-hidden rounded-xl border border-line">
+                  <CardImage image={visualAssets.engineering} className="aspect-[16/9]" />
+                </div>
                 <p className="mt-5 text-base leading-relaxed text-ink-muted">
                   Applications land with the relevant team lead as a tracked item, not in a
                   shared inbox. You will hear back either way.

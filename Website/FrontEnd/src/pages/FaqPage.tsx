@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
-import { Reveal } from '@/components/ui';
+import { CardImage, Reveal } from '@/components/ui';
 import { faqs } from '@/data/faq';
 import { getService } from '@/data/services';
 import { cn } from '@/lib/utils';
+import { visualAssets } from '@/data/visuals';
 
 const CATEGORIES = ['All', 'Commercial', 'Process', 'Technical', 'Commercial terms'] as const;
 
@@ -89,9 +90,13 @@ export default function FaqPage() {
 
               return (
                 <Reveal key={faq.question} delay={Math.min(index, 6) * 0.04} as="div">
-                  <details className="group card p-6 sm:p-7 [&_summary::-webkit-details-marker]:hidden">
-                    <summary className="flex cursor-pointer items-start justify-between gap-5">
-                      <span>
+                  <details className="group card overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                    <CardImage
+                      image={service ? { src: service.image, alt: service.imageAlt } : visualAssets.renewable}
+                      className="aspect-[16/5]"
+                    />
+                    <summary className="flex cursor-pointer items-start justify-between gap-5 p-6 sm:p-7">
+                      <span className="min-w-0 flex-1">
                         <span className="block text-[1.05rem] font-semibold text-ink">
                           {faq.question}
                         </span>
@@ -104,21 +109,23 @@ export default function FaqPage() {
                       </span>
                     </summary>
 
-                    <p className="mt-4 max-w-3xl text-[0.95rem] leading-relaxed text-ink-muted">
-                      {faq.answer}
-                    </p>
-
-                    {service && (
-                      <p className="mt-4 text-[0.85rem] text-ink-faint">
-                        Related:{' '}
-                        <a
-                          href={`/services/${service.slug}`}
-                          className="font-semibold text-emerald-700 hover:underline"
-                        >
-                          {service.title}
-                        </a>
+                    <div className="px-6 pb-6 sm:px-7 sm:pb-7">
+                      <p className="max-w-3xl text-[0.95rem] leading-relaxed text-ink-muted">
+                        {faq.answer}
                       </p>
-                    )}
+
+                      {service && (
+                        <p className="mt-4 text-[0.85rem] text-ink-faint">
+                          Related:{' '}
+                          <a
+                            href={`/services/${service.slug}`}
+                            className="font-semibold text-emerald-700 hover:underline"
+                          >
+                            {service.title}
+                          </a>
+                        </p>
+                      )}
+                    </div>
                   </details>
                 </Reveal>
               );

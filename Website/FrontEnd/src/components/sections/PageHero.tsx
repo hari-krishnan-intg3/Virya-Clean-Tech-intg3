@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { Reveal } from '@/components/ui';
+import { Reveal, SmartImage } from '@/components/ui';
+import { visualAssets } from '@/data/visuals';
 
 interface PageHeroProps {
   eyebrow: string;
@@ -20,54 +21,54 @@ interface PageHeroProps {
 
 const PAGE_VISUALS: Record<string, { src: string; alt: string }[]> = {
   Capabilities: [
-    { src: '/images/virya-solar.webp', alt: 'Solar panels at a commercial energy site.' },
-    { src: '/images/virya-ev-charging.webp', alt: 'Electric vehicle charging infrastructure.' },
-    { src: '/images/virya-engineering.webp', alt: 'Engineering equipment at a clean-energy facility.' },
+    visualAssets.solar,
+    visualAssets.ev,
+    visualAssets.storage,
   ],
   About: [
-    { src: '/images/virya-engineering.webp', alt: 'Engineer reviewing equipment at a clean-energy facility.' },
-    { src: '/images/virya-wind.webp', alt: 'Wind turbines generating renewable electricity.' },
-    { src: '/images/virya-energy.webp', alt: 'Electricity infrastructure supporting an energy network.' },
+    visualAssets.engineering,
+    visualAssets.industrial,
+    visualAssets.wind,
   ],
   Careers: [
-    { src: '/images/virya-engineering.webp', alt: 'Engineer working with technical equipment.' },
-    { src: '/images/virya-ev-charging.webp', alt: 'Electric vehicle charging station.' },
-    { src: '/images/virya-wind.webp', alt: 'Wind turbines across an open landscape.' },
+    visualAssets.engineering,
+    visualAssets.solarInstallation,
+    visualAssets.wind,
   ],
   'Request a consultation': [
-    { src: '/images/virya-solar.webp', alt: 'Commercial solar panels in daylight.' },
-    { src: '/images/virya-energy.webp', alt: 'Energy transmission infrastructure.' },
-    { src: '/images/virya-engineering.webp', alt: 'Engineer assessing clean-energy equipment.' },
+    visualAssets.solar,
+    visualAssets.storage,
+    visualAssets.engineering,
   ],
   Contact: [
-    { src: '/images/virya-engineering.webp', alt: 'Engineer at work in an energy facility.' },
-    { src: '/images/virya-solar.webp', alt: 'Solar panels at a business site.' },
-    { src: '/images/virya-ev-charging.webp', alt: 'Electric vehicle connected to a charger.' },
+    visualAssets.industrial,
+    visualAssets.solar,
+    visualAssets.ev,
   ],
   Questions: [
-    { src: '/images/virya-energy.webp', alt: 'Energy network infrastructure.' },
-    { src: '/images/virya-solar.webp', alt: 'Solar generation panels.' },
-    { src: '/images/virya-wind.webp', alt: 'Wind turbines generating power.' },
+    visualAssets.storage,
+    visualAssets.solar,
+    visualAssets.wind,
   ],
   'Who we work with': [
-    { src: '/images/virya-engineering.webp', alt: 'Engineer inspecting equipment at an industrial site.' },
-    { src: '/images/virya-ev-charging.webp', alt: 'Electric vehicle charging at a facility.' },
-    { src: '/images/virya-solar.webp', alt: 'Solar panels serving a commercial site.' },
+    visualAssets.industrial,
+    visualAssets.ev,
+    visualAssets.solar,
   ],
   Insights: [
-    { src: '/images/virya-wind.webp', alt: 'Wind turbines across a renewable energy landscape.' },
-    { src: '/images/virya-solar.webp', alt: 'Solar panels generating clean electricity.' },
-    { src: '/images/virya-energy.webp', alt: 'Electricity infrastructure in the energy system.' },
+    visualAssets.wind,
+    visualAssets.solar,
+    visualAssets.renewable,
   ],
   'How we work': [
-    { src: '/images/virya-engineering.webp', alt: 'Engineer reviewing technical equipment.' },
-    { src: '/images/virya-solar.webp', alt: 'Solar panels at an energy site.' },
-    { src: '/images/virya-ev-charging.webp', alt: 'Electric vehicle charging infrastructure.' },
+    visualAssets.engineering,
+    visualAssets.solarInstallation,
+    visualAssets.ev,
   ],
   'Projects & capabilities': [
-    { src: '/images/virya-solar.webp', alt: 'Solar installation at a commercial site.' },
-    { src: '/images/virya-engineering.webp', alt: 'Engineering work at an industrial facility.' },
-    { src: '/images/virya-energy.webp', alt: 'Electricity infrastructure for energy projects.' },
+    visualAssets.solar,
+    visualAssets.industrial,
+    visualAssets.storage,
   ],
 };
 
@@ -214,6 +215,16 @@ export function CtaBand({
 }) {
   return (
     <section className="relative overflow-hidden bg-ink py-16 sm:py-20 lg:py-24">
+      <SmartImage
+        src={visualAssets.renewable.src}
+        alt=""
+        width={1600}
+        height={900}
+        fill
+        sizes="100vw"
+        className="opacity-20"
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/40" />
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{

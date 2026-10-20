@@ -1,29 +1,34 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Leaf, Ruler, Users, Wrench } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
-import { Reveal } from '@/components/ui';
+import { CardImage, Reveal, SmartImage } from '@/components/ui';
 import { BUSINESS, CONTACT } from '@/app/siteConfig';
 import { services } from '@/data/services';
+import { visualAssets } from '@/data/visuals';
 
 const PRINCIPLES = [
   {
     icon: Ruler,
     title: 'Site context before assumptions',
+    image: visualAssets.solar,
     body: 'Energy use, physical conditions, existing infrastructure and operating needs help shape a useful project discussion. Reviewing these together can surface constraints early and make it easier to ask the right technical questions.',
   },
   {
     icon: Wrench,
     title: 'Clear scope and responsibilities',
+    image: visualAssets.engineering,
     body: 'Technical work, deliverables, approvals and follow-up should be defined for the specific project before work proceeds. Clear boundaries help both teams understand what is included, what remains open and who owns each next step.',
   },
   {
     icon: Leaf,
     title: 'Claims grounded in evidence',
+    image: visualAssets.wind,
     body: 'Savings, performance and environmental outcomes depend on the project and should be supported by stated assumptions and appropriate records. Estimates should distinguish measured results from forecasts and explain any limits on the available data.',
   },
   {
     icon: Users,
     title: 'Collaboration by agreement',
+    image: visualAssets.industrial,
     body: 'Data access, monitoring, maintenance and post-project support are clarified as part of the agreed service scope. Customers should know which systems are included, who can access information and how ongoing responsibilities are handled.',
   },
 ];
@@ -90,7 +95,9 @@ export default function AboutPage() {
 
             <div className="lg:col-span-5">
               <Reveal delay={0.1}>
-                <div className="card p-7">
+                <div className="card overflow-hidden">
+                  <CardImage image={visualAssets.industrial} className="aspect-[16/8]" />
+                  <div className="p-7">
                   <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
                     At a glance
                   </p>
@@ -125,6 +132,7 @@ export default function AboutPage() {
                       </dd>
                     </div>
                   </dl>
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -148,14 +156,28 @@ export default function AboutPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2">
             {PRINCIPLES.map((principle, index) => (
               <Reveal key={principle.title} delay={index * 0.07} as="div">
-                <article className="card card-hover h-full p-7">
-                  <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
-                    <principle.icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-5 text-lg font-bold text-ink">{principle.title}</h3>
-                  <p className="mt-3 text-[0.93rem] leading-relaxed text-ink-muted">
-                    {principle.body}
-                  </p>
+                <article className="card card-hover h-full overflow-hidden">
+                  <div className="relative h-40 overflow-hidden">
+                    <SmartImage
+                      src={principle.image.src}
+                      alt={principle.image.alt}
+                      width={960}
+                      height={480}
+                      fill
+                      sizes="(min-width: 640px) 50vw, 100vw"
+                      className="transition-transform duration-500 hover:scale-105"
+                    />
+                    <span className="absolute inset-0 bg-gradient-to-t from-[#07110f]/65 to-transparent" />
+                    <span className="absolute bottom-4 left-5 grid h-11 w-11 place-items-center rounded-xl border border-white/20 bg-[#07110f]/55 text-emerald-300 backdrop-blur">
+                      <principle.icon className="h-5 w-5" />
+                    </span>
+                  </div>
+                  <div className="p-6 sm:p-7">
+                    <h3 className="text-lg font-bold text-ink">{principle.title}</h3>
+                    <p className="mt-3 text-[0.93rem] leading-relaxed text-ink-muted">
+                      {principle.body}
+                    </p>
+                  </div>
                 </article>
               </Reveal>
             ))}
@@ -181,13 +203,16 @@ export default function AboutPage() {
 
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
               {[
-                ['Service scope', 'Confirm which services, deliverables and responsibilities are included. Clarify exclusions, decision points and any work that needs a separate agreement.'],
-                ['Technical assumptions', 'Review site information, constraints, approvals and the assumptions behind estimates. Ask which details have been measured and which still need validation.'],
-                ['Evidence and outcomes', 'Use project-specific records for performance, savings or environmental claims. Agree on the measurement period, data source and method before comparing results.'],
-              ].map(([title, body]) => (
-                <article key={title} className="card h-full p-6 text-left">
-                  <h3 className="font-bold text-ink">{title}</h3>
-                  <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-muted">{body}</p>
+                { title: 'Service scope', body: 'Confirm which services, deliverables and responsibilities are included. Clarify exclusions, decision points and any work that needs a separate agreement.', image: visualAssets.engineering },
+                { title: 'Technical assumptions', body: 'Review site information, constraints, approvals and the assumptions behind estimates. Ask which details have been measured and which still need validation.', image: visualAssets.solarInstallation },
+                { title: 'Evidence and outcomes', body: 'Use project-specific records for performance, savings or environmental claims. Agree on the measurement period, data source and method before comparing results.', image: visualAssets.wind },
+              ].map((item) => (
+                <article key={item.title} className="card h-full overflow-hidden text-left">
+                  <CardImage image={item.image} className="aspect-[16/9]" />
+                  <div className="p-6">
+                  <h3 className="font-bold text-ink">{item.title}</h3>
+                  <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-muted">{item.body}</p>
+                  </div>
                 </article>
               ))}
             </div>

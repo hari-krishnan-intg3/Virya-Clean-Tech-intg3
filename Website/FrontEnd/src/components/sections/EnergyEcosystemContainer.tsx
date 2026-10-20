@@ -2,9 +2,16 @@ import { useState } from 'react';
 import { Info } from 'lucide-react';
 import { ecosystemFlows, ecosystemNodes, type EcosystemNode } from '@/data/content';
 import { cn } from '@/lib/utils';
-import { Reveal, SectionHeading } from '@/components/ui';
+import { Reveal, SectionHeading, SmartImage } from '@/components/ui';
+import { visualAssets, type VisualAsset } from '@/data/visuals';
 
 const nodeById = (id: string) => ecosystemNodes.find((n) => n.id === id)!;
+const NODE_VISUALS: Record<string, VisualAsset> = {
+  solar: visualAssets.solar,
+  battery: visualAssets.storage,
+  ev: visualAssets.ev,
+  systems: visualAssets.engineering,
+};
 
 /** Quadratic curve between two diagram points, bowed outward from the centre. */
 function flowPath(from: EcosystemNode, to: EcosystemNode): string {
@@ -20,7 +27,6 @@ function flowPath(from: EcosystemNode, to: EcosystemNode): string {
 export function EnergyEcosystemContainer() {
   const [active, setActive] = useState<string>('solar');
   const activeNode = nodeById(active);
-  const ActiveIcon = activeNode.icon;
 
   return (
     <section
@@ -152,7 +158,16 @@ export function EnergyEcosystemContainer() {
                   aria-live="polite"
                   className="relative flex h-36 w-36 flex-col items-center justify-center rounded-2xl border border-emerald-500/40 bg-white/95 px-3 text-center shadow-lift backdrop-blur-sm sm:h-40 sm:w-40"
                 >
-                  <ActiveIcon className="h-6 w-6 text-emerald-600" aria-hidden="true" />
+                  <span className="relative h-8 w-8 overflow-hidden rounded-full border border-emerald-500/20">
+                    <SmartImage
+                      src={NODE_VISUALS[activeNode.id].src}
+                      alt={NODE_VISUALS[activeNode.id].alt}
+                      width={96}
+                      height={96}
+                      fill
+                      sizes="32px"
+                    />
+                  </span>
                   <p className="mt-2 font-heading text-[0.75rem] font-extrabold leading-tight text-ink sm:text-sm">
                     {activeNode.label}
                   </p>

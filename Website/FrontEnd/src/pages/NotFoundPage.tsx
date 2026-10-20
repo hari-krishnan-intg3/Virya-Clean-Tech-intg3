@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom';
 import { Compass } from 'lucide-react';
 import { services } from '@/data/services';
+import { CardImage } from '@/components/ui';
+import { visualAssets } from '@/data/visuals';
 
 export default function NotFoundPage() {
   return (
     <section className="section pt-36">
       <div className="shell">
         <div className="mx-auto max-w-2xl text-center">
+          <div className="mb-10 overflow-hidden rounded-2xl border border-line">
+            <CardImage image={visualAssets.renewable} className="aspect-[16/7]" />
+          </div>
           <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-emerald-50 text-emerald-600">
             <Compass className="h-6 w-6" />
           </span>

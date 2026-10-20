@@ -24,7 +24,8 @@ import { services } from '@/data/services';
 import { markFormStarted } from '@/lib/session';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { CONTACT } from '@/app/siteConfig';
-import { BookSlotButton, Button, FieldShell, SectionHeading, fieldA11y } from '@/components/ui';
+import { BookSlotButton, Button, CardImage, FieldShell, SectionHeading, fieldA11y } from '@/components/ui';
+import { visualAssets } from '@/data/visuals';
 
 /** Options are derived from the single service taxonomy. */
 const SERVICE_OPTIONS: { value: BookingFormValues['service']; label: string }[] = [
@@ -159,6 +160,9 @@ export function BookingFormContainer() {
               }
               description="Tell us about your requirements. Our team can help you explore the clean-energy solutions best suited to your project."
             />
+            <div className="mt-7 overflow-hidden rounded-xl border border-line">
+              <CardImage image={visualAssets.solarInstallation} className="aspect-[16/9]" />
+            </div>
 
             <ul className="mt-10 space-y-4">
               {[

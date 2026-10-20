@@ -4,9 +4,16 @@ import { Compass, DraftingCompass, HardHat, LineChart } from 'lucide-react';
 import { processSteps } from '@/data/process';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { cn } from '@/lib/utils';
-import { SectionHeading } from '@/components/ui';
+import { CardImage, SectionHeading } from '@/components/ui';
+import { visualAssets } from '@/data/visuals';
 
 const ICONS = [Compass, DraftingCompass, HardHat, LineChart];
+const STEP_VISUALS = [
+  visualAssets.engineering,
+  visualAssets.solarInstallation,
+  visualAssets.industrial,
+  visualAssets.storage,
+];
 
 export function ProcessContainer() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -76,13 +83,20 @@ export function ProcessContainer() {
                     <Icon className="h-5 w-5 text-emerald-600" />
                   </span>
 
-                  <h3 className="mt-2 font-heading text-lg font-bold leading-snug tracking-tight">
-                    {step.title}
-                  </h3>
-
-                  <p className="mt-2.5 text-[0.94rem] leading-relaxed text-ink-muted">
-                    {step.description}
-                  </p>
+                  <article className="card mt-4 overflow-hidden lg:mt-5">
+                    <CardImage image={STEP_VISUALS[index]} className="aspect-[16/9]" />
+                    <div className="p-5">
+                      <p className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-emerald-700">
+                        Stage {step.number}
+                      </p>
+                      <h3 className="mt-2 font-heading text-lg font-bold leading-snug tracking-tight">
+                        {step.title}
+                      </h3>
+                      <p className="mt-2.5 text-[0.94rem] leading-relaxed text-ink-muted">
+                        {step.description}
+                      </p>
+                    </div>
+                  </article>
                 </li>
               );
             })}

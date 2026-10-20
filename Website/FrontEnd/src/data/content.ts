@@ -1,4 +1,5 @@
 import { BatteryCharging, Cpu, Gauge, Leaf, Sun, Wrench, Zap, type LucideIcon } from 'lucide-react';
+import { visualAssets } from './visuals';
 
 /* ------------------------------------------------------------------ */
 /* Hero                                                                */
@@ -22,9 +23,9 @@ export const heroSlides: HeroSlide[] = [
     headline: 'Build a clearer path to cleaner energy.',
     subtext:
       'Solar, EV charging, battery storage and connected-energy software can work together, but the right mix starts with your site. Explore the questions that shape a practical next step.',
-    image: '/images/solar-array.jpg',
+    image: visualAssets.solar.src,
     imageAlt:
-      'A wide field of solar panels catching warm evening light.',
+      visualAssets.solar.alt,
     focal: 'center 52%',
   },
   {
@@ -33,8 +34,8 @@ export const heroSlides: HeroSlide[] = [
     headline: 'Connect energy generation, storage and demand.',
     subtext:
       'Load patterns, operating hours, site infrastructure and project goals all influence what may be feasible. Bring those details together before choosing a technology or defining a project.',
-    image: '/images/wind-energy.jpg',
-    imageAlt: 'Wind turbines across a green landscape beneath a wide sky.',
+    image: visualAssets.wind.src,
+    imageAlt: visualAssets.wind.alt,
     focal: 'center 48%',
   },
   {
@@ -43,8 +44,8 @@ export const heroSlides: HeroSlide[] = [
     headline: 'Make room for the next generation of mobility.',
     subtext:
       'Charging needs depend on vehicle routes, dwell time and available electrical capacity. Start with how people and vehicles move through your site, then explore an infrastructure plan that fits.',
-    image: '/images/electric-mobility.jpg',
-    imageAlt: 'An electric vehicle connected to a charging cable.',
+    image: visualAssets.ev.src,
+    imageAlt: visualAssets.ev.alt,
     focal: 'center 50%',
   },
 ];

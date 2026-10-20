@@ -1,7 +1,21 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, TrendingUp } from 'lucide-react';
-import { Reveal } from '@/components/ui';
+import { CardImage, Reveal } from '@/components/ui';
 import { insights, marketShifts } from '@/data/insights';
+import { visualAssets } from '@/data/visuals';
+
+const INSIGHT_VISUALS = [
+  visualAssets.solar,
+  visualAssets.solarInstallation,
+  visualAssets.solar,
+  visualAssets.solarInstallation,
+];
+const SHIFT_VISUALS = [
+  visualAssets.solar,
+  visualAssets.ev,
+  visualAssets.storage,
+  visualAssets.engineering,
+];
 
 interface InsightBandProps {
   /** Only show the first N figures. */
@@ -39,26 +53,29 @@ export function InsightBand({ limit = 4 }: InsightBandProps) {
         <dl className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {insights.slice(0, limit).map((insight, index) => (
             <Reveal key={insight.id} delay={index * 0.08} as="div">
-              <div className="card card-hover h-full p-6">
-                <dt className="flex items-start justify-between gap-3">
-                  <span className="font-heading text-4xl font-extrabold leading-none text-ink">
-                    {insight.value}
-                    <span className="ml-1.5 text-base font-bold text-emerald-600">
-                      {insight.unit}
+              <div className="card card-hover h-full overflow-hidden">
+                <CardImage image={INSIGHT_VISUALS[index % INSIGHT_VISUALS.length]} />
+                <div className="p-6">
+                  <dt className="flex items-start justify-between gap-3">
+                    <span className="font-heading text-4xl font-extrabold leading-none text-ink">
+                      {insight.value}
+                      <span className="ml-1.5 text-base font-bold text-emerald-600">
+                        {insight.unit}
+                      </span>
                     </span>
-                  </span>
-                  <TrendingUp className="h-5 w-5 shrink-0 text-emerald-500/40" />
-                </dt>
+                    <TrendingUp className="h-5 w-5 shrink-0 text-emerald-500/40" />
+                  </dt>
 
-                <dd className="mt-4">
-                  <p className="text-[0.95rem] font-semibold text-ink">{insight.label}</p>
-                  <p className="mt-2 text-[0.85rem] leading-relaxed text-ink-muted">
-                    {insight.note}
-                  </p>
-                  <p className="mt-3 border-t border-line pt-3 text-[0.72rem] leading-relaxed text-ink-faint">
-                    {insight.source} · as of {insight.asOf}
-                  </p>
-                </dd>
+                  <dd className="mt-4">
+                    <p className="text-[0.95rem] font-semibold text-ink">{insight.label}</p>
+                    <p className="mt-2 text-[0.85rem] leading-relaxed text-ink-muted">
+                      {insight.note}
+                    </p>
+                    <p className="mt-3 border-t border-line pt-3 text-[0.72rem] leading-relaxed text-ink-faint">
+                      {insight.source} · as of {insight.asOf}
+                    </p>
+                  </dd>
+                </div>
               </div>
             </Reveal>
           ))}
@@ -68,11 +85,14 @@ export function InsightBand({ limit = 4 }: InsightBandProps) {
         <div className="mt-16 grid gap-6 lg:grid-cols-2">
           {marketShifts.map((shift, index) => (
             <Reveal key={shift.title} delay={index * 0.06} as="div">
-              <article className="card h-full p-7">
-                <h3 className="text-lg font-bold leading-snug text-ink">{shift.title}</h3>
-                <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
-                  {shift.body}
-                </p>
+              <article className="card h-full overflow-hidden">
+                <CardImage image={SHIFT_VISUALS[index % SHIFT_VISUALS.length]} />
+                <div className="p-7">
+                  <h3 className="text-lg font-bold leading-snug text-ink">{shift.title}</h3>
+                  <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                    {shift.body}
+                  </p>
+                </div>
               </article>
             </Reveal>
           ))}

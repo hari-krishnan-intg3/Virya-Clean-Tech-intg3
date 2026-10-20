@@ -13,9 +13,10 @@ import {
   Truck,
 } from 'lucide-react';
 import { CtaBand } from '@/components/sections/PageHero';
-import { Reveal, SmartImage } from '@/components/ui';
+import { CardImage, Reveal, SmartImage } from '@/components/ui';
 import { getService, services } from '@/data/services';
 import { disqualifiers } from '@/data/qualification';
+import { visualAssets } from '@/data/visuals';
 
 const VEHICLE_APPLICATIONS = [
   {
@@ -42,6 +43,18 @@ const VEHICLE_APPLICATIONS = [
     description:
       'Vans, delivery vehicles and other commercial fleets have operating windows tied to routes and service commitments. Review daily distance, vehicle mix, loading activity, time at depot and the electrical capacity available for charging.',
   },
+];
+const VEHICLE_VISUALS = [
+  visualAssets.ev,
+  visualAssets.solarInstallation,
+  visualAssets.industrial,
+  visualAssets.ev,
+];
+const DELIVERABLE_VISUALS = [
+  visualAssets.engineering,
+  visualAssets.solar,
+  visualAssets.industrial,
+  visualAssets.storage,
 ];
 
 /**
@@ -229,7 +242,9 @@ export default function ServiceDetailPage() {
 
             <div className="lg:col-span-5">
               <Reveal delay={0.1}>
-                <div className="card p-7">
+                <div className="card overflow-hidden">
+                  <CardImage image={visualAssets.industrial} className="aspect-[16/8]" />
+                  <div className="p-7">
                   <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
                     Best suited to
                   </p>
@@ -243,6 +258,7 @@ export default function ServiceDetailPage() {
                       </li>
                     ))}
                   </ul>
+                  </div>
                 </div>
               </Reveal>
 
@@ -292,14 +308,17 @@ export default function ServiceDetailPage() {
             <div className="mt-10 grid gap-5 sm:grid-cols-2">
               {VEHICLE_APPLICATIONS.map((application, index) => (
                 <Reveal key={application.title} delay={index * 0.06} as="div">
-                  <article className="card h-full p-6 sm:p-7">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-white text-emerald-700">
-                      <application.icon className="h-5 w-5" aria-hidden="true" />
-                    </span>
-                    <h3 className="mt-5 text-lg font-bold text-ink">{application.title}</h3>
-                    <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
-                      {application.description}
-                    </p>
+                  <article className="card h-full overflow-hidden">
+                    <CardImage image={VEHICLE_VISUALS[index]} className="aspect-[16/9]" />
+                    <div className="p-6 sm:p-7">
+                      <span className="grid h-11 w-11 place-items-center rounded-xl bg-white text-emerald-700">
+                        <application.icon className="h-5 w-5" aria-hidden="true" />
+                      </span>
+                      <h3 className="mt-5 text-lg font-bold text-ink">{application.title}</h3>
+                      <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                        {application.description}
+                      </p>
+                    </div>
                   </article>
                 </Reveal>
               ))}
@@ -329,11 +348,14 @@ export default function ServiceDetailPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2">
             {service.deliverables.map((item, index) => (
               <Reveal key={item.title} delay={index * 0.07} as="div">
-                <article className="card card-hover h-full p-7">
-                  <h3 className="mt-5 text-lg font-bold text-ink">{item.title}</h3>
-                  <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
-                    {item.description}
-                  </p>
+                <article className="card card-hover h-full overflow-hidden">
+                  <CardImage image={DELIVERABLE_VISUALS[index % DELIVERABLE_VISUALS.length]} className="aspect-[16/9]" />
+                  <div className="p-7">
+                    <h3 className="text-lg font-bold text-ink">{item.title}</h3>
+                    <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                      {item.description}
+                    </p>
+                  </div>
                 </article>
               </Reveal>
             ))}
@@ -365,14 +387,15 @@ export default function ServiceDetailPage() {
               <div className="space-y-4">
                 {service.faqs.map((faq, index) => (
                   <Reveal key={faq.question} delay={index * 0.06} as="div">
-                    <details className="group card p-6 [&_summary::-webkit-details-marker]:hidden">
-                      <summary className="flex cursor-pointer items-start justify-between gap-4 text-[1rem] font-semibold text-ink">
+                    <details className="group card overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                      <CardImage image={{ src: service.image, alt: service.imageAlt }} className="aspect-[16/7]" />
+                      <summary className="flex cursor-pointer items-start justify-between gap-4 p-6 text-[1rem] font-semibold text-ink">
                         {faq.question}
                         <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border border-line text-ink-muted transition-transform group-open:rotate-45">
                           +
                         </span>
                       </summary>
-                      <p className="mt-4 text-[0.93rem] leading-relaxed text-ink-muted">
+                      <p className="px-6 pb-6 text-[0.93rem] leading-relaxed text-ink-muted">
                         {faq.answer}
                       </p>
                     </details>
@@ -401,7 +424,9 @@ export default function ServiceDetailPage() {
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {others.map((other, index) => (
               <Reveal key={other.slug} delay={index * 0.06} as="div">
-                <Link to={`/services/${other.slug}`} className="card card-hover group h-full p-6">
+                <Link to={`/services/${other.slug}`} className="card card-hover group h-full overflow-hidden">
+                  <CardImage image={{ src: other.image, alt: other.imageAlt }} className="aspect-[16/9]" />
+                  <div className="p-6">
                   <span
                     className={`inline-grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br ${other.gradient} text-white`}
                   >
@@ -413,6 +438,7 @@ export default function ServiceDetailPage() {
                   <p className="mt-2 text-[0.86rem] leading-relaxed text-ink-muted">
                     {other.cardSummary}
                   </p>
+                  </div>
                 </Link>
               </Reveal>
             ))}

@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CalendarDays, Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
-import { BookSlotButton, Reveal } from '@/components/ui';
+import { BookSlotButton, CardImage, Reveal } from '@/components/ui';
 import { ADDRESS_LINES, CONTACT, MAP_EMBED, MAP_LINK } from '@/app/siteConfig';
 import { officeStatus, visitorClock } from '@/lib/time';
 import { trackEvent } from '@/lib/utils';
+import { visualAssets } from '@/data/visuals';
 
 /**
  * Contact page.
@@ -20,6 +21,7 @@ export default function ContactPage() {
   const channels = [
     {
       icon: Phone,
+      image: visualAssets.engineering,
       label: 'Phone',
       value: CONTACT.phoneDisplay,
       href: CONTACT.phoneHref,
@@ -30,6 +32,7 @@ export default function ContactPage() {
     },
     {
       icon: Mail,
+      image: visualAssets.industrial,
       label: 'Email',
       value: CONTACT.email,
       href: CONTACT.emailHref,
@@ -40,6 +43,7 @@ export default function ContactPage() {
     },
     {
       icon: MapPin,
+      image: visualAssets.renewable,
       label: 'Office',
       value: ADDRESS_LINES[2] ?? CONTACT.address.locality,
       href: MAP_LINK,
@@ -76,30 +80,33 @@ export default function ContactPage() {
                   target={channel.label === 'Office' ? '_blank' : undefined}
                   rel={channel.label === 'Office' ? 'noopener noreferrer' : undefined}
                   onClick={() => trackEvent('contact_click', { channel: channel.label })}
-                  className="card card-hover group flex h-full flex-col p-7"
+                  className="card card-hover group flex h-full flex-col overflow-hidden"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
-                      <channel.icon className="h-5 w-5" />
-                    </span>
-                    {channel.live && (
-                      <span className="flex items-center gap-1.5 text-[0.72rem] font-semibold text-emerald-600">
-                        <span className="h-1.5 w-1.5 animate-dot-pulse rounded-full bg-emerald-500" />
-                        Live
+                  <CardImage image={channel.image} className="aspect-[16/9]" />
+                  <div className="flex flex-1 flex-col p-7">
+                    <div className="flex items-center justify-between">
+                      <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+                        <channel.icon className="h-5 w-5" />
                       </span>
-                    )}
-                  </div>
+                      {channel.live && (
+                        <span className="flex items-center gap-1.5 text-[0.72rem] font-semibold text-emerald-600">
+                          <span className="h-1.5 w-1.5 animate-dot-pulse rounded-full bg-emerald-500" />
+                          Live
+                        </span>
+                      )}
+                    </div>
 
-                  <p className="mt-5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
-                    {channel.label}
-                  </p>
-                  <p className="mt-2 text-[1.05rem] font-bold text-ink transition-colors group-hover:text-emerald-700">
-                    {channel.value}
-                  </p>
-                  <p className="mt-2 text-[0.85rem] text-ink-muted">{channel.note}</p>
-                  <p className="mt-3 flex-1 text-[0.85rem] leading-relaxed text-ink-muted">
-                    {channel.detail}
-                  </p>
+                    <p className="mt-5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
+                      {channel.label}
+                    </p>
+                    <p className="mt-2 text-[1.05rem] font-bold text-ink transition-colors group-hover:text-emerald-700">
+                      {channel.value}
+                    </p>
+                    <p className="mt-2 text-[0.85rem] text-ink-muted">{channel.note}</p>
+                    <p className="mt-3 flex-1 text-[0.85rem] leading-relaxed text-ink-muted">
+                      {channel.detail}
+                    </p>
+                  </div>
                 </a>
               </Reveal>
             ))}
@@ -107,7 +114,7 @@ export default function ContactPage() {
 
           {/* Office status — visitor time vs Bengaluru time */}
           <Reveal delay={0.12} className="mt-8">
-            <div className="card flex flex-wrap items-center justify-between gap-6 p-6">
+            <div className="card flex flex-wrap items-center justify-between gap-6 overflow-hidden p-6">
               <div className="flex items-center gap-4">
                 <span className="grid h-11 w-11 place-items-center rounded-xl bg-mist text-ink-muted">
                   <Clock className="h-5 w-5" />
