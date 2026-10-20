@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
-import { CardImage, Reveal } from '@/components/ui';
+import { Reveal } from '@/components/ui';
 import { faqs } from '@/data/faq';
 import { getService } from '@/data/services';
 import { cn } from '@/lib/utils';
-import { visualAssets } from '@/data/visuals';
 
 const CATEGORIES = ['All', 'Commercial', 'Process', 'Technical', 'Commercial terms'] as const;
 
@@ -84,18 +83,14 @@ export default function FaqPage() {
           </div>
 
           {/* List */}
-          <div className="mt-12 space-y-4">
+          <div className="mt-8 space-y-3">
             {filtered.map((faq, index) => {
               const service = faq.relatedService ? getService(faq.relatedService) : undefined;
 
               return (
                 <Reveal key={faq.question} delay={Math.min(index, 6) * 0.04} as="div">
-                  <details className="group card overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-                    <CardImage
-                      image={service ? { src: service.image, alt: service.imageAlt } : visualAssets.renewable}
-                      className="aspect-[16/5]"
-                    />
-                    <summary className="flex cursor-pointer items-start justify-between gap-5 p-6 sm:p-7">
+                  <details className="group card [&_summary::-webkit-details-marker]:hidden">
+                    <summary className="flex cursor-pointer items-start justify-between gap-5 p-5 sm:p-6">
                       <span className="min-w-0 flex-1">
                         <span className="block text-[1.05rem] font-semibold text-ink">
                           {faq.question}
@@ -109,7 +104,7 @@ export default function FaqPage() {
                       </span>
                     </summary>
 
-                    <div className="px-6 pb-6 sm:px-7 sm:pb-7">
+                    <div className="px-5 pb-5 sm:px-6 sm:pb-6">
                       <p className="max-w-3xl text-[0.95rem] leading-relaxed text-ink-muted">
                         {faq.answer}
                       </p>

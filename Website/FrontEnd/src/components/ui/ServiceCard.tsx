@@ -41,7 +41,7 @@ export function ServiceCard({
         </span>
       </Link>
 
-      <div className="flex flex-1 flex-col p-6 sm:p-7">
+      <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex items-center gap-3">
           <span className={cn('grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white', service.gradient)}>
             <service.icon className="h-5 w-5" aria-hidden="true" />
@@ -51,14 +51,14 @@ export function ServiceCard({
           </p>
         </div>
 
-        <h3 className="mt-5 min-h-[3.25rem] line-clamp-2 text-xl font-bold leading-snug text-ink transition-colors group-hover:text-emerald-300">
+        <h3 className="mt-4 line-clamp-2 text-xl font-bold leading-snug text-ink transition-colors group-hover:text-emerald-300">
           {service.title}
         </h3>
-        <p className="mt-3 min-h-[4.5rem] line-clamp-3 text-[0.92rem] leading-relaxed text-ink-muted">
+        <p className="mt-2.5 line-clamp-3 text-[0.92rem] leading-relaxed text-ink-muted">
           {service.tagline}
         </p>
 
-        <details className="group/details mt-auto border-t border-line pt-4">
+        <details className="group/details mt-4 border-t border-line pt-4">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-emerald-300 focus-visible:outline-none">
             <span>What to consider</span>
             <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 group-open/details:rotate-180" aria-hidden="true" />
@@ -76,7 +76,7 @@ export function ServiceCard({
 
         <Link
           to={`/services/${service.slug}`}
-          className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-emerald-300 focus-visible:outline-none"
+          className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-emerald-300 focus-visible:outline-none"
         >
           Explore {service.label.toLowerCase()}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />

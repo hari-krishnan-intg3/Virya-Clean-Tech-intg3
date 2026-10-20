@@ -16,7 +16,7 @@ const PRINCIPLES = [
   {
     icon: Wrench,
     title: 'Clear scope and responsibilities',
-    image: visualAssets.engineering,
+    image: visualAssets.engineeringBlueprints,
     body: 'Technical work, deliverables, approvals and follow-up should be defined for the specific project before work proceeds. Clear boundaries help both teams understand what is included, what remains open and who owns each next step.',
   },
   {
@@ -96,7 +96,6 @@ export default function AboutPage() {
             <div className="lg:col-span-5">
               <Reveal delay={0.1}>
                 <div className="card overflow-hidden">
-                  <CardImage image={visualAssets.industrial} className="aspect-[16/8]" />
                   <div className="p-7">
                   <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
                     At a glance

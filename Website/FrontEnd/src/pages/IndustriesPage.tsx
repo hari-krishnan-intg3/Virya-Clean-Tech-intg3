@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
-import { CardImage, Reveal } from '@/components/ui';
+import { Reveal, SmartImage } from '@/components/ui';
 import { getService, industries } from '@/data/services';
 import { personas, qualificationSignals } from '@/data/qualification';
-import { SmartImage } from '@/components/ui';
 import { industryVisuals } from '@/data/visuals';
 
 export default function IndustriesPage() {
@@ -109,9 +108,8 @@ export default function IndustriesPage() {
                   not eligibility rules or a technical recommendation.
                 </p>
 
-                <div className="card mt-8 overflow-hidden">
-                  <CardImage image={industryVisuals.manufacturing} className="aspect-[16/9]" />
-                  <ul className="space-y-4 p-6">
+                <div className="card mt-6 overflow-hidden">
+                  <ul className="space-y-3 p-5 sm:p-6">
                     {qualificationSignals.map((signal) => (
                       <li key={signal} className="flex gap-3">
                         <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-500" />
@@ -133,14 +131,9 @@ export default function IndustriesPage() {
                   Different priorities, one project discussion
                 </h2>
 
-                <div className="mt-8 space-y-4">
+                <div className="mt-6 space-y-3">
                   {personas.map((persona) => (
-                    <div key={persona.role} className="card overflow-hidden">
-                      <CardImage
-                        image={industryVisuals[persona.goesTo === 'ev-charging' ? 'fleet-logistics' : 'manufacturing']}
-                        className="aspect-[16/9]"
-                      />
-                      <div className="p-6">
+                    <div key={persona.role} className="card p-5">
                       <div className="flex flex-wrap items-center justify-between gap-3">
                         <h3 className="text-[1.05rem] font-bold text-ink">{persona.role}</h3>
                         <Link
@@ -165,7 +158,6 @@ export default function IndustriesPage() {
                           <dd className="text-ink-muted">{persona.proof}</dd>
                         </div>
                       </dl>
-                      </div>
                     </div>
                   ))}
                 </div>

@@ -320,8 +320,8 @@ export default function CareersPage() {
     visualAssets.ev,
     visualAssets.storage,
     visualAssets.industrial,
-    visualAssets.engineering,
-    visualAssets.wind,
+    visualAssets.solarInstallation,
+    visualAssets.serviceEvCharging,
   ];
 
   const applyTo = (role: Role) => {
@@ -419,7 +419,6 @@ export default function CareersPage() {
             {employerValues.map((value, index) => (
               <Reveal key={value.title} delay={index * 0.05} as="div">
                 <article className="card h-full overflow-hidden">
-                  <CardImage image={careerVisuals[index % careerVisuals.length]} className="aspect-[16/9]" />
                   <div className="p-7">
                     <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
                       <value.icon className="h-5 w-5" />
@@ -479,7 +478,6 @@ export default function CareersPage() {
                     focusedRole === role.slug && 'border-emerald-500/40 ring-2 ring-emerald-500/20',
                   )}
                 >
-                  <CardImage image={careerVisuals[index % careerVisuals.length]} className="aspect-[16/5]" />
                   {/* Header */}
                   <div className="flex flex-wrap items-start justify-between gap-5 p-7 pb-5">
                     <div className="min-w-0">
@@ -626,13 +624,12 @@ export default function CareersPage() {
           <ol className="mt-14 space-y-4">
             {hiringStages.map((item, index) => (
               <Reveal key={item.stage} delay={index * 0.05} as="li">
-                <div className="card flex flex-wrap items-start gap-5 overflow-hidden sm:gap-7">
-                  <CardImage image={careerVisuals[index % careerVisuals.length]} className="aspect-[16/5] w-full" />
-                  <div className="min-w-0 flex-1 px-6 pb-6 sm:px-7 sm:pb-7">
+                <div className="card flex flex-wrap items-start justify-between gap-4 p-5 sm:p-6">
+                  <div className="min-w-0 flex-1">
                     <h3 className="text-[1.05rem] font-bold text-ink">{item.stage}</h3>
                     <p className="mt-2 text-[0.9rem] leading-relaxed text-ink-muted">{item.detail}</p>
                   </div>
-                  <span className="mr-6 mt-6 shrink-0 rounded-full border border-line bg-white px-3 py-1.5 text-[0.75rem] font-medium text-ink-muted sm:mr-7">
+                  <span className="shrink-0 rounded-full border border-line bg-white px-3 py-1.5 text-[0.75rem] font-medium text-ink-muted">
                     {item.duration}
                   </span>
                 </div>
@@ -669,7 +666,7 @@ export default function CareersPage() {
                   Send it to the person who will read it
                 </h2>
                 <div className="mt-6 overflow-hidden rounded-xl border border-line">
-                  <CardImage image={visualAssets.engineering} className="aspect-[16/9]" />
+                  <CardImage image={visualAssets.engineeringBlueprints} className="aspect-[16/9]" />
                 </div>
                 <p className="mt-5 text-base leading-relaxed text-ink-muted">
                   Applications land with the relevant team lead as a tracked item, not in a

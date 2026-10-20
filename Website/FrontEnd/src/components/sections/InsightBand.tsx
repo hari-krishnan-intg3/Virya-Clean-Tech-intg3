@@ -5,10 +5,10 @@ import { insights, marketShifts } from '@/data/insights';
 import { visualAssets } from '@/data/visuals';
 
 const INSIGHT_VISUALS = [
-  visualAssets.solar,
-  visualAssets.solarInstallation,
-  visualAssets.solar,
-  visualAssets.solarInstallation,
+  visualAssets.solarMarketRooftop,
+  visualAssets.solarMarketPanels,
+  visualAssets.solarComplex,
+  visualAssets.rooftopSolarArray,
 ];
 const SHIFT_VISUALS = [
   visualAssets.solar,

@@ -105,9 +105,9 @@ export default function ProjectsPage() {
 
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {[
-              { title: 'Share the context', body: 'Describe the facility, location, operating patterns and challenge. Mention what is changing and which teams will be involved in evaluating a possible project.', image: visualAssets.industrial },
-              { title: 'Review relevant options', body: 'Compare service areas against site conditions and the objective. A preliminary discussion can identify questions, but it cannot replace an engineering review.', image: visualAssets.solar },
-              { title: 'Agree on a next step', body: 'Confirm what information, site access or specialist input is needed. Define the scope and responsibilities before committing to further work.', image: visualAssets.engineering },
+              { title: 'Share the context', body: 'Describe the facility, location, operating patterns and challenge. Mention what is changing and which teams will be involved in evaluating a possible project.', image: visualAssets.energyControl },
+              { title: 'Review relevant options', body: 'Compare service areas against site conditions and the objective. A preliminary discussion can identify questions, but it cannot replace an engineering review.', image: visualAssets.storage },
+              { title: 'Agree on a next step', body: 'Confirm what information, site access or specialist input is needed. Define the scope and responsibilities before committing to further work.', image: visualAssets.renewable },
             ].map((item, index) => (
               <Reveal key={item.title} delay={index * 0.06} as="div">
                 <article className="card h-full overflow-hidden">

@@ -40,10 +40,7 @@ export default function ServicesPage() {
             <h2 className="mt-5 text-3xl font-extrabold leading-tight text-ink sm:text-4xl">Start with the question your site needs to answer.</h2>
             <p className="mt-4 text-base leading-relaxed text-ink-muted">Your first review can focus on site energy use, available infrastructure, vehicle patterns, storage needs, or missing project information.</p>
           </Reveal>
-          <div className="mt-8 max-w-3xl overflow-hidden rounded-xl border border-line">
-            <CardImage image={visualAssets.industrial} className="aspect-[16/7]" />
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Link to="/insights" className="btn-outline">Read energy insights</Link>
             <Link to="/faq" className="btn-outline">Common questions</Link>
           </div>
@@ -68,7 +65,7 @@ export default function ServicesPage() {
               {
                 when: 'You want to understand energy use',
                 then: 'Energy audit',
-                image: visualAssets.engineering,
+                image: visualAssets.siteAssessment,
                 because:
                   'Available bills, meter data and operating context can help frame a review of energy requirements. Operating hours and known changes can reveal what information is missing before options are compared.',
                 to: '/services/consulting',
@@ -77,7 +74,7 @@ export default function ServicesPage() {
               {
                 when: 'You are exploring on-site generation or storage',
                 then: 'Solar or storage design',
-                image: visualAssets.solar,
+                image: visualAssets.rooftopSolarArray,
                 because:
                   'Site area, structural conditions, energy use, electrical infrastructure and project objectives influence feasibility. Clarify ownership, roof or land access and any connection constraints before a system is sized.',
                 to: '/services/solar',
@@ -86,7 +83,7 @@ export default function ServicesPage() {
               {
                 when: 'Your site is planning for electric vehicles',
                 then: 'EV infrastructure',
-                image: visualAssets.ev,
+                image: visualAssets.fleetCharging,
                 because:
                   'Vehicle use, parking duration, charging demand and available electrical capacity help shape the discussion. Routes, dwell windows, site layout and charging operations also affect what should be assessed.',
                 to: '/services/ev-charging',

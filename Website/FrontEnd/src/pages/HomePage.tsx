@@ -5,10 +5,10 @@ import { InsightBand } from '@/components/sections/InsightBand';
 import { EnergyEcosystemContainer } from '@/components/sections/EnergyEcosystemContainer';
 import { ProcessContainer } from '@/components/sections/ProcessContainer';
 import { CtaBand } from '@/components/sections/PageHero';
-import { CardImage, Reveal, ServiceCard, SmartImage } from '@/components/ui';
+import { CardImage, Reveal, ServiceCard } from '@/components/ui';
 import { services, industries } from '@/data/services';
 import { whyWeStart } from '@/data/homeContent';
-import { industryVisuals, visualAssets } from '@/data/visuals';
+import { visualAssets } from '@/data/visuals';
 
 const SPOTLIGHT = [
   { slug: 'manufacturing', label: 'Manufacturing', icon: Factory },
@@ -26,8 +26,8 @@ export default function HomePage() {
       {/* Positioning strip — the one-line answer to "who is this for" */}
       <section className="border-b border-line bg-white">
         <div className="shell py-12 sm:py-16">
-          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-5">
+          <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="lg:col-span-4">
               <Reveal>
                 <p className="eyebrow">
                   <span className="rule-accent" />
@@ -36,21 +36,10 @@ export default function HomePage() {
                 <h2 className="mt-5 text-2xl font-extrabold leading-tight text-ink sm:text-3xl">
                   Clear energy decisions start with your site.
                 </h2>
-                <div className="relative mt-6 h-36 overflow-hidden rounded-xl border border-line sm:h-44">
-                  <SmartImage
-                    src={visualAssets.solar.src}
-                    alt={visualAssets.solar.alt}
-                    width={1200}
-                    height={600}
-                    fill
-                    sizes="(min-width: 1024px) 40vw, 100vw"
-                  />
-                  <span className="absolute inset-0 bg-gradient-to-t from-[#07110f]/55 to-transparent" />
-                </div>
               </Reveal>
             </div>
 
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-8">
               <Reveal delay={0.08}>
                 <p className="text-base leading-relaxed text-ink-muted">
                   Assess solar, EV charging, storage and connected-energy options against
@@ -151,17 +140,17 @@ export default function HomePage() {
                 {
                   title: 'Start with context',
                   body: 'Operating hours, energy use and existing infrastructure frame the questions to review first.',
-                  image: visualAssets.industrial,
+                  image: visualAssets.siteAssessment,
                 },
                 {
                   title: 'Explore connected options',
                   body: 'Compare generation, storage, charging and monitoring against capacity, schedules and site constraints.',
-                  image: visualAssets.storage,
+                  image: visualAssets.energyControl,
                 },
                 {
                   title: 'Make scope clear',
                   body: 'Confirm deliverables, approvals and responsibilities before committing to further work.',
-                  image: visualAssets.engineering,
+                  image: visualAssets.engineeringBlueprints,
                 },
               ].map((item, index) => (
                 <Reveal key={item.title} delay={index * 0.06} as="div">
@@ -215,24 +204,12 @@ export default function HomePage() {
               <Reveal key={item.slug} delay={index * 0.05} as="li">
                 <Link
                   to={`/industries#${item.slug}`}
-                  className="card card-hover group flex h-full flex-col overflow-hidden"
+                  className="card card-hover group flex h-full flex-col p-5"
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <SmartImage
-                      src={industryVisuals[item.slug].src}
-                      alt={industryVisuals[item.slug].alt}
-                      width={960}
-                      height={600}
-                      fill
-                      sizes="(min-width: 1024px) 20vw, (min-width: 640px) 50vw, 100vw"
-                      className="transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <span className="absolute inset-0 bg-gradient-to-t from-[#07110f]/75 via-transparent to-transparent" />
-                    <span className="absolute bottom-4 left-4 grid h-10 w-10 place-items-center rounded-xl border border-white/20 bg-[#07110f]/55 text-emerald-300 backdrop-blur">
-                      <item.icon className="h-5 w-5" />
-                    </span>
+                  <div className="mb-4 grid h-10 w-10 place-items-center rounded-lg border border-emerald-400/20 bg-emerald-400/10 text-emerald-300">
+                    <item.icon className="h-5 w-5" aria-hidden="true" />
                   </div>
-                  <div className="flex flex-1 flex-col p-5">
+                  <div className="flex flex-1 flex-col">
                     <p className="text-[0.98rem] font-bold text-ink transition-colors group-hover:text-emerald-700">
                       {item.label}
                     </p>
@@ -270,22 +247,22 @@ export default function HomePage() {
               {
                 title: 'Site context',
                 body: 'Share the facility type, location, operating status and any access or ownership constraints.',
-                image: visualAssets.industrial,
+                image: visualAssets.warehousing,
               },
               {
                 title: 'Energy use',
                 body: 'Bills or meter data, operating hours and demand peaks help show when the site uses power.',
-                image: visualAssets.solar,
+                image: visualAssets.fleetCharging,
               },
               {
                 title: 'Existing infrastructure',
                 body: 'Note available roof or land, the electrical connection, existing generation and backup systems.',
-                image: visualAssets.storage,
+                image: visualAssets.realEstate,
               },
               {
                 title: 'Project objective',
                 body: 'Describe the decision, solution areas, stakeholders and timeline you are working toward.',
-                image: visualAssets.engineering,
+                image: visualAssets.manufacturing,
               },
             ].map((item, index) => (
               <Reveal key={item.title} delay={index * 0.06} as="div">
