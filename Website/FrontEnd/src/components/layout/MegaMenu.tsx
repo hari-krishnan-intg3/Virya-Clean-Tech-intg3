@@ -161,7 +161,10 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
                   </p>
                   <ul className="space-y-1">
                     {column.items.map((item) => {
-                      const service = item.accent ? getService(item.accent) : undefined;
+                      const service =
+                        group.label !== 'Offerings' && item.accent
+                          ? getService(item.accent)
+                          : undefined;
 
                       return (
                         <li key={item.to + item.label}>

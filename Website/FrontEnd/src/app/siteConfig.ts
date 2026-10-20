@@ -118,7 +118,9 @@ export const NAV: NavGroup[] = [
         heading: 'Explore Virya',
         items: [
           { label: 'Our approach', to: '/about', description: 'Start with the facility, its energy use and operating context.' },
-          { label: 'Energy services', to: '/services', description: 'Solar, charging, storage and connected-energy options.' },
+          { label: 'Energy services', to: '/services', description: 'Compare solar, charging, storage and connected-energy options.' },
+          { label: 'Industries', to: '/industries', description: 'See how energy needs differ across operating environments.' },
+          { label: 'Latest insights', to: '/insights', description: 'Read practical context for energy decisions.' },
         ],
       },
       {
@@ -126,6 +128,8 @@ export const NAV: NavGroup[] = [
         items: [
           { label: 'How we work', to: '/process', description: 'Understand the path from first questions to a scoped review.' },
           { label: 'Request a consultation', to: '/request-consultation', description: 'Share your project objective with the Virya team.' },
+          { label: 'Common questions', to: '/faq', description: 'Find answers about services, feasibility and next steps.' },
+          { label: 'Contact Virya', to: '/contact', description: 'Reach the team directly with a question.' },
         ],
       },
     ],
@@ -150,6 +154,8 @@ export const NAV: NavGroup[] = [
         items: [
           { label: 'About Virya', to: '/about', description: 'Our practical, site-first view of clean-energy decisions.' },
           { label: 'Our process', to: '/process', description: 'What to expect as a project question takes shape.' },
+          { label: 'Projects & capabilities', to: '/projects', description: 'Explore project considerations and areas of work.' },
+          { label: 'Insights', to: '/insights', description: 'Read practical context on energy and technology.' },
         ],
       },
       {
@@ -157,6 +163,7 @@ export const NAV: NavGroup[] = [
         items: [
           { label: 'Careers', to: '/careers', description: 'Explore current opportunities and role information.' },
           { label: 'Contact', to: '/contact', description: 'Reach the Bengaluru team directly.' },
+          { label: 'Frequently asked questions', to: '/faq', description: 'Review common questions before getting in touch.' },
         ],
       },
     ],
@@ -181,7 +188,7 @@ export const NAV: NavGroup[] = [
         items: serviceItems,
       },
       {
-        heading: 'Start with',
+        heading: 'Plan your next step',
         items: [
           {
             label: 'All services',
@@ -204,9 +211,14 @@ export const NAV: NavGroup[] = [
             description: 'Information about services, feasibility and next steps.',
           },
           {
-            label: 'Careers',
-            to: '/careers',
-            description: 'Current opportunities and role information.',
+            label: 'Industries',
+            to: '/industries',
+            description: 'Explore operating contexts across eight segments.',
+          },
+          {
+            label: 'Contact the team',
+            to: '/contact',
+            description: 'Ask a question about your facility or project.',
           },
         ],
       },
@@ -236,7 +248,7 @@ export const NAV: NavGroup[] = [
         })),
       },
       {
-        heading: 'Also served by',
+        heading: 'More sectors',
         items: [
           ...industries.slice(4).map((industry) => ({
             label: industry.label,
@@ -247,6 +259,16 @@ export const NAV: NavGroup[] = [
             label: 'All industries',
             to: '/industries',
             description: 'Eight segments, with the pressure point for each.',
+          },
+          {
+            label: 'Explore energy services',
+            to: '/services',
+            description: 'Compare capabilities for your site and operating needs.',
+          },
+          {
+            label: 'Common questions',
+            to: '/faq',
+            description: 'Learn about feasibility reviews and project next steps.',
           },
         ],
       },
@@ -272,13 +294,15 @@ export const NAV: NavGroup[] = [
         items: [
           { label: 'Project overview', to: '/projects', description: 'Explore the kinds of site and energy questions we help assess.' },
           { label: 'Services', to: '/services', description: 'Review the clean-energy capabilities available to explore.' },
+          { label: 'Industries', to: '/industries', description: 'Review operating contexts across different facility types.' },
         ],
       },
       {
         heading: 'Project planning',
         items: [
-          { label: 'Industries', to: '/industries', description: 'Considerations across common operating environments.' },
           { label: 'How we work', to: '/process', description: 'A clear path from initial context to an agreed scope.' },
+          { label: 'Common questions', to: '/faq', description: 'Get answers about feasibility and planning.' },
+          { label: 'Contact the team', to: '/contact', description: 'Discuss project information and possible next steps.' },
         ],
       },
     ],
@@ -303,13 +327,16 @@ export const NAV: NavGroup[] = [
         items: [
           { label: 'Latest insights', to: '/insights', description: 'Read sourced context on India’s energy transition.' },
           { label: 'Frequently asked questions', to: '/faq', description: 'Answers on feasibility, services and first steps.' },
+          { label: 'How we work', to: '/process', description: 'See how questions progress into project-specific scope.' },
         ],
       },
       {
         heading: 'Explore further',
         items: [
           { label: 'Industries', to: '/industries', description: 'See how operating needs vary from site to site.' },
+          { label: 'Explore services', to: '/services', description: 'Review clean-energy options for commercial facilities.' },
           { label: 'Request a consultation', to: '/request-consultation', description: 'Discuss the question behind your project.' },
+          { label: 'Contact Virya', to: '/contact', description: 'Connect with the team about your energy questions.' },
         ],
       },
     ],
