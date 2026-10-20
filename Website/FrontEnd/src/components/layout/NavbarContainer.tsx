@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { ChevronDown, Menu, Phone, X } from 'lucide-react';
+import { ChevronDown, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '@/components/ui';
 import { MegaMenu } from './MegaMenu';
-import { CONTACT, NAV } from '@/app/siteConfig';
+import { NAV } from '@/app/siteConfig';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useScrolled } from '@/hooks/useScrolled';
 import { cn } from '@/lib/utils';
@@ -105,22 +105,10 @@ export function NavbarContainer() {
 
             {/* ── Actions ─────────────────────────────────────────── */}
             <div className="flex items-center gap-2 sm:gap-3">
-              <a
-                href={CONTACT.phoneHref}
-                onClick={() => trackEvent('nav_click', { target: 'phone' })}
-                className={cn(
-                  'hidden items-center gap-2 rounded-lg px-2.5 py-2 text-[0.9rem] font-semibold transition-colors xl:inline-flex',
-                  condensed ? 'text-ink-muted hover:text-emerald-700' : 'text-white/80 hover:text-white',
-                )}
-              >
-                <Phone className="h-4 w-4" />
-                {CONTACT.phoneDisplay}
-              </a>
-
               <Link
                 to="/request-consultation"
                 onClick={() => trackEvent('nav_click', { target: 'consultation' })}
-                className="btn-primary btn-sm hidden shadow-soft sm:inline-flex"
+                className="btn-primary hidden h-10 min-w-[12rem] justify-center px-5 text-sm leading-none shadow-soft sm:inline-flex"
               >
                 Request Consultation
               </Link>
@@ -233,14 +221,6 @@ export function NavbarContainer() {
                   >
                     Request Consultation
                   </Link>
-                  <a
-                    href={CONTACT.phoneHref}
-                    className="btn-outline w-full"
-                    onClick={() => trackEvent('nav_click', { target: 'phone' })}
-                  >
-                    <Phone className="h-4 w-4" />
-                    {CONTACT.phoneDisplay}
-                  </a>
                 </div>
               </div>
             </motion.div>
