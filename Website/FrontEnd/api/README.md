@@ -112,6 +112,12 @@ Variables**, then:
 vercel --prod
 ```
 
+For Redis-backed session tracking, set `REDIS_URL` to the full connection URL
+from Redis Cloud in Vercel as a server-only variable. Do not use a `VITE_`
+prefix or commit the URL. Session records expire after 90 days; the existing
+consent and Do Not Track checks remain in effect. Verify the deployed connection
+with `GET /api/session?health=1` (it reports the storage type, never credentials).
+
 Check it:
 
 ```bash

@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { sessionConfig } from './_lib/config.js';
 import { buildRequestContext, isVercelInternal } from './_lib/context.js';
-import { findReturningSession, upsertSession, type SessionPayload } from './_lib/session.js';
+import { findReturningSession, normalizeSessionRecord, upsertSession, type SessionPayload } from './_lib/session.js';
+import { findReturningRedisSession, pingRedisSessionStore, upsertRedisSession } from './_lib/redis-session.js';
 
 /**
  * Visitor session endpoint.
@@ -17,6 +18,18 @@ import { findReturningSession, upsertSession, type SessionPayload } from './_lib
 const MAX_BODY_BYTES = 24_000;
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  if (req.method === 'GET' && req.query?.health === '1') {
+    res.setHeader('Cache-Control', 'no-store');
+    try {
+      const config = sessionConfig();
+      if (!config.redisUrl) return res.status(200).json({ ok: true, storage: 'sheets' });
+      await pingRedisSessionStore(config.redisUrl);
+      return res.status(200).json({ ok: true, storage: 'redis' });
+    } catch {
+      return res.status(503).json({ ok: false, storage: 'unavailable' });
+    }
+  }
+
   if (req.method === 'GET' && req.query?.returning === '1') {
     res.setHeader('Cache-Control', 'no-store');
     const visitorId = typeof req.query.visitorId === 'string' ? req.query.visitorId : '';
@@ -26,14 +39,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     try {
       const config = sessionConfig();
-      if (!config.sessionsTab) return res.status(200).json({ returning: false });
-
-      const summary = await findReturningSession(
-        config.sheets,
-        config.google,
-        config.sessionsTab,
-        visitorId,
-      );
+      let summary = config.redisUrl
+        ? await findReturningRedisSession(config.redisUrl, visitorId)
+        : null;
+      if (!summary && config.sheets && config.google) {
+        summary = await findReturningSession(
+          config.sheets,
+          config.google,
+          config.sessionsTab,
+          visitorId,
+        );
+      }
       return res.status(200).json(summary ? { returning: true, ...summary } : { returning: false });
     } catch {
       return res.status(503).json({ returning: false });
@@ -65,11 +81,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(204).end();
   }
 
-  if (!config.sessionsTab) {
-    res.setHeader('Cache-Control', 'no-store');
-    return res.status(204).end();
-  }
-
   const raw = typeof req.body === 'string' ? req.body : JSON.stringify(req.body ?? {});
   if (raw.length > MAX_BODY_BYTES) {
     return res.status(413).json({ error: 'payload too large' });
@@ -91,18 +102,34 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const result = await upsertSession(
-      config.sheets,
-      config.google,
-      config.sessionsTab,
-      payload,
-      request,
-    );
+    let result: { mode: 'created' | 'updated'; row?: number };
+    let storage: 'redis' | 'sheets';
+
+    if (config.redisUrl) {
+      try {
+        result = await upsertRedisSession(
+          config.redisUrl,
+          normalizeSessionRecord(payload, request),
+        );
+        storage = 'redis';
+      } catch (error) {
+        if (!config.sheets || !config.google) throw error;
+        console.warn('[session] Redis write failed; using Sheets fallback');
+        result = await upsertSession(config.sheets, config.google, config.sessionsTab, payload, request);
+        storage = 'sheets';
+      }
+    } else if (config.sheets && config.google) {
+      result = await upsertSession(config.sheets, config.google, config.sessionsTab, payload, request);
+      storage = 'sheets';
+    } else {
+      return res.status(204).end();
+    }
 
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({
       ok: true,
       mode: result.mode,
+      storage,
       session: payload.sessionId ?? null,
       at: new Date().toISOString(),
     });

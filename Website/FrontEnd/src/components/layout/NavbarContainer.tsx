@@ -53,8 +53,8 @@ export function NavbarContainer() {
         className={cn(
           'fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,border-color,backdrop-filter] duration-300',
           condensed
-            ? 'border-b border-line/80 bg-white/85 shadow-soft backdrop-blur-xl'
-            : 'border-b border-white/10 bg-white/5 backdrop-blur-md',
+            ? 'border-b border-white/10 bg-[#07110f]/95 shadow-soft backdrop-blur-xl'
+            : 'border-b border-white/10 bg-[#07110f]/45 backdrop-blur-xl',
         )}
       >
         <nav className="shell" aria-label="Primary">
@@ -70,7 +70,7 @@ export function NavbarContainer() {
               aria-label="Virya Clean Tech — home"
               className="shrink-0"
             >
-              <Logo tone={condensed ? 'dark' : 'light'} />
+              <Logo tone="light" />
             </Link>
 
             {/* ── Desktop ─────────────────────────────────────────── */}
@@ -167,7 +167,7 @@ export function NavbarContainer() {
               animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
               exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12 }}
               transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed inset-x-0 top-[4.25rem] z-40 max-h-[calc(100vh-5rem)] overflow-y-auto rounded-b-[1.6rem] border-b border-line bg-white shadow-lift lg:hidden"
+              className="fixed inset-x-0 top-[4.25rem] z-[60] max-h-[calc(100vh-5rem)] overflow-y-auto rounded-b-[1.6rem] border-b border-line bg-white shadow-lift lg:hidden"
             >
               <div className="shell flex flex-col gap-1 py-6">
                 {NAV.map((group) => {

@@ -106,10 +106,42 @@ export const NAV: NavGroup[] = [
   {
     label: 'Home',
     to: '/',
+    columns: [
+      {
+        heading: 'Explore Virya',
+        items: [
+          { label: 'Our approach', to: '/about', description: 'Start with the facility, its energy use and operating context.' },
+          { label: 'Energy services', to: '/services', description: 'Solar, charging, storage and connected-energy options.' },
+        ],
+      },
+      {
+        heading: 'Plan a next step',
+        items: [
+          { label: 'How we work', to: '/process', description: 'Understand the path from first questions to a scoped review.' },
+          { label: 'Request a consultation', to: '/request-consultation', description: 'Share your project objective with the Virya team.' },
+        ],
+      },
+    ],
   },
   {
     label: 'About',
     to: '/about',
+    columns: [
+      {
+        heading: 'The company',
+        items: [
+          { label: 'About Virya', to: '/about', description: 'Our practical, site-first view of clean-energy decisions.' },
+          { label: 'Our process', to: '/process', description: 'What to expect as a project question takes shape.' },
+        ],
+      },
+      {
+        heading: 'Connect',
+        items: [
+          { label: 'Careers', to: '/careers', description: 'Explore current opportunities and role information.' },
+          { label: 'Contact', to: '/contact', description: 'Reach the Bengaluru team directly.' },
+        ],
+      },
+    ],
   },
   {
     label: 'Offerings',
@@ -189,10 +221,42 @@ export const NAV: NavGroup[] = [
   {
     label: 'Projects',
     to: '/projects',
+    columns: [
+      {
+        heading: 'Capabilities',
+        items: [
+          { label: 'Project overview', to: '/projects', description: 'Explore the kinds of site and energy questions we help assess.' },
+          { label: 'Services', to: '/services', description: 'Review the clean-energy capabilities available to explore.' },
+        ],
+      },
+      {
+        heading: 'Project planning',
+        items: [
+          { label: 'Industries', to: '/industries', description: 'Considerations across common operating environments.' },
+          { label: 'How we work', to: '/process', description: 'A clear path from initial context to an agreed scope.' },
+        ],
+      },
+    ],
   },
   {
     label: 'Insights',
     to: '/insights',
+    columns: [
+      {
+        heading: 'Energy context',
+        items: [
+          { label: 'Latest insights', to: '/insights', description: 'Read sourced context on India’s energy transition.' },
+          { label: 'Frequently asked questions', to: '/faq', description: 'Answers on feasibility, services and first steps.' },
+        ],
+      },
+      {
+        heading: 'Explore further',
+        items: [
+          { label: 'Industries', to: '/industries', description: 'See how operating needs vary from site to site.' },
+          { label: 'Request a consultation', to: '/request-consultation', description: 'Discuss the question behind your project.' },
+        ],
+      },
+    ],
   },
 ];
 

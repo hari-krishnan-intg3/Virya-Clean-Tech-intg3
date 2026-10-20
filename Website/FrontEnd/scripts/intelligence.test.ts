@@ -1,11 +1,27 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { SESSION_HEADERS, sheetColumnName } from '../api/_lib/session.js';
+import { normalizeSessionRecord, SESSION_HEADERS, sheetColumnName } from '../api/_lib/session.js';
+import type { RequestContext } from '../api/_lib/context.js';
 import { getVercelAnalytics } from '../api/_lib/vercel-analytics.js';
 import { sessionHasExpired, SESSION_IDLE_MS } from '../src/lib/session';
 import { parseChatSnapshot, parseVisitorMemory } from '../src/lib/visitorMemory';
 
 const now = Date.parse('2026-10-14T00:00:00.000Z');
+const testRequestContext: RequestContext = {
+  ip: '203.0.113.42',
+  ipForStorage: '203.0.x.x',
+  country: 'IN',
+  region: 'KA',
+  city: 'Bengaluru',
+  network: null,
+  userAgent: 'Mozilla/5.0',
+  browser: 'Chrome',
+  browserVersion: '120',
+  os: 'Linux',
+  device: 'desktop',
+  isBot: false,
+  edgeRegion: null,
+};
 
 function visitorRaw(overrides: Record<string, unknown> = {}): string {
   return JSON.stringify({
@@ -32,6 +48,24 @@ test('session headers end at AJ after adding UTC offset', () => assert.equal(she
 test('active session does not expire before the idle limit', () => assert.equal(sessionHasExpired(now - SESSION_IDLE_MS + 1, now), false));
 test('session expires after thirty minutes idle', () => assert.equal(sessionHasExpired(now - SESSION_IDLE_MS - 1, now), true));
 test('session expires when its activity timestamp is invalid', () => assert.equal(sessionHasExpired(Number.NaN, now), true));
+test('session record normalization bounds metrics and uses server-masked IP', () => {
+  const record = normalizeSessionRecord(
+    {
+      visitorId: `vis_${'b'.repeat(24)}`,
+      sessionId: `ses_${'a'.repeat(24)}`,
+      pages: ['/','/services/solar'],
+      maxScrollDepth: 125,
+      activeSeconds: -5,
+      events: [{ event: 'page_view' }],
+    },
+    testRequestContext,
+  );
+
+  assert.equal(record.maxScrollDepth, 100);
+  assert.equal(record.activeSeconds, 0);
+  assert.equal(record.ip, '203.0.x.x');
+  assert.equal(record.lastEvents, 'page_view');
+});
 test('valid visitor memory is restored', () => assert.equal(parseVisitorMemory(visitorRaw(), now)?.lastPath, '/services/solar'));
 test('null visitor memory is ignored', () => assert.equal(parseVisitorMemory(null, now), null));
 test('malformed visitor memory is ignored', () => assert.equal(parseVisitorMemory('{', now), null));

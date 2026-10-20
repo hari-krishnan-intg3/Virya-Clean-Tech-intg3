@@ -53,7 +53,7 @@ export function HeroSliderContainer() {
       id="home"
       aria-label="Introduction"
       aria-roledescription="carousel"
-      className="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-ink"
+      className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-ink"
       onMouseEnter={() => {
         hoverRef.current = true;
         if (playing) swiper()?.autoplay?.stop();
@@ -122,11 +122,11 @@ export function HeroSliderContainer() {
       </Swiper>
 
       {/* Content layer — fixed so text position never shifts between slides */}
-      <div className="shell relative z-10 w-full pb-24 pt-32 sm:pb-28">
-        <div className="max-w-3xl">
+      <div className="shell relative z-10 w-full py-32 sm:py-40">
+        <div className="mx-auto max-w-5xl text-center">
           <p
             key={`eyebrow-${active}`}
-            className="hero-stagger"
+            className="hero-stagger flex justify-center"
             style={{ animationDelay: reduced ? undefined : '0ms' }}
           >
             <span className="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-md">
@@ -140,7 +140,7 @@ export function HeroSliderContainer() {
 
           <h1
             key={`title-${active}`}
-            className="hero-stagger mt-6 text-balance font-heading text-[2.1rem] font-extrabold leading-[1.06] tracking-tight text-white sm:text-5xl lg:text-[4.1rem]"
+            className="hero-stagger mx-auto mt-7 max-w-5xl text-balance font-heading text-[2.6rem] font-extrabold leading-[1.04] text-white sm:text-6xl lg:text-[5.5rem]"
             style={{ animationDelay: reduced ? undefined : '90ms' }}
           >
             {heroSlides[active].headline}
@@ -148,7 +148,7 @@ export function HeroSliderContainer() {
 
           <p
             key={`body-${active}`}
-            className="hero-stagger mt-6 max-w-xl text-pretty text-base leading-relaxed text-white/75 sm:text-lg"
+            className="hero-stagger mx-auto mt-7 max-w-3xl text-pretty text-base leading-relaxed text-white/80 sm:text-xl lg:text-2xl"
             style={{ animationDelay: reduced ? undefined : '180ms' }}
           >
             {heroSlides[active].subtext}
@@ -156,7 +156,7 @@ export function HeroSliderContainer() {
 
           <div
             key={`cta-${active}`}
-            className="hero-stagger mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+            className="hero-stagger mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
             style={{ animationDelay: reduced ? undefined : '270ms' }}
           >
             <Link

@@ -295,13 +295,36 @@ export async function upsertSession(
   payload: SessionPayload,
   request: RequestContext,
 ): Promise<{ mode: 'created' | 'updated'; row: number }> {
-  const sessionId = text(payload.sessionId, MAX_ID);
-  if (!sessionId) throw new Error('sessionId is required');
+  const record = normalizeSessionRecord(payload, request);
+  const sessionId = record.sessionId;
 
   await ensureTab(sheets, google, tab);
   await ensureSessionHeaders(sheets, google, tab);
 
-  const record: SessionRecord = {
+  const values = toRow(record);
+  const index = await indexSessions(sheets, google, tab);
+  const existingRow = index.get(sessionId);
+
+  if (existingRow) {
+    await writeTab(sheets, google, tab, `A${existingRow}:${LAST_COLUMN}${existingRow}`, [values]);
+    return { mode: 'updated', row: existingRow };
+  }
+
+  const { appendRows } = await import('./sheets.js');
+  await appendRows(sheets, google, tab, `A:${LAST_COLUMN}`, [values]);
+
+  const nextRow = await countRowsAfter(sheets, google, tab, sessionId, existingRow);
+  return { mode: 'created', row: nextRow };
+}
+
+export function normalizeSessionRecord(
+  payload: SessionPayload,
+  request: RequestContext,
+): SessionRecord {
+  const sessionId = text(payload.sessionId, MAX_ID);
+  if (!sessionId) throw new Error('sessionId is required');
+
+  return {
     sessionId,
     visitorId: text(payload.visitorId, MAX_ID),
     startedAt: text(payload.startedAt) || new Date().toISOString(),
@@ -345,22 +368,6 @@ export async function upsertSession(
       .join(' → ')
       .slice(0, 400),
   };
-
-  const values = toRow(record);
-  const index = await indexSessions(sheets, google, tab);
-  const existingRow = index.get(sessionId);
-
-  if (existingRow) {
-    await writeTab(sheets, google, tab, `A${existingRow}:${LAST_COLUMN}${existingRow}`, [values]);
-    return { mode: 'updated', row: existingRow };
-  }
-
-  // appendRows writes to the next free row; find it after the write.
-  const { appendRows } = await import('./sheets.js');
-  await appendRows(sheets, google, tab, `A:${LAST_COLUMN}`, [values]);
-
-  const nextRow = await countRowsAfter(sheets, google, tab, sessionId, existingRow);
-  return { mode: 'created', row: nextRow };
 }
 
 async function countRowsAfter(

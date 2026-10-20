@@ -214,19 +214,42 @@ export function loadConfig(): AppConfig {
  * be validated independently of the report stack. Keeps /api/session from
  * 503-ing just because a Jira token is missing.
  */
-export function sessionConfig(): Pick<AppConfig, 'sheets' | 'google' | 'sessionsTab' | 'storeRawIp'> {
+export interface SessionConfig {
+  redisUrl?: string;
+  sheets?: SheetsConfig;
+  google?: GoogleAuthConfig;
+  sessionsTab: string;
+  storeRawIp: boolean;
+}
+
+export function sessionConfig(): SessionConfig {
+  const redisUrl = process.env.REDIS_URL?.trim() || undefined;
+  const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+  const spreadsheetId = process.env.SHEETS_SPREADSHEET_ID;
+  const sheetsReady = Boolean(clientEmail && privateKey && spreadsheetId);
+
+  if (!redisUrl && !sheetsReady) {
+    throw new Error('Set REDIS_URL or configure Google Sheets session storage.');
+  }
+
   return {
-    sheets: {
-      spreadsheetId: required('SHEETS_SPREADSHEET_ID'),
-      reportsTab: process.env.SHEETS_REPORTS_TAB || 'Reports',
-      kpiTab: process.env.SHEETS_KPI_TAB || 'Reports KPI',
-      leadsTab: process.env.SHEETS_LEADS_TAB || undefined,
-      analyticsTab: process.env.SHEETS_ANALYTICS_TAB || 'Vercel Analytics',
-    },
-    google: {
-      clientEmail: required('GOOGLE_CLIENT_EMAIL'),
-      privateKey: required('GOOGLE_PRIVATE_KEY').replace(/\\n/g, '\n'),
-    },
+    redisUrl,
+    ...(sheetsReady
+      ? {
+          sheets: {
+            spreadsheetId: spreadsheetId as string,
+            reportsTab: process.env.SHEETS_REPORTS_TAB || 'Reports',
+            kpiTab: process.env.SHEETS_KPI_TAB || 'Reports KPI',
+            leadsTab: process.env.SHEETS_LEADS_TAB || undefined,
+            analyticsTab: process.env.SHEETS_ANALYTICS_TAB || 'Vercel Analytics',
+          },
+          google: {
+            clientEmail: clientEmail as string,
+            privateKey: (privateKey as string).replace(/\\n/g, '\n'),
+          },
+        }
+      : {}),
     sessionsTab: process.env.SHEETS_SESSIONS_TAB ?? 'Sessions',
     storeRawIp: process.env.STORE_RAW_IP === 'true',
   };

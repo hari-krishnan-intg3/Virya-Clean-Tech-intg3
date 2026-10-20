@@ -20,7 +20,13 @@ export default function handler(_req: VercelRequest, res: VercelResponse) {
     missing,
     supportedReports: REPORT_TYPES,
     features: {
-      sessionTracking: Boolean(process.env.SHEETS_SESSIONS_TAB ?? 'Sessions'),
+      sessionTracking: Boolean(
+        process.env.REDIS_URL ||
+          (process.env.GOOGLE_CLIENT_EMAIL &&
+            process.env.GOOGLE_PRIVATE_KEY &&
+            process.env.SHEETS_SPREADSHEET_ID),
+      ),
+      sessionStorage: process.env.REDIS_URL ? 'redis' : 'sheets',
       leadsAssigned: Boolean(process.env.JIRA_LEADS_ASSIGNEE_ID),
       vercelAnalytics: Boolean(
         (process.env.VERCEL_CONTROLLER || process.env.VERCEL_ACCESS_TOKEN) &&

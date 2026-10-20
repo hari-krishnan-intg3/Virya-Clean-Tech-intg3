@@ -103,7 +103,7 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
         role="region"
         aria-label={group.label}
         hidden={!open}
-        className="absolute left-1/2 top-full z-50 w-[min(56rem,90vw)] -translate-x-1/2 pt-3"
+        className="fixed left-1/2 top-[4.5rem] z-50 w-[min(56rem,90vw)] -translate-x-1/2 pt-3"
       >
         <div
           className={cn(
@@ -157,7 +157,7 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
           </div>
 
           {group.feature && (
-            <div className="border-t border-line bg-gradient-to-r from-emerald-50 to-signal-50/60 px-7 py-5">
+            <div className="border-t border-white/10 bg-[#0c1a16] px-7 py-5">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="max-w-md">
                   <p className="text-[0.95rem] font-bold text-ink">{group.feature.title}</p>

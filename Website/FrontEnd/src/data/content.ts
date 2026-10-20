@@ -18,37 +18,34 @@ export interface HeroSlide {
 export const heroSlides: HeroSlide[] = [
   {
     id: 'future',
-    eyebrow: 'Clean energy for business',
-    headline: 'Explore a smarter energy future for your facility.',
+    eyebrow: 'Clean energy, engineered for your site',
+    headline: 'Build a clearer path to cleaner energy.',
     subtext:
-      'Explore solar, EV charging, storage and connected-energy options through the lens of your site, operating needs and project goals.',
-    image:
-      'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/alternative-energy-ecological-concept-2021-08-29-01-16-39-utc-r6meidpw3yeqhqnfbk43plqnob1so02kx2zrxwbiag.jpg',
+      'Solar, EV charging, battery storage and connected-energy software can work together, but the right mix starts with your site. Explore the questions that shape a practical next step.',
+    image: '/images/solar-array.jpg',
     imageAlt:
-      'Solar photovoltaic panels installed on a building, surrounded by greenery at dusk.',
-    focal: 'center 40%',
+      'A wide field of solar panels catching warm evening light.',
+    focal: 'center 52%',
   },
   {
     id: 'innovation',
-    eyebrow: 'Energy systems work together',
-    headline: 'Connect generation, charging and operations.',
+    eyebrow: 'Systems work better in context',
+    headline: 'Connect energy generation, storage and demand.',
     subtext:
-      'Understand how energy demand, available infrastructure and technology choices shape a practical project plan.',
-    image:
-      'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/ev-charging-station-clean-energy-filling-technology-electric-car-charging-scaled-r6meidpw3yeqhqnfbk43plqnob1so02kx2zrxwbiag.jpg',
-    imageAlt: 'Electric vehicle plugged into a smart charging station.',
-    focal: 'center 45%',
+      'Load patterns, operating hours, site infrastructure and project goals all influence what may be feasible. Bring those details together before choosing a technology or defining a project.',
+    image: '/images/wind-energy.jpg',
+    imageAlt: 'Wind turbines across a green landscape beneath a wide sky.',
+    focal: 'center 48%',
   },
   {
     id: 'solar',
-    eyebrow: 'Commercial and industrial solar',
-    headline: 'Start with the site. Then assess solar.',
+    eyebrow: 'Mobility meets site infrastructure',
+    headline: 'Make room for the next generation of mobility.',
     subtext:
-      'Roof condition, available area, energy use and electrical infrastructure all influence whether a solar project is suitable.',
-    image:
-      'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/engineer-electric-woman-checking-and-maintenance-of-solar-cells-1024x684-1-r6meidptx0o0prd40xhzpa0uy2uuax1um815hhjz0g.jpg',
-    imageAlt: 'Engineer carrying out maintenance checks across a solar panel array.',
-    focal: 'center 40%',
+      'Charging needs depend on vehicle routes, dwell time and available electrical capacity. Start with how people and vehicles move through your site, then explore an infrastructure plan that fits.',
+    image: '/images/electric-mobility.jpg',
+    imageAlt: 'An electric vehicle connected to a charging cable.',
+    focal: 'center 50%',
   },
 ];
 

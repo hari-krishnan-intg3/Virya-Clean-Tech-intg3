@@ -99,6 +99,10 @@ Website/FrontEnd/
 
 public/
 ├── favicon.svg
+├── images/
+│   ├── solar-array.jpg
+│   ├── wind-energy.jpg
+│   └── electric-mobility.jpg
 └── google-calendar/
     └── google-calendar-scheduler.js   # copy of the connector (see below)
 ```
@@ -121,26 +125,27 @@ runtime if you ever switch to the embedded widget.
 
 | Token | Value | Use |
 | --- | --- | --- |
-| Surface | `#FFFFFF` | Page background (light theme throughout) |
-| Surface alt | `#F5F8F7` | Alternating sections, cards on hover |
-| Primary | `#10B981` | Emerald — CTAs, accents, active states |
-| Deep green | `#064E3B` | Footer links, hover states |
-| Tech | `#0EA5E9` | Secondary accent, data/monitoring motifs |
-| Text | `#1E293B` | Headings and body |
-| Text muted | `#64748B` | Supporting copy |
-| Border | `#E3EBE8` | Subtle green-tinted hairlines |
+| Surface | `#07110F` | Deep charcoal page canvas |
+| Surface alt | `#0E1D18` | Alternating sections and raised surfaces |
+| Primary | `#34D3A2` | Virya green — CTAs, accents, active states |
+| Deep green | `#11271E` | Subtle green panels and icon surfaces |
+| Tech | `#0EA5E9` | Cyan-blue secondary accents |
+| Text | `#EDF6F1` | High-contrast headings and body |
+| Text muted | `#A5B8AE` | Supporting copy |
+| Border | `#20342C` | Quiet green-tinted hairlines |
 
-Typography: **Manrope** (headings) + **Inter** (body), loaded from Google Fonts
-with `preconnect`.
+Typography: **Inter** for headings and body, loaded from Google Fonts with
+`preconnect` to match the reference's clean, technical typography.
 
 ### "Energy in Motion" signature language
 
 - Thin animated energy-flow lines between the four ecosystem nodes (SVG
   `stroke-dasharray` loop, `flowDash` keyframes).
 - Abstract circuit / distribution grid patterns (`grid-lines` utility).
-- Layered ambient green + blue glow blobs behind key visuals.
+- Dark charcoal surfaces with crisp green and cyan-blue accents.
 - Small animated status indicators (hero eyebrow pulse, node pulse rings).
 - Oversized editorial headings with gradient accents on key phrases.
+- Locally hosted clean-energy photography for the three-slide hero.
 
 ---
 
