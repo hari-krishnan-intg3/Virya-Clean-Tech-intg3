@@ -13,7 +13,7 @@ import {
   Truck,
 } from 'lucide-react';
 import { CtaBand } from '@/components/sections/PageHero';
-import { Reveal } from '@/components/ui';
+import { Reveal, SmartImage } from '@/components/ui';
 import { getService, services } from '@/data/services';
 import { disqualifiers } from '@/data/qualification';
 
@@ -122,7 +122,7 @@ export default function ServiceDetailPage() {
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  to="/#slots"
+                  to="/contact#slots"
                   className="btn btn-lg border border-white/25 text-white hover:-translate-y-0.5 hover:border-white/50 hover:bg-white/5"
                 >
                   <CalendarDays className="h-4 w-4" />
@@ -132,7 +132,23 @@ export default function ServiceDetailPage() {
             </div>
 
             {/* At-a-glance panel */}
-            <div className="lg:col-span-5">
+            <div className="space-y-5 lg:col-span-5">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10">
+                <SmartImage
+                  src={service.image}
+                  alt={service.imageAlt}
+                  width={1600}
+                  height={1000}
+                  fill
+                  sizes="(min-width: 1024px) 40vw, 100vw"
+                />
+                <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#07110f]/55 to-transparent" />
+                <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#07110f]/55 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
+                  <Icon className="h-4 w-4" aria-hidden="true" />
+                  {service.label}
+                </span>
+              </div>
+
               <div className="panel overflow-hidden">
                 <dl className="divide-y divide-line">
                   <div className="flex items-center gap-4 p-5">

@@ -13,16 +13,16 @@ export interface WhyWeStart {
  */
 export const whyWeStart: WhyWeStart[] = [
   {
-    title: 'Start with the information you have',
-    body: 'Site location, facility type, available bills or usage data and operating hours help frame an initial discussion. Include whether the facility is existing or planned and any near-term operational changes.',
+    title: 'Site context',
+    body: 'Facility type, location, energy data and existing systems frame the first review.',
   },
   {
-    title: 'Consider how the site operates',
-    body: 'Production schedules, occupancy, charging windows and critical loads can change which options are worth assessing. Describe when the site is busiest and what equipment or services must remain available.',
+    title: 'Operating needs',
+    body: 'Hours, critical loads and charging windows shape the options worth assessing.',
   },
   {
-    title: 'Agree on a useful next step',
-    body: 'A preliminary conversation can identify missing information and whether a more detailed technical review is appropriate. Project scope, site conditions and agreed responsibilities determine what happens after that discussion.',
+    title: 'A clear next step',
+    body: 'Agree on missing information, review scope and responsibilities before detailed work.',
   },
 ];
 

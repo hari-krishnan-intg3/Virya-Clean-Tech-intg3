@@ -692,7 +692,7 @@ export default function CareersPage() {
         title="Not looking for a job right now?"
         body="Most of the useful intelligence about a company comes from its clients. If you have a site with a rising bill or a fleet to electrify, that conversation is worth more to both of us than any speculative application."
         primary={{ label: 'Request a consultation', to: '/request-consultation' }}
-        secondary={{ label: 'See open roles', to: '/roles' }}
+        secondary={{ label: 'See open roles', to: '/careers#roles' }}
       />
     </>
   );

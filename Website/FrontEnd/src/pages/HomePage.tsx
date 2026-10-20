@@ -5,7 +5,7 @@ import { InsightBand } from '@/components/sections/InsightBand';
 import { EnergyEcosystemContainer } from '@/components/sections/EnergyEcosystemContainer';
 import { ProcessContainer } from '@/components/sections/ProcessContainer';
 import { CtaBand } from '@/components/sections/PageHero';
-import { Reveal } from '@/components/ui';
+import { Reveal, ServiceCard } from '@/components/ui';
 import { services, industries } from '@/data/services';
 import { whyWeStart } from '@/data/homeContent';
 
@@ -33,7 +33,7 @@ export default function HomePage() {
                   What we do
                 </p>
                 <h2 className="mt-5 text-2xl font-extrabold leading-tight text-ink sm:text-3xl">
-                  Make your next energy decision with a clearer view of the site.
+                  Clear energy decisions start with your site.
                 </h2>
               </Reveal>
             </div>
@@ -41,11 +41,8 @@ export default function HomePage() {
             <div className="lg:col-span-7">
               <Reveal delay={0.08}>
                 <p className="text-base leading-relaxed text-ink-muted">
-                  Clean-energy projects start with how a facility uses energy,
-                  what infrastructure is already in place, and what the business
-                  needs to change. Explore relevant options, understand the
-                  information that can shape an assessment, and decide on a
-                  practical next step with the Virya team.
+                  Assess solar, EV charging, storage and connected-energy options against
+                  real operations, existing infrastructure and project goals.
                 </p>
 
                 <div className="mt-8 grid gap-6 sm:grid-cols-3">
@@ -87,46 +84,13 @@ export default function HomePage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {services.map((service, index) => (
               <Reveal key={service.slug} delay={index * 0.06} as="div">
-                <Link
-                  to={`/services/${service.slug}`}
-                  className="card card-hover group flex h-full flex-col p-7"
-                >
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`inline-grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${service.gradient} text-white shadow-glow`}
-                    >
-                      <service.icon className="h-5 w-5" />
-                    </span>
-                  </div>
-
-                  <h3 className="mt-6 text-xl font-bold leading-snug text-ink transition-colors group-hover:text-emerald-700">
-                    {service.title}
-                  </h3>
-
-                  <p className="mt-3 flex-1 text-[0.9rem] leading-relaxed text-ink-muted">
-                    {service.cardSummary}
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap gap-2">
-                    <span className="rounded-full border border-line bg-mist px-3 py-1 text-[0.72rem] font-medium text-ink-muted">
-                      {service.scale}
-                    </span>
-                    <span className="rounded-full border border-line bg-mist px-3 py-1 text-[0.72rem] font-medium text-ink-muted">
-                      {service.timeline}
-                    </span>
-                  </div>
-
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-[0.9rem] font-semibold text-emerald-700">
-                    Explore
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                </Link>
+                <ServiceCard service={service} />
               </Reveal>
             ))}
 
             {/* Conversion tile closes the grid deliberately. */}
             <Reveal delay={0.3} as="div">
-              <div className="flex h-full flex-col justify-between rounded-[1.6rem] bg-ink p-7 text-white">
+              <div className="flex h-full flex-col justify-between rounded-lg border border-white/10 bg-ink p-7 text-white">
                 <div>
                   <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-white/45">
                     Not sure where to start?
@@ -141,7 +105,7 @@ export default function HomePage() {
                   to="/request-consultation"
                   className="btn-primary-lg mt-8 w-full justify-center"
                 >
-                  Request a consultation
+                  Discuss Your Project
                 </Link>
               </div>
             </Reveal>
@@ -160,10 +124,9 @@ export default function HomePage() {
                 Practical energy decisions start with the way a site works.
               </h2>
               <p className="mt-5 text-base leading-relaxed text-white/70">
-                Virya helps businesses explore solar, EV charging, storage,
-                connected-energy technology and assessments. The team begins
-                with the facility, operating requirements and project objective;
-                suitability depends on site conditions and agreed scope.
+                Virya helps businesses assess clean-energy options around the facility,
+                its operating needs and the project decision ahead. Suitability depends
+                on site conditions and agreed scope.
               </p>
               <Link to="/about" className="btn-outline mt-7 border-white/25 text-white hover:bg-white/10">
                 About Virya
@@ -175,15 +138,15 @@ export default function HomePage() {
               {[
                 {
                   title: 'Start with context',
-                  body: 'Operating hours, energy use, site layout and existing infrastructure help frame which questions matter. Available data can guide the first review, while gaps are identified before conclusions are drawn.',
+                  body: 'Operating hours, energy use and existing infrastructure frame the questions to review first.',
                 },
                 {
                   title: 'Explore connected options',
-                  body: 'Generation, storage, charging and monitoring can interact, but each facility has different needs. Options should be considered against vehicle patterns, electrical capacity, ownership and operational constraints.',
+                  body: 'Compare generation, storage, charging and monitoring against capacity, schedules and site constraints.',
                 },
                 {
                   title: 'Make scope clear',
-                  body: 'Technical reviews, equipment, approvals, deliverables and ongoing support depend on the agreed engagement. Clarifying responsibilities and assumptions helps everyone understand the next step.',
+                  body: 'Confirm deliverables, approvals and responsibilities before committing to further work.',
                 },
               ].map((item, index) => (
                 <Reveal key={item.title} delay={index * 0.06} as="div">
@@ -215,12 +178,11 @@ export default function HomePage() {
                 Industries
               </p>
               <h2 className="mt-5 text-3xl font-extrabold leading-[1.12] text-ink sm:text-4xl">
-                Considerations for real operating environments
+                Different sites. Different energy questions.
               </h2>
               <p className="mt-5 text-base leading-relaxed text-ink-muted">
-                Different facilities have different operating hours, electrical
-                constraints and project objectives. Explore common questions by
-                site type, then assess what is relevant to your location.
+                Explore common operating constraints by site type, then focus on what
+                matters at your location.
               </p>
             </div>
 
@@ -266,9 +228,8 @@ export default function HomePage() {
               The details that help shape an initial assessment.
             </h2>
             <p className="mt-5 text-base leading-relaxed text-ink-muted">
-              You do not need a complete project specification to get started.
-              Share what is available, and the team can help identify what else
-              may be useful for a more detailed review.
+              A first discussion can start with the information you already have.
+              These details help identify what a closer review may need.
             </p>
           </Reveal>
 
@@ -276,19 +237,19 @@ export default function HomePage() {
             {[
               {
                 title: 'Site context',
-                body: 'Describe the business, site location and facility type. Note whether it is operating, under construction or still being planned, and mention any access or ownership constraints that may affect a review.',
+                body: 'Share the facility type, location, operating status and any access or ownership constraints.',
               },
               {
                 title: 'Energy use',
-                body: 'Recent bills or meter data can show how usage changes through the day and across seasons. Operating hours, production schedules and known demand peaks help put those figures into context.',
+                body: 'Bills or meter data, operating hours and demand peaks help show when the site uses power.',
               },
               {
                 title: 'Existing infrastructure',
-                body: 'Share what is known about roof or land availability, the electrical connection and existing generation or backup systems. Structural records, parking layout, utility requirements and site access restrictions may also affect the technical review.',
+                body: 'Note available roof or land, the electrical connection, existing generation and backup systems.',
               },
               {
                 title: 'Project objective',
-                body: 'Explain what the business is trying to change and which solution areas are under consideration. Include the decision stage, stakeholders involved and any target dates that influence the discussion.',
+                body: 'Describe the decision, solution areas, stakeholders and timeline you are working toward.',
               },
             ].map((item, index) => (
               <Reveal key={item.title} delay={index * 0.06} as="div">
@@ -314,6 +275,7 @@ export default function HomePage() {
         title="Have an energy project in mind?"
         body="Tell us about your facility, operating requirements or project question. The team can help identify the information and next step relevant to your enquiry."
         primary={{ label: 'Request a consultation', to: '/request-consultation' }}
+        secondary={{ label: 'Contact Us', to: '/contact' }}
       />
     </>
   );

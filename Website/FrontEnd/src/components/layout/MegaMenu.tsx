@@ -23,6 +23,7 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
   const [open, setOpen] = useState(false);
   const [focusWithin, setFocusWithin] = useState(false);
   const closeTimer = useRef<number>();
+  const pinnedOpen = useRef(false);
 
   useEffect(() => () => window.clearTimeout(closeTimer.current), []);
 
@@ -32,13 +33,24 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
   };
 
   const hide = () => {
+    if (pinnedOpen.current) return;
     // Grace period so the pointer can travel diagonally into the panel.
     closeTimer.current = window.setTimeout(() => setOpen(false), 160);
   };
 
   const hideNow = () => {
     window.clearTimeout(closeTimer.current);
+    pinnedOpen.current = false;
     setOpen(false);
+  };
+
+  const togglePinned = () => {
+    if (pinnedOpen.current) {
+      hideNow();
+      return;
+    }
+    pinnedOpen.current = true;
+    show();
   };
 
   useEffect(() => {
@@ -73,29 +85,35 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
         }
       }}
     >
-      <Link
-        to={group.to}
-        data-menu-trigger={group.label}
-        aria-expanded={open}
-        aria-controls={panelId}
-        className={cn(
-          'group inline-flex items-center gap-1 rounded-lg px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-200',
-          open || focusWithin
-            ? 'text-emerald-700'
-            : condensed
-              ? 'text-ink hover:text-emerald-700'
-              : 'text-white/85 hover:text-white',
-        )}
-      >
-        {group.label}
-        <ChevronDown
+      <div className="flex items-center">
+        <Link
+          to={group.to}
+          data-menu-trigger={group.label}
           className={cn(
-            'h-4 w-4 transition-transform duration-200',
-            open && 'rotate-180',
+            'group inline-flex items-center rounded-lg px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-200',
+            open || focusWithin
+              ? 'text-emerald-700'
+              : condensed
+                ? 'text-ink hover:text-emerald-700'
+                : 'text-white/85 hover:text-white',
+          )}
+        >
+          {group.label}
+        </Link>
+        <button
+          type="button"
+          onClick={togglePinned}
+          aria-expanded={open}
+          aria-controls={panelId}
+          aria-label={`${open ? 'Close' : 'Open'} ${group.label} menu`}
+          className={cn(
+            'grid h-9 w-8 place-items-center rounded-lg transition-colors hover:bg-white/10',
             condensed ? 'text-ink-faint' : 'text-white/60',
           )}
-        />
-      </Link>
+        >
+          <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', open && 'rotate-180')} />
+        </button>
+      </div>
 
       {/* Full-width panel, positioned against the viewport rather than the trigger. */}
       <div

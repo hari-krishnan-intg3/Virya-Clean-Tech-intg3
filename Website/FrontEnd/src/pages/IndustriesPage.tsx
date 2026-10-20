@@ -4,6 +4,42 @@ import { PageHero, CtaBand } from '@/components/sections/PageHero';
 import { Reveal } from '@/components/ui';
 import { getService, industries } from '@/data/services';
 import { personas, qualificationSignals } from '@/data/qualification';
+import { SmartImage } from '@/components/ui';
+
+const INDUSTRY_VISUALS: Record<string, { src: string; alt: string }> = {
+  manufacturing: {
+    src: '/images/virya-engineering.webp',
+    alt: 'Engineer reviewing equipment in an industrial test facility.',
+  },
+  warehousing: {
+    src: '/images/virya-solar.webp',
+    alt: 'Rows of solar panels viewed across an open energy site.',
+  },
+  'fleet-logistics': {
+    src: '/images/virya-ev-charging.webp',
+    alt: 'Electric vehicle connected to charging infrastructure.',
+  },
+  'real-estate': {
+    src: '/images/virya-solar.webp',
+    alt: 'Solar panels generating electricity at a commercial site.',
+  },
+  hospitals: {
+    src: '/images/virya-energy.webp',
+    alt: 'Industrial battery units being checked by a technician.',
+  },
+  hotels: {
+    src: '/images/virya-ev-charging.webp',
+    alt: 'Electric vehicle charging beside a facility.',
+  },
+  retail: {
+    src: '/images/virya-solar.webp',
+    alt: 'Solar generation panels at a commercial location.',
+  },
+  education: {
+    src: '/images/virya-wind.webp',
+    alt: 'Wind turbines supplying renewable electricity across a landscape.',
+  },
+};
 
 export default function IndustriesPage() {
   return (
@@ -32,43 +68,55 @@ export default function IndustriesPage() {
                 <Reveal key={industry.slug} delay={index * 0.05} as="div">
                   <article
                     id={industry.slug}
-                    className="card card-hover h-full scroll-mt-28 p-7 sm:p-8"
+                    className="card card-hover h-full scroll-mt-28 overflow-hidden"
                   >
-                    <div className="flex items-start gap-4">
-                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
-                        <industry.icon className="h-5 w-5" />
-                      </span>
-                      <h2 className="text-xl font-bold leading-snug text-ink">{industry.label}</h2>
+                    <div className="relative aspect-[16/7] overflow-hidden">
+                      <SmartImage
+                        src={INDUSTRY_VISUALS[industry.slug].src}
+                        alt={INDUSTRY_VISUALS[industry.slug].alt}
+                        width={1200}
+                        height={525}
+                        fill
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        className="transition-transform duration-500 ease-out group-hover:scale-105"
+                      />
+                      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-[#07110f]/75 to-transparent" />
+                      <h2 className="absolute bottom-5 left-6 right-6 flex items-center gap-3 text-xl font-bold leading-snug text-white sm:left-7 sm:text-2xl">
+                        <industry.icon className="h-5 w-5 shrink-0 text-emerald-300" aria-hidden="true" />
+                        {industry.label}
+                      </h2>
                     </div>
 
-                    <p className="mt-5 text-[0.93rem] leading-relaxed text-ink-muted">
-                      {industry.pressure}
-                    </p>
+                    <div className="p-6 sm:p-7">
+                      <p className="text-[0.93rem] leading-relaxed text-ink-muted">
+                        {industry.pressure}
+                      </p>
 
-                    <p className="mt-3 text-[0.9rem] leading-relaxed text-ink-muted">
-                      {industry.cardSummary}
-                    </p>
+                      <p className="mt-3 line-clamp-4 text-[0.9rem] leading-relaxed text-ink-muted">
+                        {industry.cardSummary}
+                      </p>
 
-                    <ul className="mt-6 flex flex-wrap gap-2">
-                      {industry.signals.map((signal) => (
-                        <li
-                          key={signal}
-                          className="rounded-full border border-line bg-mist px-3 py-1 text-[0.75rem] font-medium text-ink-muted"
+                      <ul className="mt-5 flex flex-wrap gap-2">
+                        {industry.signals.map((signal) => (
+                          <li
+                            key={signal}
+                            className="rounded-full border border-line bg-mist px-3 py-1 text-[0.75rem] font-medium text-ink-muted"
+                          >
+                            {signal}
+                          </li>
+                        ))}
+                      </ul>
+
+                      {service && (
+                        <Link
+                          to={`/services/${service.slug}`}
+                          className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-[0.92rem] font-semibold text-emerald-300 hover:underline"
                         >
-                          {signal}
-                        </li>
-                      ))}
-                    </ul>
-
-                    {service && (
-                      <Link
-                        to={`/services/${service.slug}`}
-                        className="mt-7 inline-flex items-center gap-1.5 text-[0.92rem] font-semibold text-emerald-700 hover:underline"
-                      >
-                        Explore {service.label.toLowerCase()}
-                        <ArrowRight className="h-4 w-4" />
-                      </Link>
-                    )}
+                          Explore {service.label.toLowerCase()}
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      )}
+                    </div>
                   </article>
                 </Reveal>
               );

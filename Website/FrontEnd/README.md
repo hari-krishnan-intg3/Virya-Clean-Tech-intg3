@@ -137,6 +137,9 @@ runtime if you ever switch to the embedded widget.
 Typography: **Inter** for headings and body, loaded from Google Fonts with
 `preconnect` to match the reference's clean, technical typography.
 
+The optimized WebP photos added for page heroes and service cards are sourced
+from Unsplash and stored locally under `public/images/`.
+
 ### "Energy in Motion" signature language
 
 - Thin animated energy-flow lines between the four ecosystem nodes (SVG
