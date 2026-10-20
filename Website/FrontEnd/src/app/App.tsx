@@ -34,6 +34,7 @@ const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const ConsultationPage = lazy(() => import('@/pages/ConsultationPage'));
 const CareersPage = lazy(() => import('@/pages/CareersPage'));
 const FaqPage = lazy(() => import('@/pages/FaqPage'));
+const ControllerPage = lazy(() => import('@/pages/ControllerPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const ChatAssistant = lazy(() =>
   import('@/components/assistant/ChatAssistant').then((m) => ({ default: m.ChatAssistant })),
@@ -80,6 +81,7 @@ function useEngagementTracking() {
   const started = useRef(Date.now());
 
   useEffect(() => {
+    if (location.pathname.startsWith('/controller')) return;
     started.current = Date.now();
     recordPageView(`${location.pathname}${location.search}`);
 
@@ -106,31 +108,37 @@ function useEngagementTracking() {
 export default function App() {
   const { activeService, seenServices } = useRouteContext();
   const location = useLocation();
-  const [priorVisitorMemory] = useState<VisitorMemory | null>(readVisitorMemory);
+  const isControllerRoute = location.pathname.startsWith('/controller');
+  const [priorVisitorMemory] = useState<VisitorMemory | null>(() =>
+    isControllerRoute ? null : readVisitorMemory(),
+  );
   const [returningVisitor, setReturningVisitor] = useState<VisitorMemory | null>(null);
 
   useEngagementTracking();
 
   useEffect(() => {
+    if (isControllerRoute) return;
     installSessionTracking();
-  }, []);
+  }, [isControllerRoute]);
 
   useEffect(() => {
+    if (isControllerRoute) return;
     const saveProgress = () =>
       saveVisitorProgress(`${location.pathname}${location.hash}`, activeService ?? null);
     saveProgress();
     window.addEventListener('virya:tracking-preference', saveProgress);
     return () => window.removeEventListener('virya:tracking-preference', saveProgress);
-  }, [activeService, location.hash, location.pathname]);
+  }, [activeService, isControllerRoute, location.hash, location.pathname]);
 
   useEffect(() => {
+    if (isControllerRoute) return;
     const refreshMemory = () => {
       void readReturningVisitorFromSheet(priorVisitorMemory).then(setReturningVisitor);
     };
     refreshMemory();
     window.addEventListener('virya:tracking-preference', refreshMemory);
     return () => window.removeEventListener('virya:tracking-preference', refreshMemory);
-  }, [priorVisitorMemory]);
+  }, [isControllerRoute, priorVisitorMemory]);
 
   // Capture intent the chatbot discovered so the form can pre-select it.
   const onAssistantInterest = useCallback((event: Event) => {
@@ -142,24 +150,27 @@ export default function App() {
   }, [location.pathname]);
 
   useEffect(() => {
+    if (isControllerRoute) return;
     window.addEventListener('virya:assistant-interest', onAssistantInterest);
     return () => window.removeEventListener('virya:assistant-interest', onAssistantInterest);
-  }, [onAssistantInterest]);
+  }, [isControllerRoute, onAssistantInterest]);
 
-  // The chatbot is noise on the form page itself — it competes with the form.
-  const showAssistant = !location.pathname.startsWith('/request-consultation');
+  const showAssistant = !isControllerRoute && !location.pathname.startsWith('/request-consultation');
 
   return (
     <>
-      <a
-        href="#main"
-        className="sr-only-focusable fixed left-4 top-4 z-[70] rounded-lg bg-emerald-500 px-4 py-2 font-heading text-sm font-semibold text-white"
-      >
-        Skip to content
-      </a>
-
-      <NavbarContainer />
-      <ScrollManager />
+      {!isControllerRoute && (
+        <>
+          <a
+            href="#main"
+            className="sr-only-focusable fixed left-4 top-4 z-[70] rounded-lg bg-emerald-500 px-4 py-2 font-heading text-sm font-semibold text-white"
+          >
+            Skip to content
+          </a>
+          <NavbarContainer />
+          <ScrollManager />
+        </>
+      )}
 
       <main id="main">
         <Suspense fallback={<RouteFallback />}>
@@ -176,15 +187,20 @@ export default function App() {
             <Route path="/request-consultation" element={<ConsultationPage />} />
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/faq" element={<FaqPage />} />
+            <Route path="/controller" element={<ControllerPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </main>
 
-      <FooterContainer />
-      <PrivacyConsent />
-      <VercelAnalyticsGate />
-      <ExitIntentPrompt />
+      {!isControllerRoute && (
+        <>
+          <FooterContainer />
+          <PrivacyConsent />
+          <VercelAnalyticsGate />
+          <ExitIntentPrompt />
+        </>
+      )}
 
       {showAssistant && (
         <Suspense fallback={null}>

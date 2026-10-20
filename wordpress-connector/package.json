@@ -1,0 +1,17 @@
+{
+  "name": "trustgrid-wordpress-commenter",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "comment:hello": "node --env-file=.env src/comment.js"
+  },
+  "dependencies": {
+    "busboy": "^1.6.0"
+  }
+}

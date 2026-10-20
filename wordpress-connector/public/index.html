@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#163b32" />
+    <title>WordPress Operations | Local Connector</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="WordPress Operations home">
+        <span class="brand-mark" aria-hidden="true">W</span>
+        <span class="brand-copy">
+          <strong>WordPress Operations</strong>
+          <small>Local connector</small>
+        </span>
+      </a>
+      <div class="topbar-tools">
+        <a class="site-link" id="site-link" href="https://team.trustgrid.ai" target="_blank" rel="noreferrer">
+          <span id="site-name">team.trustgrid.ai</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+        <span class="connection" id="connection-status" data-state="checking">
+          <span class="connection-dot" aria-hidden="true"></span>
+          <span id="connection-copy">Checking connection</span>
+        </span>
+      </div>
+    </header>
+
+    <div class="app-layout">
+      <aside class="action-rail" aria-label="WordPress operations">
+        <div class="rail-heading">
+          <span class="eyebrow">Choose operation</span>
+          <span class="rail-count">10</span>
+        </div>
+        <nav class="action-list" id="action-list"></nav>
+        <div class="rail-foot">
+          <span class="secure-mark" aria-hidden="true">●</span>
+          <p>Credentials stay in the local Node server.</p>
+        </div>
+      </aside>
+
+      <main class="workbench">
+        <div class="workbench-header">
+          <div>
+            <p class="eyebrow" id="action-group">Posts</p>
+            <h1 id="action-title">Create a post</h1>
+            <p class="action-description" id="action-description"></p>
+          </div>
+          <span class="method-badge" id="action-method">POST /posts</span>
+        </div>
+
+        <div class="config-notice" id="config-notice" hidden>
+          <span class="notice-symbol" aria-hidden="true">!</span>
+          <div>
+            <strong>WordPress credentials aren’t configured</strong>
+            <p>Copy <code>.env.example</code> to <code>.env</code> and set a WordPress Application Password. Regular wp-admin passwords aren’t accepted by the REST API.</p>
+          </div>
+          <a href="/setup" target="_blank" rel="noreferrer">Setup details</a>
+        </div>
+
+        <div class="workbench-grid">
+          <section class="form-panel" aria-labelledby="form-heading">
+            <div class="section-heading">
+              <div>
+                <h2 id="form-heading">Request details</h2>
+                <p id="form-subtitle">Complete the fields and send them to WordPress.</p>
+              </div>
+              <span class="required-note">* Required</span>
+            </div>
+            <form id="operation-form">
+              <div class="form-fields" id="form-fields"></div>
+              <div class="form-footer">
+                <p class="form-note" id="form-note">Changes are sent to the configured WordPress site.</p>
+                <button class="submit-button" id="submit-button" type="submit">
+                  <span id="submit-label">Create post</span>
+                  <span class="button-arrow" aria-hidden="true">→</span>
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="result-panel" aria-live="polite">
+            <div class="result-topline">
+              <span class="result-icon" aria-hidden="true">↗</span>
+              <span class="eyebrow">Response</span>
+            </div>
+            <div class="result-empty" id="result-empty">
+              <span class="empty-rule"></span>
+              <p>WordPress results will appear here after an action runs.</p>
+            </div>
+            <div class="result-content" id="result-content" hidden></div>
+            <div class="result-bottom">
+              <span>REST API</span>
+              <span>wp/v2</span>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
