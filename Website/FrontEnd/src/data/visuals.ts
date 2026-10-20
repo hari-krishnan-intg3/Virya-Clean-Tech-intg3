@@ -64,6 +64,46 @@ export const visualAssets = {
     src: '/images/pexels-engineering-blueprints.jpg',
     alt: 'Architects reviewing technical blueprints together.',
   },
+  batteryStorage: {
+    src: '/images/battery-storage.jpg',
+    alt: 'Battery storage equipment for a clean-energy system.',
+  },
+  electricMobility: {
+    src: '/images/electric-mobility.jpg',
+    alt: 'Electric mobility charging infrastructure.',
+  },
+  industrialAssessment: {
+    src: '/images/industrial-assessment.jpg',
+    alt: 'An engineer assessing industrial energy equipment.',
+  },
+  solarArray: {
+    src: '/images/solar-array.jpg',
+    alt: 'A large solar array supplying renewable electricity.',
+  },
+  viryaEnergy: {
+    src: '/images/virya-energy.webp',
+    alt: 'Virya energy systems and infrastructure.',
+  },
+  viryaEngineering: {
+    src: '/images/virya-engineering.webp',
+    alt: 'Virya engineers working on energy infrastructure.',
+  },
+  viryaEvCharging: {
+    src: '/images/virya-ev-charging.webp',
+    alt: 'Electric-vehicle charging infrastructure.',
+  },
+  viryaSolar: {
+    src: '/images/virya-solar.webp',
+    alt: 'Solar panels at a clean-energy site.',
+  },
+  viryaWind: {
+    src: '/images/virya-wind.webp',
+    alt: 'Wind turbines generating renewable electricity.',
+  },
+  windEnergy: {
+    src: '/images/wind-energy.jpg',
+    alt: 'Wind energy infrastructure across an open landscape.',
+  },
   serviceEvCharging: {
     src: '/images/pexels-service-ev-charging.jpg',
     alt: 'An electric vehicle connected to a public charging station.',

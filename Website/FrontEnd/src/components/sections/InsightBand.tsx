@@ -11,10 +11,10 @@ const INSIGHT_VISUALS = [
   visualAssets.rooftopSolarArray,
 ];
 const SHIFT_VISUALS = [
-  visualAssets.solar,
-  visualAssets.ev,
-  visualAssets.storage,
-  visualAssets.engineering,
+  visualAssets.realEstate,
+  visualAssets.fleetCharging,
+  visualAssets.manufacturing,
+  visualAssets.warehousing,
 ];
 
 interface InsightBandProps {

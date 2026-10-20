@@ -7,10 +7,10 @@ import { visualAssets, type VisualAsset } from '@/data/visuals';
 
 const nodeById = (id: string) => ecosystemNodes.find((n) => n.id === id)!;
 const NODE_VISUALS: Record<string, VisualAsset> = {
-  solar: visualAssets.solar,
+  solar: visualAssets.solarInstallation,
   battery: visualAssets.storage,
-  ev: visualAssets.ev,
-  systems: visualAssets.engineering,
+  ev: visualAssets.viryaEvCharging,
+  systems: visualAssets.viryaWind,
 };
 
 /** Quadratic curve between two diagram points, bowed outward from the centre. */

@@ -9,10 +9,10 @@ import { visualAssets } from '@/data/visuals';
 
 const ICONS = [Compass, DraftingCompass, HardHat, LineChart];
 const STEP_VISUALS = [
-  visualAssets.engineering,
-  visualAssets.solarInstallation,
+  visualAssets.viryaEngineering,
+  visualAssets.industrialAssessment,
   visualAssets.industrial,
-  visualAssets.storage,
+  visualAssets.viryaEnergy,
 ];
 
 export function ProcessContainer() {

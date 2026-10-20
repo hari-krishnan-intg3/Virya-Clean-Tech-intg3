@@ -22,7 +22,7 @@ const PRINCIPLES = [
   {
     icon: Leaf,
     title: 'Claims grounded in evidence',
-    image: visualAssets.wind,
+    image: visualAssets.windEnergy,
     body: 'Savings, performance and environmental outcomes depend on the project and should be supported by stated assumptions and appropriate records. Estimates should distinguish measured results from forecasts and explain any limits on the available data.',
   },
   {

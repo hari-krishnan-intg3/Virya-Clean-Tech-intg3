@@ -247,22 +247,22 @@ export default function HomePage() {
               {
                 title: 'Site context',
                 body: 'Share the facility type, location, operating status and any access or ownership constraints.',
-                image: visualAssets.warehousing,
+                image: visualAssets.hospital,
               },
               {
                 title: 'Energy use',
                 body: 'Bills or meter data, operating hours and demand peaks help show when the site uses power.',
-                image: visualAssets.fleetCharging,
+                image: visualAssets.hotel,
               },
               {
                 title: 'Existing infrastructure',
                 body: 'Note available roof or land, the electrical connection, existing generation and backup systems.',
-                image: visualAssets.realEstate,
+                image: visualAssets.retail,
               },
               {
                 title: 'Project objective',
                 body: 'Describe the decision, solution areas, stakeholders and timeline you are working toward.',
-                image: visualAssets.manufacturing,
+                image: visualAssets.education,
               },
             ].map((item, index) => (
               <Reveal key={item.title} delay={index * 0.06} as="div">
