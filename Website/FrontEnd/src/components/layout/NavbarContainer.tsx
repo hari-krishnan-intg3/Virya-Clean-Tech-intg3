@@ -188,25 +188,62 @@ export function NavbarContainer() {
 
                       <AnimatePresence initial={false}>
                         {expanded && group.columns && (
-                          <motion.ul
+                          <motion.div
                             initial={reduced ? false : { height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={reduced ? undefined : { height: 0, opacity: 0 }}
                             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                            className="overflow-hidden"
+                            className="overflow-hidden pb-2"
                           >
-                            {group.columns.flatMap((column) => column.items).map((item) => (
-                              <li key={item.to + item.label}>
-                                <Link
-                                  to={item.to}
-                                  onClick={() => trackEvent('nav_click', { target: item.to })}
-                                  className="block py-2.5 pl-9 pr-2 text-[0.92rem] text-ink-muted"
-                                >
-                                  {item.label}
-                                </Link>
-                              </li>
+                            <div className="mb-3 rounded-xl bg-mist p-4">
+                              <p className="text-[0.68rem] font-bold uppercase tracking-[0.15em] text-emerald-700">
+                                {group.context?.eyebrow ?? 'Explore'}
+                              </p>
+                              <p className="mt-1.5 text-sm font-semibold text-ink">
+                                {group.context?.title ?? group.label}
+                              </p>
+                              <p className="mt-1 text-xs leading-relaxed text-ink-muted">
+                                {group.context?.description}
+                              </p>
+                            </div>
+                            {group.columns.map((column) => (
+                              <div key={column.heading} className="mb-3">
+                                <p className="px-3 pb-1 text-[0.65rem] font-bold uppercase tracking-[0.15em] text-ink-faint">
+                                  {column.heading}
+                                </p>
+                                {column.items.map((item) => (
+                                  <Link
+                                    key={item.to + item.label}
+                                    to={item.to}
+                                    onClick={() => trackEvent('nav_click', { target: item.to })}
+                                    className="block rounded-lg px-3 py-2.5 transition-colors hover:bg-mist"
+                                  >
+                                    <span className="block text-sm font-semibold text-ink">{item.label}</span>
+                                    <span className="mt-0.5 block text-xs leading-relaxed text-ink-muted">
+                                      {item.description}
+                                    </span>
+                                  </Link>
+                                ))}
+                              </div>
                             ))}
-                          </motion.ul>
+                            {group.feature && (
+                              <Link
+                                to={group.feature.to}
+                                onClick={() => trackEvent('nav_click', { target: group.feature?.to ?? '' })}
+                                className="mt-2 flex items-center justify-between gap-3 rounded-xl border border-emerald-700/20 bg-emerald-50 p-4"
+                              >
+                                <span>
+                                  <span className="block text-sm font-semibold text-ink">{group.feature.title}</span>
+                                  <span className="mt-1 block text-xs leading-relaxed text-ink-muted">
+                                    {group.feature.body}
+                                  </span>
+                                </span>
+                                <span className="shrink-0 text-xs font-bold text-emerald-700">
+                                  {group.feature.cta}
+                                </span>
+                              </Link>
+                            )}
+                          </motion.div>
                         )}
                       </AnimatePresence>
                     </div>

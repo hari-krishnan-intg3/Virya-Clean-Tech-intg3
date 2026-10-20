@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getService } from '@/data/services';
 import type { NavGroup } from '@/app/siteConfig';
@@ -121,7 +121,7 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
         role="region"
         aria-label={group.label}
         hidden={!open}
-        className="fixed left-1/2 top-[4.5rem] z-50 w-[min(56rem,90vw)] -translate-x-1/2 pt-3"
+        className="fixed left-1/2 top-[4.5rem] z-50 w-[min(70rem,calc(100vw-2rem))] -translate-x-1/2 pt-3"
       >
         <div
           className={cn(
@@ -129,63 +129,92 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
             open ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0',
           )}
         >
-          <div className="grid gap-x-8 gap-y-6 p-7 sm:grid-cols-2">
-            {group.columns.map((column) => (
-              <div key={column.heading}>
-                <p className="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
-                  {column.heading}
+          <div className="grid max-h-[min(76vh,42rem)] overflow-y-auto lg:grid-cols-[15rem_minmax(0,1fr)]">
+            <aside className="flex flex-col justify-between border-b border-white/10 bg-[#0d2019] p-6 sm:p-7 lg:border-b-0 lg:border-r">
+              <div>
+                <span className="inline-flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.17em] text-emerald-300">
+                  <Compass className="h-3.5 w-3.5" aria-hidden="true" />
+                  {group.context?.eyebrow ?? 'Explore'}
+                </span>
+                <h2 className="mt-4 text-xl leading-snug">
+                  {group.context?.title ?? group.label}
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                  {group.context?.description ?? 'Explore information and resources from Virya Clean Tech.'}
                 </p>
-                <ul className="space-y-1">
-                  {column.items.map((item) => {
-                    const service = item.accent ? getService(item.accent) : undefined;
-
-                    return (
-                      <li key={item.to + item.label}>
-                        <Link
-                          to={item.to}
-                          onClick={hideNow}
-                          className="group/item flex gap-3 rounded-xl p-2.5 transition-colors duration-200 hover:bg-mist"
-                        >
-                          {service && (
-                            <span
-                              className={cn(
-                                'mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white',
-                                service.gradient,
-                              )}
-                            >
-                              <service.icon className="h-4 w-4" strokeWidth={2} />
-                            </span>
-                          )}
-                          <span className="min-w-0">
-                            <span className="flex items-center gap-1 text-[0.95rem] font-semibold text-ink transition-colors group-hover/item:text-emerald-700">
-                              {item.label}
-                              <ArrowRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100" />
-                            </span>
-                            <span className="mt-0.5 block text-[0.82rem] leading-relaxed text-ink-muted">
-                              {item.description}
-                            </span>
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
               </div>
-            ))}
+              <Link
+                to={group.to}
+                onClick={hideNow}
+                className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+              >
+                Explore {group.label}
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </aside>
+
+            <div className="grid gap-x-7 gap-y-6 p-5 sm:grid-cols-2 sm:p-7">
+              {group.columns.map((column) => (
+                <div key={column.heading}>
+                  <p className="mb-3 border-b border-white/10 pb-2.5 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
+                    {column.heading}
+                  </p>
+                  <ul className="space-y-1">
+                    {column.items.map((item) => {
+                      const service = item.accent ? getService(item.accent) : undefined;
+
+                      return (
+                        <li key={item.to + item.label}>
+                          <Link
+                            to={item.to}
+                            onClick={hideNow}
+                            className="group/item flex gap-3 rounded-xl p-2.5 transition-colors duration-200 hover:bg-white/5"
+                          >
+                            {service && (
+                              <span
+                                className={cn(
+                                  'mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white',
+                                  service.gradient,
+                                )}
+                              >
+                                <service.icon className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
+                              </span>
+                            )}
+                            <span className="min-w-0">
+                              <span className="flex items-center gap-1 text-[0.92rem] font-semibold text-ink transition-colors group-hover/item:text-emerald-300">
+                                {item.label}
+                                <ArrowRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100" aria-hidden="true" />
+                              </span>
+                              <span className="mt-0.5 block text-[0.78rem] leading-relaxed text-ink-muted">
+                                {item.description}
+                              </span>
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </div>
 
           {group.feature && (
-            <div className="border-t border-white/10 bg-[#0c1a16] px-7 py-5">
+            <div className="border-t border-white/10 bg-[#091510] px-6 py-4 sm:px-7">
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="max-w-md">
-                  <p className="text-[0.95rem] font-bold text-ink">{group.feature.title}</p>
-                  <p className="mt-1 text-[0.85rem] leading-relaxed text-ink-muted">
+                <div className="max-w-lg">
+                  <p className="text-sm font-bold text-ink">{group.feature.title}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-ink-muted">
                     {group.feature.body}
                   </p>
                 </div>
-                <Link to={group.feature.to} onClick={hideNow} className="btn-outline btn-sm">
+                <Link
+                  to={group.feature.to}
+                  onClick={hideNow}
+                  className="inline-flex items-center gap-2 rounded-lg border border-emerald-300/25 px-4 py-2.5 text-sm font-semibold text-emerald-300 transition-colors hover:border-emerald-300/50 hover:bg-emerald-300/10"
+                >
                   {group.feature.cta}
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </div>
             </div>

@@ -90,6 +90,8 @@ export interface NavGroup {
   label: string;
   /** Mega menu when set, plain link otherwise. */
   columns?: NavColumn[];
+  /** Context shown alongside this group's links in its menu. */
+  context?: { eyebrow: string; title: string; description: string };
   /** Promotional strip rendered at the foot of the mega menu. */
   feature?: { title: string; body: string; to: string; cta: string };
   to: string;
@@ -106,6 +108,11 @@ export const NAV: NavGroup[] = [
   {
     label: 'Home',
     to: '/',
+    context: {
+      eyebrow: 'Start here',
+      title: 'A clearer view of clean energy',
+      description: 'Explore Virya’s capabilities, approach and practical next steps for your site.',
+    },
     columns: [
       {
         heading: 'Explore Virya',
@@ -122,10 +129,21 @@ export const NAV: NavGroup[] = [
         ],
       },
     ],
+    feature: {
+      title: 'Have a project in mind?',
+      body: 'Share your site, energy needs and objectives to start a focused conversation.',
+      to: '/request-consultation',
+      cta: 'Request a consultation',
+    },
   },
   {
     label: 'About',
     to: '/about',
+    context: {
+      eyebrow: 'About Virya',
+      title: 'People, process and perspective',
+      description: 'Learn about our site-first approach and how to connect with our team.',
+    },
     columns: [
       {
         heading: 'The company',
@@ -142,10 +160,21 @@ export const NAV: NavGroup[] = [
         ],
       },
     ],
+    feature: {
+      title: 'Know what to expect',
+      body: 'See how an initial conversation can progress into a clearly scoped project review.',
+      to: '/process',
+      cta: 'View our process',
+    },
   },
   {
     label: 'Offerings',
     to: '/services',
+    context: {
+      eyebrow: 'Energy solutions',
+      title: 'Explore the right capabilities',
+      description: 'Compare technologies and services in the context of your facility and operating needs.',
+    },
     columns: [
       {
         heading: 'What we build',
@@ -192,6 +221,11 @@ export const NAV: NavGroup[] = [
   {
     label: 'Industries',
     to: '/industries',
+    context: {
+      eyebrow: 'Industries we serve',
+      title: 'Designed around how sites operate',
+      description: 'Explore energy considerations for facilities with different loads, schedules and infrastructure.',
+    },
     columns: [
       {
         heading: 'Who we work with',
@@ -217,10 +251,21 @@ export const NAV: NavGroup[] = [
         ],
       },
     ],
+    feature: {
+      title: 'Every site has its own context',
+      body: 'Discuss your facility and operating requirements before deciding which options to explore.',
+      to: '/request-consultation',
+      cta: 'Discuss your site',
+    },
   },
   {
     label: 'Projects',
     to: '/projects',
+    context: {
+      eyebrow: 'Project planning',
+      title: 'Move from questions to a scope',
+      description: 'Understand the information, site conditions and decisions that shape energy projects.',
+    },
     columns: [
       {
         heading: 'Capabilities',
@@ -237,10 +282,21 @@ export const NAV: NavGroup[] = [
         ],
       },
     ],
+    feature: {
+      title: 'Planning a project?',
+      body: 'Bring your objectives and site context together for a practical first discussion.',
+      to: '/request-consultation',
+      cta: 'Start a conversation',
+    },
   },
   {
     label: 'Insights',
     to: '/insights',
+    context: {
+      eyebrow: 'Ideas & guidance',
+      title: 'Make informed energy decisions',
+      description: 'Read practical context on the energy transition, feasibility and choosing next steps.',
+    },
     columns: [
       {
         heading: 'Energy context',
@@ -257,6 +313,12 @@ export const NAV: NavGroup[] = [
         ],
       },
     ],
+    feature: {
+      title: 'Have a question about your site?',
+      body: 'Browse common questions or talk through the context behind your project.',
+      to: '/faq',
+      cta: 'Browse common questions',
+    },
   },
 ];
 
