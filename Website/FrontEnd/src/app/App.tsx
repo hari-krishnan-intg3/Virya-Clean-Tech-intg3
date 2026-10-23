@@ -35,6 +35,7 @@ const ConsultationPage = lazy(() => import('@/pages/ConsultationPage'));
 const CareersPage = lazy(() => import('@/pages/CareersPage'));
 const FaqPage = lazy(() => import('@/pages/FaqPage'));
 const ControllerPage = lazy(() => import('@/pages/ControllerPage'));
+const JiraPracticePage = lazy(() => import('@/pages/JiraPracticePage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const ChatAssistant = lazy(() =>
   import('@/components/assistant/ChatAssistant').then((m) => ({ default: m.ChatAssistant })),
@@ -109,20 +110,21 @@ export default function App() {
   const { activeService, seenServices } = useRouteContext();
   const location = useLocation();
   const isControllerRoute = location.pathname.startsWith('/controller');
+  const isOperationsRoute = isControllerRoute || location.pathname.startsWith('/jira-practice');
   const [priorVisitorMemory] = useState<VisitorMemory | null>(() =>
-    isControllerRoute ? null : readVisitorMemory(),
+    isOperationsRoute ? null : readVisitorMemory(),
   );
   const [returningVisitor, setReturningVisitor] = useState<VisitorMemory | null>(null);
 
   useEngagementTracking();
 
   useEffect(() => {
-    if (isControllerRoute) return;
+    if (isOperationsRoute) return;
     installSessionTracking();
-  }, [isControllerRoute]);
+  }, [isOperationsRoute]);
 
   useEffect(() => {
-    if (isControllerRoute) return;
+    if (isOperationsRoute) return;
     const saveProgress = () =>
       saveVisitorProgress(`${location.pathname}${location.hash}`, activeService ?? null);
     saveProgress();
@@ -138,7 +140,7 @@ export default function App() {
     refreshMemory();
     window.addEventListener('virya:tracking-preference', refreshMemory);
     return () => window.removeEventListener('virya:tracking-preference', refreshMemory);
-  }, [isControllerRoute, priorVisitorMemory]);
+  }, [isOperationsRoute, priorVisitorMemory]);
 
   // Capture intent the chatbot discovered so the form can pre-select it.
   const onAssistantInterest = useCallback((event: Event) => {
@@ -150,16 +152,16 @@ export default function App() {
   }, [location.pathname]);
 
   useEffect(() => {
-    if (isControllerRoute) return;
+    if (isOperationsRoute) return;
     window.addEventListener('virya:assistant-interest', onAssistantInterest);
     return () => window.removeEventListener('virya:assistant-interest', onAssistantInterest);
-  }, [isControllerRoute, onAssistantInterest]);
+  }, [isOperationsRoute, onAssistantInterest]);
 
-  const showAssistant = !isControllerRoute && !location.pathname.startsWith('/request-consultation');
+  const showAssistant = !isOperationsRoute && !location.pathname.startsWith('/request-consultation');
 
   return (
     <>
-      {!isControllerRoute && (
+      {!isOperationsRoute && (
         <>
           <a
             href="#main"
@@ -188,12 +190,13 @@ export default function App() {
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/faq" element={<FaqPage />} />
             <Route path="/controller" element={<ControllerPage />} />
+            <Route path="/jira-practice" element={<JiraPracticePage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
       </main>
 
-      {!isControllerRoute && (
+      {!isOperationsRoute && (
         <>
           <FooterContainer />
           <PrivacyConsent />
