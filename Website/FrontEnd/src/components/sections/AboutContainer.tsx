@@ -2,6 +2,7 @@ import { ArrowRight, Cpu, Leaf, Sparkles, Sun, Zap } from 'lucide-react';
 import { SmartImage } from '@/components/ui';
 import { Button } from '@/components/ui';
 import { scrollToSection, trackEvent } from '@/lib/utils';
+import { visualAssets } from '@/data/visuals';
 
 /** Small connected-system motif: generation -> storage -> use -> insight. */
 function EnergyLoop() {
@@ -111,8 +112,8 @@ export function AboutContainer() {
             <div className="relative">
               <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-line bg-mist shadow-lift">
                 <SmartImage
-                  src="https://viryacleantech.com/wp-content/uploads/elementor/thumbs/engineer-electric-woman-checking-and-maintenance-of-solar-cells-1024x684-1-r6meidptx0o0prd40xhzpa0uy2uuax1um815hhjz0g.jpg"
-                  alt="Virya Cleantech engineer checking and maintaining solar cells."
+                  src={visualAssets.industrialAssessment.src}
+                  alt={visualAssets.industrialAssessment.alt}
                   width={1024}
                   height={683}
                   fill

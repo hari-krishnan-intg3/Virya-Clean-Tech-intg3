@@ -4,6 +4,7 @@ import { HeroSliderContainer } from '@/components/sections/HeroSliderContainer';
 import { InsightBand } from '@/components/sections/InsightBand';
 import { EnergyEcosystemContainer } from '@/components/sections/EnergyEcosystemContainer';
 import { ProcessContainer } from '@/components/sections/ProcessContainer';
+import { UseCasesContainer } from '@/components/sections/UseCasesContainer';
 import { CtaBand } from '@/components/sections/PageHero';
 import { CardImage, Reveal, ServiceCard } from '@/components/ui';
 import { services, industries } from '@/data/services';
@@ -16,6 +17,24 @@ const SPOTLIGHT = [
   { slug: 'fleet-logistics', label: 'Logistics fleets', icon: Truck },
   { slug: 'hospitals', label: 'Hospitals', icon: HeartPulse },
   { slug: 'real-estate', label: 'Real estate', icon: Building2 },
+] as const;
+
+const DECISION_METRICS = [
+  {
+    value: '01',
+    label: 'Baseline first',
+    detail: 'Start with interval data, operating hours and site constraints before forecasting an outcome.',
+  },
+  {
+    value: '03',
+    label: 'Questions answered',
+    detail: 'Connect each recommendation to a problem, an intended benefit and a defined measurement period.',
+  },
+  {
+    value: '100%',
+    label: 'Scope visible',
+    detail: 'Make dependencies, preconditions, approvals and responsibilities explicit before work begins.',
+  },
 ] as const;
 
 export default function HomePage() {
@@ -57,6 +76,35 @@ export default function HomePage() {
                   ))}
                 </div>
               </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Metrics strip — makes the decision framework tangible without making unsupported savings claims. */}
+      <section className="border-b border-line bg-mist" aria-labelledby="metrics-title">
+        <div className="shell py-10 sm:py-12">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_2fr] lg:items-center lg:gap-14">
+            <Reveal>
+              <p className="eyebrow">
+                <span className="rule-accent" />
+                How we make progress visible
+              </p>
+              <h2 id="metrics-title" className="mt-4 text-2xl font-extrabold leading-tight text-ink sm:text-3xl">
+                Better decisions need better measures.
+              </h2>
+            </Reveal>
+
+            <div className="grid gap-5 sm:grid-cols-3">
+              {DECISION_METRICS.map((metric, index) => (
+                <Reveal key={metric.label} delay={index * 0.06}>
+                  <div className="border-l-2 border-emerald-400/60 pl-4">
+                    <p className="font-heading text-2xl font-extrabold text-emerald-300">{metric.value}</p>
+                    <p className="mt-1 text-sm font-bold text-ink">{metric.label}</p>
+                    <p className="mt-2 text-xs leading-relaxed text-ink-muted">{metric.detail}</p>
+                  </div>
+                </Reveal>
+              ))}
             </div>
           </div>
         </div>
@@ -113,6 +161,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <UseCasesContainer />
 
       <section id="about" className="section bg-ink">
         <div className="shell">

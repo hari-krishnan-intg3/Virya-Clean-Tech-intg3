@@ -1,0 +1,4 @@
+company_name,website_url,contact_page_url,emails,phone_numbers,linkedin_url,twitter_url,address,pages_visited,scrape_status,screener_url
+Reliance Industries,https://www.ril.com/,https://www.ril.com/contact-us,info@ril.com; infosecurity.alerts@zmail.ril.com,+91-22-3555-5000; +912235555000,https://www.linkedin.com/company/reliance,https://twitter.com/RIL_Updates,"Corporate office, Reliance Industries Limited Maker Chambers - IV, Nariman Point Mumbai 400 021, India, info@ril.com, +91-22-3555-5000",2,SUCCESS,https://www.screener.in/company/RELIANCE/consolidated/
+Bharti Airtel,https://www.airtel.in/,,,,,,,1,VISITED_NO_CONTACTS_FOUND,https://www.screener.in/company/BHARTIARTL/consolidated/
+HDFC Bank,https://www.hdfc.bank.in/,https://www.hdfc.bank.in/msme-banking/smarthub-vyapar-merchant-app/contactless-tap-and-pay-for-merchants,,18001600,https://in.linkedin.com/company/hdfc-bank,https://x.com/hdfc_bank,,2,SUCCESS,https://www.screener.in/company/HDFCBANK/consolidated/

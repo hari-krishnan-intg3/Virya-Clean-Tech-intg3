@@ -1,0 +1,26 @@
+company_name,website_url,screener_url,extraction_status
+Reliance Industries,http://www.ril.com,https://www.screener.in/company/RELIANCE/consolidated/,SUCCESS
+Bharti Airtel,http://www.airtel.in,https://www.screener.in/company/BHARTIARTL/consolidated/,SUCCESS
+HDFC Bank,http://www.hdfcbank.com,https://www.screener.in/company/HDFCBANK/consolidated/,SUCCESS
+Jio Platforms,,https://www.screener.in/company/id/1286266/consolidated/,NO_WEBSITE_FOUND
+ICICI Bank,http://www.icicibank.com,https://www.screener.in/company/ICICIBANK/consolidated/,SUCCESS
+TCS,http://www.tcs.com,https://www.screener.in/company/TCS/consolidated/,SUCCESS
+SBI,http://www.sbi.co.in,https://www.screener.in/company/SBIN/consolidated/,SUCCESS
+Bajaj Finance,http://www.bajajfinserv.in/finance,https://www.screener.in/company/BAJFINANCE/consolidated/,SUCCESS
+Larsen & Toubro,http://www.larsentoubro.com,https://www.screener.in/company/LT/consolidated/,SUCCESS
+Life Insurance,https://licindia.in/,https://www.screener.in/company/LICI/consolidated/,SUCCESS
+Infosys,http://www.infosys.com,https://www.screener.in/company/INFY/consolidated/,SUCCESS
+Kotak Mah. Bank,http://www.kotak.com,https://www.screener.in/company/KOTAKBANK/consolidated/,SUCCESS
+Hind. Unilever,http://www.hul.co.in,https://www.screener.in/company/HINDUNILVR/consolidated/,SUCCESS
+Sun Pharma.Inds.,http://www.sunpharma.com,https://www.screener.in/company/SUNPHARMA/consolidated/,SUCCESS
+NSE,,https://www.screener.in/company/544937/consolidated/,NO_WEBSITE_FOUND
+Adani Ports,http://www.adaniports.com,https://www.screener.in/company/ADANIPORTS/consolidated/,SUCCESS
+HCL Technologies,http://www.hcltech.com,https://www.screener.in/company/HCLTECH/consolidated/,SUCCESS
+Titan Company,https://www.titancompany.in,https://www.screener.in/company/TITAN/consolidated/,SUCCESS
+Axis Bank,http://www.axisbank.com,https://www.screener.in/company/AXISBANK/consolidated/,SUCCESS
+M & M,http://www.mahindra.com,https://www.screener.in/company/M&M/consolidated/,SUCCESS
+Maruti Suzuki,http://www.marutisuzuki.com,https://www.screener.in/company/MARUTI/consolidated/,SUCCESS
+Adani Power,http://www.adani.com,https://www.screener.in/company/ADANIPOWER/consolidated/,SUCCESS
+Adani Enterp.,http://www.adani.com,https://www.screener.in/company/ADANIENT/consolidated/,SUCCESS
+UltraTech Cem.,https://www.ultratechcement.com,https://www.screener.in/company/ULTRACEMCO/consolidated/,SUCCESS
+ITC,https://www.itcportal.com,https://www.screener.in/company/ITC/consolidated/,SUCCESS

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="110" y1="55" x2="1060" y2="770" gradientUnits="userSpaceOnUse"><stop stop-color="#183B37"/><stop offset="1" stop-color="#071713"/></linearGradient>
+    <linearGradient id="panel" x1="410" y1="385" x2="950" y2="690" gradientUnits="userSpaceOnUse"><stop stop-color="#42D6A0"/><stop offset="1" stop-color="#137A70"/></linearGradient>
+    <linearGradient id="sun" x1="845" y1="109" x2="1004" y2="268" gradientUnits="userSpaceOnUse"><stop stop-color="#FFE4A2"/><stop offset="1" stop-color="#F4A65D"/></linearGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h1200v800H0z"/>
+  <circle cx="909" cy="185" r="88" fill="url(#sun)" opacity=".92"/>
+  <path d="M0 480c152-73 291-62 425-17 177 60 293 50 438-17 120-56 229-50 337-7v361H0V480Z" fill="#0B2620"/>
+  <path d="M120 404h658l248 167H370L120 404Z" fill="#49655D"/>
+  <path d="M120 404v132h250V571l-250-167Z" fill="#263E37"/>
+  <path d="M778 404v132l248 35V571L778 404Z" fill="#344F45"/>
+  <path d="m177 421 192 126M279 421l191 126M381 421l191 126M483 421l192 126M585 421l192 126M687 421l91 60" stroke="#A5D5C2" stroke-opacity=".72" stroke-width="3"/>
+  <path d="m189 451 519 1m-469 32 520 1m-470 32 520 1" stroke="#A5D5C2" stroke-opacity=".6" stroke-width="3"/>
+  <path d="m370 571 656-35v111l-656 53V571Z" fill="#132B24"/>
+  <path d="m370 571 250 52v77m-126-115v121m250-148v127m126-134v124" stroke="#42655A" stroke-width="4"/>
+  <path d="M96 653h1008" stroke="#70BA98" stroke-opacity=".35" stroke-width="2"/>
+  <path d="M91 659h68v67H91zm922-18h91v84h-91z" fill="#19382D"/>
+  <path d="M137 656h14v14h-14zm0 27h14v14h-14zm906-34h17v17h-17zm0 31h17v17h-17z" fill="#D8B76B"/>
+  <path d="M136 322c41-39 84-39 125 0m-93-41c21-20 43-20 64 0" stroke="#68D9AE" stroke-opacity=".65" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -12,17 +12,17 @@ export interface HeroSlide {
   subtext: string;
   image: string;
   imageAlt: string;
-  /** Focal point of the photograph so cropping stays stable across breakpoints. */
+  /** Focal point of the illustration so cropping stays stable across breakpoints. */
   focal: string;
 }
 
 export const heroSlides: HeroSlide[] = [
   {
     id: 'future',
-    eyebrow: 'Clean energy, engineered for your site',
-    headline: 'Build a clearer path to cleaner energy.',
+    eyebrow: 'From operating problem to measurable next step',
+    headline: 'Make cleaner energy work in the real world.',
     subtext:
-      'Solar, EV charging, battery storage and connected-energy software can work together, but the right mix starts with your site. Explore the questions that shape a practical next step.',
+      'Virya connects solar, EV charging, storage and energy data to the way your facility actually runs—so teams can move from a broad ambition to a scoped, measurable decision.',
     image: visualAssets.solar.src,
     imageAlt:
       visualAssets.solar.alt,
@@ -30,20 +30,20 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: 'innovation',
-    eyebrow: 'Systems work better in context',
-    headline: 'Connect energy generation, storage and demand.',
+    eyebrow: 'Solutions built around operating reality',
+    headline: 'See the problem before you buy the technology.',
     subtext:
-      'Load patterns, operating hours, site infrastructure and project goals all influence what may be feasible. Bring those details together before choosing a technology or defining a project.',
+      'Start with load patterns, operating hours, dependencies and site constraints. Then compare the solution, expected benefit and evidence your team will use to measure progress.',
     image: visualAssets.wind.src,
     imageAlt: visualAssets.wind.alt,
     focal: 'center 48%',
   },
   {
     id: 'solar',
-    eyebrow: 'Mobility meets site infrastructure',
-    headline: 'Make room for the next generation of mobility.',
+    eyebrow: 'A practical plan for the next shift',
+    headline: 'Turn energy goals into an operating plan.',
     subtext:
-      'Charging needs depend on vehicle routes, dwell time and available electrical capacity. Start with how people and vehicles move through your site, then explore an infrastructure plan that fits.',
+      'Whether the challenge is fleet charging, peak demand or resilient power, map the sequence, preconditions and metrics before committing to a rollout.',
     image: visualAssets.ev.src,
     imageAlt: visualAssets.ev.alt,
     focal: 'center 50%',
@@ -209,9 +209,8 @@ export const applications: Application[] = [
     category: 'Solar power',
     description:
       'Rooftop and ground-mounted installations engineered around your consumption pattern, roof geometry and available daylight.',
-    image:
-      'https://viryacleantech.com/wp-content/uploads/2025/03/solar-LFGADCC.png',
-    imageAlt: 'Solar panels installed across a large rooftop installation.',
+    image: visualAssets.solar.src,
+    imageAlt: visualAssets.solar.alt,
     href: '#service-solar',
     focal: 'center 50%',
     span: 'tall',
@@ -222,9 +221,8 @@ export const applications: Application[] = [
     category: 'EV charging',
     description:
       'Charging infrastructure for workplaces, retail complexes and fleet depots, planned around peak demand and available grid capacity.',
-    image:
-      'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/ev-charging-station-clean-energy-filling-technology-electric-car-charging-scaled-r6meidpw3yeqhqnfbk43plqnob1so02kx2zrxwbiag.jpg',
-    imageAlt: 'Electric car connected to a public EV charging point.',
+    image: visualAssets.ev.src,
+    imageAlt: visualAssets.ev.alt,
     href: '#service-ev-charging',
     focal: 'center 45%',
     span: 'normal',
@@ -235,9 +233,8 @@ export const applications: Application[] = [
     category: 'Battery technology',
     description:
       'Storage paired with on-site generation to shift peak demand, maintain continuity and make better use of every unit generated.',
-    image:
-      'https://viryacleantech.com/wp-content/uploads/elementor/thumbs/female-maintenance-engineer-controls-the-work-of-w-2021-12-09-04-14-06-utc-r6meidpuek646827clcskxuzu6n5w9vjl7nfud2a88.jpg',
-    imageAlt: 'Engineer inspecting energy storage equipment in an equipment room.',
+    image: visualAssets.storage.src,
+    imageAlt: visualAssets.storage.alt,
     href: '#service-software-iot',
     focal: 'center 35%',
     span: 'normal',
@@ -248,9 +245,8 @@ export const applications: Application[] = [
     category: 'Software & IoT',
     description:
       'Live dashboards and device telemetry so operators can see generation, consumption and charging behaviour in one place.',
-    image:
-      'https://viryacleantech.com/wp-content/uploads/2025/04/programming-background-with-html-1024x683.jpg',
-    imageAlt: 'Energy monitoring software being developed on a workstation.',
+    image: visualAssets.energyControl.src,
+    imageAlt: visualAssets.energyControl.alt,
     href: '#service-software-iot',
     focal: 'center 45%',
     span: 'wide',

@@ -1,5 +1,6 @@
 import { differentiators } from '@/data/content';
 import { Reveal, SectionHeading, SmartImage } from '@/components/ui';
+import { visualAssets } from '@/data/visuals';
 
 export function WhyViryaContainer() {
   return (
@@ -16,8 +17,8 @@ export function WhyViryaContainer() {
               <div className="relative">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-white shadow-lift sm:aspect-[4/4.4]">
                   <SmartImage
-                    src="https://viryacleantech.com/wp-content/uploads/elementor/thumbs/female-maintenance-engineer-controls-the-work-of-w-2021-12-09-04-14-06-utc-r6meidpuek646827clcskxuzu6n5w9vjl7nfud2a88.jpg"
-                    alt="Maintenance engineer controlling clean-energy equipment on site."
+                    src={visualAssets.energyControl.src}
+                    alt={visualAssets.energyControl.alt}
                     width={1024}
                     height={1024}
                     fill

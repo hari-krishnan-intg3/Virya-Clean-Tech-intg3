@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="96" y1="58" x2="1110" y2="755" gradientUnits="userSpaceOnUse"><stop stop-color="#30264D"/><stop offset=".54" stop-color="#162C36"/><stop offset="1" stop-color="#081713"/></linearGradient>
+    <linearGradient id="battery" x1="365" y1="276" x2="815" y2="672" gradientUnits="userSpaceOnUse"><stop stop-color="#83E1BE"/><stop offset="1" stop-color="#188E7D"/></linearGradient>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h1200v800H0z"/>
+  <circle cx="946" cy="163" r="136" fill="#8D79C3" opacity=".1"/>
+  <path d="M0 616h1200v184H0z" fill="#0A1B19"/>
+  <path d="M153 642h900" stroke="#76B397" stroke-opacity=".34" stroke-width="2"/>
+  <path d="M324 277h524v360H324z" fill="url(#battery)"/>
+  <path d="M367 317h438v278H367z" fill="#13362F"/>
+  <path d="M367 343h438" stroke="#7FE4BE" stroke-opacity=".48" stroke-width="3"/>
+  <path d="M391 374h72v188h-72zm100 0h72v188h-72zm100 0h72v188h-72zm100 0h72v188h-72z" fill="#1A4A40"/>
+  <path d="M426 405v86m-15-71 15-15 15 15m-15 40 15 15m-15-15-15 15" stroke="#78DDB7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m526 418-18 37h26l-15 40" stroke="#F4C86D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="627" cy="462" r="30" stroke="#78DDB7" stroke-width="6"/><path d="M627 445v18l14 9" stroke="#78DDB7" stroke-width="5" stroke-linecap="round"/>
+  <path d="M700 422h38m-38 23h38m-38 23h38" stroke="#78DDB7" stroke-width="5" stroke-linecap="round"/>
+  <path d="M848 365h77v155h-77z" fill="#1B3A36"/><path d="M861 381h51v103h-51z" fill="#0C211D"/>
+  <path d="m871 449 12-17 11 9 18-28" stroke="#5CE0AF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M886 520v70m0 0H811m75 0h110" stroke="#69CDA7" stroke-opacity=".6" stroke-width="5"/>
+  <path d="M173 480c45 0 49-76 94-76h57m524 31h64c32 0 30 74 62 74h58" stroke="#77DDB7" stroke-opacity=".65" stroke-width="4" stroke-dasharray="9 12"/>
+  <circle cx="324" cy="404" r="8" fill="#F5CC7B"/><circle cx="1032" cy="509" r="8" fill="#F5CC7B"/>
+</svg>

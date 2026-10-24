@@ -1,0 +1,28 @@
+- Start Date
+- Actual Start Date
+Planned started
+Actuutal start
+what is the Delay on starting
+
+Dealy at Sart : 2 Days
+
+elapsed time
+
+counter time
+
+automation trigger every thing 
+
+flow need to give
+
+Nested Tasts
+Elpsed Time
+Count Down Downs
+Delayed start
+Deled End
+Time Over Run
+
+- Dedpdneceys
+Pre contidions
+_ Parles
+Pareell Tsk
+Sequence Task

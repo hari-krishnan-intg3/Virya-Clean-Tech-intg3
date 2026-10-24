@@ -85,6 +85,7 @@ Website/FrontEnd/
     │       └── index.ts
     ├── data/
     │   ├── services.ts         # 4 services + icons + imagery
+    │   ├── homeContent.ts      # Homepage positioning and illustrative use cases
     │   ├── process.ts          # 4-step process
     │   └── content.ts          # Hero slides, ecosystem, differentiators, applications
     ├── hooks/
@@ -100,9 +101,14 @@ Website/FrontEnd/
 public/
 ├── favicon.svg
 ├── images/
-│   ├── solar-array.jpg
-│   ├── wind-energy.jpg
-│   └── electric-mobility.jpg
+│   ├── ai-solar.svg
+│   ├── ai-ev-charging.svg
+│   ├── ai-storage.svg
+│   ├── ai-energy-systems.svg
+│   ├── ai-engineering.svg
+│   ├── ai-wind.svg
+│   ├── ai-industry.svg
+│   └── ai-facility.svg
 └── google-calendar/
     └── google-calendar-scheduler.js   # copy of the connector (see below)
 ```
@@ -118,6 +124,12 @@ Google Calender/
 The connector is also copied to
 `public/google-calendar/google-calendar-scheduler.js` so it can be loaded at
 runtime if you ever switch to the embedded widget.
+
+The website uses original, locally hosted SVG illustrations matched to its
+energy and facility content; its image components do not fetch stock-photo
+URLs. Homepage use cases describe illustrative scenarios, not completed Virya
+projects. Any expected benefit or performance metric must be assessed against
+the specific site's baseline and an agreed measurement period.
 
 ---
 

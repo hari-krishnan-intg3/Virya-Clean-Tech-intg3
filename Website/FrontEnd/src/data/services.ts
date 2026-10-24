@@ -50,7 +50,7 @@ export interface Service {
   tagline: string;
   /** Longer card copy for the home, services and related-capability grids. */
   cardSummary: string;
-  /** Local photograph used by service cards and the service detail hero. */
+  /** Original local illustration used by service cards and the service detail hero. */
   image: string;
   imageAlt: string;
   /** Two to three sentence overview for the detail page hero. */
