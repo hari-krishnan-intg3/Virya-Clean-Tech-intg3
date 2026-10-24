@@ -9,7 +9,7 @@ export const visualAssets = {
     alt: 'Photograph of a commercial rooftop solar installation in warm evening light.',
   },
   solarInstallation: {
-    src: '/images/generated-solar.jpg',
+    src: '/images/generated-solar-installation.jpg',
     alt: 'Photograph of a commercial rooftop solar installation in warm evening light.',
   },
   wind: {
@@ -17,11 +17,11 @@ export const visualAssets = {
     alt: 'Photograph of wind turbines operating across an open landscape.',
   },
   ev: {
-    src: '/images/generated-ev-charging.jpg',
+    src: '/images/generated-electric-mobility.jpg',
     alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
   },
   storage: {
-    src: '/images/generated-operator.jpg',
+    src: '/images/generated-storage-system.jpg',
     alt: 'Photograph of an engineer reviewing industrial energy equipment.',
   },
   industrial: {
@@ -37,23 +37,23 @@ export const visualAssets = {
     alt: 'Photograph of renewable energy infrastructure at sunrise.',
   },
   solarComplex: {
-    src: '/images/generated-solar.jpg',
+    src: '/images/generated-solar-complex.jpg',
     alt: 'Original illustrated view of a commercial rooftop solar installation.',
   },
   solarMarketRooftop: {
-    src: '/images/generated-solar.jpg',
+    src: '/images/generated-solar-market-rooftop.jpg',
     alt: 'Original illustrated view of a commercial rooftop solar installation.',
   },
   solarMarketPanels: {
-    src: '/images/generated-solar.jpg',
+    src: '/images/generated-solar-market-panels.jpg',
     alt: 'Original illustrated view of a commercial rooftop solar installation.',
   },
   rooftopSolarArray: {
-    src: '/images/generated-solar.jpg',
+    src: '/images/generated-rooftop-array.jpg',
     alt: 'Original illustrated view of a commercial rooftop solar installation.',
   },
   siteAssessment: {
-    src: '/images/generated-engineering.jpg',
+    src: '/images/generated-site-assessment.jpg',
     alt: 'Original illustrated view of a site review for a clean-energy project.',
   },
   energyControl: {
@@ -61,11 +61,11 @@ export const visualAssets = {
     alt: 'Photograph of an operations dashboard used to monitor performance.',
   },
   engineeringBlueprints: {
-    src: '/images/generated-engineering.jpg',
+    src: '/images/generated-blueprints.jpg',
     alt: 'Original illustrated view of engineers planning a clean-energy project.',
   },
   batteryStorage: {
-    src: '/images/generated-operator.jpg',
+    src: '/images/generated-battery-room.jpg',
     alt: 'Photograph of an engineer reviewing industrial energy equipment.',
   },
   electricMobility: {
@@ -73,43 +73,43 @@ export const visualAssets = {
     alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
   },
   industrialAssessment: {
-    src: '/images/generated-engineering.jpg',
+    src: '/images/generated-industrial-assessment.jpg',
     alt: 'Original illustrated view of a site review for a clean-energy project.',
   },
   solarArray: {
-    src: '/images/generated-solar.jpg',
+    src: '/images/generated-solar-array.jpg',
     alt: 'Original illustrated view of a commercial rooftop solar installation.',
   },
   viryaEnergy: {
-    src: '/images/generated-dashboard.jpg',
+    src: '/images/generated-energy-network.jpg',
     alt: 'Original illustrated view of connected clean-energy systems.',
   },
   viryaEngineering: {
-    src: '/images/generated-engineering.jpg',
+    src: '/images/generated-engineering-team.jpg',
     alt: 'Original illustrated view of engineers planning a clean-energy project.',
   },
   viryaEvCharging: {
-    src: '/images/generated-ev-charging.jpg',
+    src: '/images/generated-fleet-depot.jpg',
     alt: 'Original illustrated view of electric-vehicle charging infrastructure.',
   },
   viryaSolar: {
-    src: '/images/generated-solar.jpg',
+    src: '/images/generated-solar-field.jpg',
     alt: 'Original illustrated view of a commercial rooftop solar installation.',
   },
   viryaWind: {
-    src: '/images/generated-wind.jpg',
+    src: '/images/generated-turbine-field.jpg',
     alt: 'Original illustrated view of wind turbines generating clean electricity.',
   },
   windEnergy: {
-    src: '/images/generated-wind.jpg',
+    src: '/images/generated-wind-energy.jpg',
     alt: 'Original illustrated view of wind turbines generating clean electricity.',
   },
   serviceEvCharging: {
-    src: '/images/generated-ev-charging.jpg',
+    src: '/images/generated-service-ev.jpg',
     alt: 'Original illustrated view of an electric vehicle charging at a depot.',
   },
   manufacturing: {
-    src: '/images/generated-industrial.jpg',
+    src: '/images/generated-factory-floor.jpg',
     alt: 'Photograph of a modern industrial facility with connected operations.',
   },
   warehousing: {
@@ -117,7 +117,7 @@ export const visualAssets = {
     alt: 'Photograph of a warehouse aisle and logistics operations.',
   },
   fleetCharging: {
-    src: '/images/generated-ev-charging.jpg',
+    src: '/images/generated-logistics-yard.jpg',
     alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
   },
   realEstate: {
