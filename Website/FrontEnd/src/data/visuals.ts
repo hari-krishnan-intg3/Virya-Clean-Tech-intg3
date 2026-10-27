@@ -49,8 +49,8 @@ export const visualAssets = {
     alt: 'Original illustrated view of a commercial rooftop solar installation.',
   },
   rooftopSolarArray: {
-    src: '/images/generated-rooftop-array.jpg',
-    alt: 'Original illustrated view of a commercial rooftop solar installation.',
+    src: '/images/ai-solar.svg',
+    alt: 'Illustration of solar panels installed on a commercial rooftop.',
   },
   siteAssessment: {
     src: '/images/generated-site-assessment.jpg',
@@ -77,8 +77,8 @@ export const visualAssets = {
     alt: 'Original illustrated view of a site review for a clean-energy project.',
   },
   solarArray: {
-    src: '/images/generated-solar-array.jpg',
-    alt: 'Original illustrated view of a commercial rooftop solar installation.',
+    src: '/images/ai-solar.svg',
+    alt: 'Illustration of solar panels installed on a commercial rooftop.',
   },
   viryaEnergy: {
     src: '/images/generated-energy-network.jpg',
@@ -89,8 +89,8 @@ export const visualAssets = {
     alt: 'Original illustrated view of engineers planning a clean-energy project.',
   },
   viryaEvCharging: {
-    src: '/images/generated-fleet-depot.jpg',
-    alt: 'Original illustrated view of electric-vehicle charging infrastructure.',
+    src: '/images/generated-logistics-yard.jpg',
+    alt: 'Photograph of an electric vehicle at a depot.',
   },
   viryaSolar: {
     src: '/images/generated-solar-field.jpg',
