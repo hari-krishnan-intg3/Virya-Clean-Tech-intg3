@@ -83,19 +83,25 @@ export function InsightBand({ limit = 4 }: InsightBandProps) {
 
         {/* The judgement behind the numbers */}
         <div className="mt-16 grid gap-6 lg:grid-cols-2">
-          {marketShifts.map((shift, index) => (
-            <Reveal key={shift.title} delay={index * 0.06} as="div">
-              <article className="card h-full overflow-hidden">
-                <CardImage image={SHIFT_VISUALS[index % SHIFT_VISUALS.length]} />
-                <div className="p-7">
-                  <h3 className="text-lg font-bold leading-snug text-ink">{shift.title}</h3>
-                  <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
-                    {shift.body}
-                  </p>
-                </div>
-              </article>
-            </Reveal>
-          ))}
+          {marketShifts
+            .filter(
+              ({ title }) =>
+                title !== 'Rooftop is where the growth actually is' &&
+                title !== 'Charging infrastructure is behind vehicle adoption',
+            )
+            .map((shift, index) => (
+              <Reveal key={shift.title} delay={index * 0.06} as="div">
+                <article className="card h-full overflow-hidden">
+                  <CardImage image={SHIFT_VISUALS[index % SHIFT_VISUALS.length]} />
+                  <div className="p-7">
+                    <h3 className="text-lg font-bold leading-snug text-ink">{shift.title}</h3>
+                    <p className="mt-3 text-[0.92rem] leading-relaxed text-ink-muted">
+                      {shift.body}
+                    </p>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
         </div>
 
         <Reveal delay={0.1} className="mt-10">
