@@ -131,11 +131,13 @@ export default function HomePage() {
           </Reveal>
 
           <div className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {services.map((service, index) => (
-              <Reveal key={service.slug} delay={index * 0.06} as="div">
-                <ServiceCard service={service} />
-              </Reveal>
-            ))}
+            {services
+              .filter((service) => service.slug !== 'solar' && service.slug !== 'ev-charging')
+              .map((service, index) => (
+                <Reveal key={service.slug} delay={index * 0.06} as="div">
+                  <ServiceCard service={service} />
+                </Reveal>
+              ))}
 
             {/* Conversion tile closes the grid deliberately. */}
             <Reveal delay={0.3} as="div">
