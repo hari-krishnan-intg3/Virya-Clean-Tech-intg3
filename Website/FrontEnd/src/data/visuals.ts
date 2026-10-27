@@ -105,8 +105,8 @@ export const visualAssets = {
     alt: 'Original illustrated view of wind turbines generating clean electricity.',
   },
   serviceEvCharging: {
-    src: '/images/generated-service-ev.jpg',
-    alt: 'Original illustrated view of an electric vehicle charging at a depot.',
+    src: '/images/generated-electric-mobility.jpg',
+    alt: 'Photograph of an electric vehicle at a charging location.',
   },
   manufacturing: {
     src: '/images/generated-factory-floor.jpg',
