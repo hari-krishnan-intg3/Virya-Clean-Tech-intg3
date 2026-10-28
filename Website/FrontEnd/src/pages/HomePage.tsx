@@ -6,8 +6,8 @@ import { EnergyEcosystemContainer } from '@/components/sections/EnergyEcosystemC
 import { ProcessContainer } from '@/components/sections/ProcessContainer';
 import { UseCasesContainer } from '@/components/sections/UseCasesContainer';
 import { CtaBand } from '@/components/sections/PageHero';
-import { CardImage, Reveal, ServiceCard } from '@/components/ui';
-import { services, industries } from '@/data/services';
+import { CardImage, Reveal } from '@/components/ui';
+import { industries } from '@/data/services';
 import { whyWeStart } from '@/data/homeContent';
 import { visualAssets } from '@/data/visuals';
 
@@ -130,36 +130,42 @@ export default function HomePage() {
             </Link>
           </Reveal>
 
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {services
-              .filter((service) => service.slug !== 'solar' && service.slug !== 'ev-charging')
-              .map((service, index) => (
-                <Reveal key={service.slug} delay={index * 0.06} as="div">
-                  <ServiceCard service={service} />
-                </Reveal>
-              ))}
-
-            {/* Conversion tile closes the grid deliberately. */}
-            <Reveal delay={0.3} as="div">
-              <div className="flex h-full flex-col justify-between rounded-lg border border-white/10 bg-ink p-7 text-white">
-                <div>
-                  <p className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-white/45">
-                    Not sure where to start?
-                  </p>
-                  <p className="mt-4 text-xl font-bold leading-snug">
-                    Share your facility and project objective to identify what
-                    information may be useful to explore next.
-                  </p>
-                </div>
-
-                <Link
-                  to="/request-consultation"
-                  className="btn-primary-lg mt-8 w-full justify-center"
-                >
-                  Discuss Your Project
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            {[
+              {
+                title: 'EV charging',
+                detail: 'Cars, two-wheelers, electric autos, buses and fleets.',
+                spec: 'Charging time · charger type · fleet ROI',
+                image: visualAssets.ev,
+                to: '/services/ev-charging',
+              },
+              {
+                title: 'Solar power',
+                detail: 'Rigid modules, flexible panels and rooftop systems.',
+                spec: 'System size · daily generation · savings',
+                image: visualAssets.solarInstallation,
+                to: '/services/solar',
+              },
+              {
+                title: 'Wind energy',
+                detail: 'Turbine classes, hourly output and Kayathar site context.',
+                spec: 'Rated output · current · rotor speed',
+                image: visualAssets.wind,
+                to: '/services/wind-energy',
+              },
+            ].map((offering, index) => (
+              <Reveal key={offering.title} delay={index * 0.06} as="div">
+                <Link to={offering.to} className="card card-hover group block h-full overflow-hidden">
+                  <CardImage image={offering.image} className="aspect-[16/9]" />
+                  <div className="p-6">
+                    <p className="text-xl font-bold text-ink">{offering.title}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-muted">{offering.detail}</p>
+                    <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-emerald-300">{offering.spec}</p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300">Explore offering <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                  </div>
                 </Link>
-              </div>
-            </Reveal>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>

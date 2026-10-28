@@ -1,5 +1,4 @@
 import { BookingFormContainer } from '@/components/sections/BookingFormContainer';
-import { PageHero } from '@/components/sections/PageHero';
 import { CardImage } from '@/components/ui';
 import { INSURANCE_HONESTS } from '@/data/consultationContent';
 import { visualAssets } from '@/data/visuals';
@@ -12,18 +11,6 @@ import { visualAssets } from '@/data/visuals';
 export default function ConsultationPage() {
   return (
     <>
-      <PageHero
-        eyebrow="Request a consultation"
-        title={
-          <>
-            Start a conversation about <span className="text-gradient">your energy project.</span>
-          </>
-        }
-        description="Tell us about your business, facility and energy requirements. The details help the team understand your enquiry and identify what information may be useful for a next step."
-        primary={undefined}
-        trail={[{ label: 'Home', to: '/' }, { label: 'Request a consultation', to: '/request-consultation' }]}
-      />
-
       <BookingFormContainer />
 
       {/* What happens next — reduces the "what am I committing to" hesitation. */}

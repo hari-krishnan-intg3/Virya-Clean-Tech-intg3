@@ -81,6 +81,15 @@ export default function ServicesPage() {
                 cta: 'Scope a system',
               },
               {
+                when: 'You are evaluating a wind resource',
+                then: 'Wind energy screening',
+                image: visualAssets.wind,
+                because:
+                  'Measured wind speed, turbine power curves, rotor and generator operating ranges, grid connection and site access determine whether a wind project merits detailed assessment.',
+                to: '/services/wind-energy',
+                cta: 'Explore wind options',
+              },
+              {
                 when: 'Your site is planning for electric vehicles',
                 then: 'EV infrastructure',
                 image: visualAssets.fleetCharging,

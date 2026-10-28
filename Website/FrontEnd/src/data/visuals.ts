@@ -17,7 +17,7 @@ export const visualAssets = {
     alt: 'Photograph of wind turbines operating across an open landscape.',
   },
   ev: {
-    src: '/images/generated-electric-mobility.jpg',
+    src: '/images/generated-ev-charging.jpg',
     alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
   },
   storage: {
@@ -69,7 +69,7 @@ export const visualAssets = {
     alt: 'Photograph of an engineer reviewing industrial energy equipment.',
   },
   electricMobility: {
-    src: '/images/generated-ev-charging.jpg',
+    src: '/images/generated-electric-mobility.jpg',
     alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
   },
   industrialAssessment: {
@@ -89,7 +89,7 @@ export const visualAssets = {
     alt: 'Original illustrated view of engineers planning a clean-energy project.',
   },
   viryaEvCharging: {
-    src: '/images/generated-logistics-yard.jpg',
+    src: '/images/generated-ev-charging.jpg',
     alt: 'Photograph of an electric vehicle at a depot.',
   },
   viryaSolar: {
@@ -117,7 +117,7 @@ export const visualAssets = {
     alt: 'Photograph of a warehouse aisle and logistics operations.',
   },
   fleetCharging: {
-    src: '/images/generated-logistics-yard.jpg',
+    src: '/images/generated-industrial.jpg',
     alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
   },
   realEstate: {

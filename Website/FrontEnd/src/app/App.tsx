@@ -25,6 +25,8 @@ import HomePage from '@/pages/HomePage';
 
 const ServicesPage = lazy(() => import('@/pages/ServicesPage'));
 const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
+const EVChargingPage = lazy(() => import('@/pages/EVChargingPage'));
+const RenewablesPage = lazy(() => import('@/pages/RenewablesPage'));
 const IndustriesPage = lazy(() => import('@/pages/IndustriesPage'));
 const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));
 const InsightsPage = lazy(() => import('@/pages/InsightsPage'));
@@ -179,6 +181,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/ev-charging/:segment?" element={<EVChargingPage />} />
+            <Route path="/services/solar/:category?" element={<RenewablesPage />} />
+            <Route path="/services/wind-energy/:category?" element={<RenewablesPage />} />
             <Route path="/services/:slug" element={<ServiceDetailPage />} />
             <Route path="/industries" element={<IndustriesPage />} />
             <Route path="/projects" element={<ProjectsPage />} />

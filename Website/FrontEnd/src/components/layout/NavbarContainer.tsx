@@ -10,6 +10,9 @@ import { useScrolled } from '@/hooks/useScrolled';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils';
 
+const NAV_ORDER = ['Home', 'Offerings', 'About', 'Industries', 'Projects', 'Insights'];
+const orderedNav = [...NAV].sort((left, right) => NAV_ORDER.indexOf(left.label) - NAV_ORDER.indexOf(right.label));
+
 /**
  * Primary navigation.
  *
@@ -75,7 +78,7 @@ export function NavbarContainer() {
 
             {/* ── Desktop ─────────────────────────────────────────── */}
             <ul className="hidden items-center gap-1 lg:flex">
-              {NAV.map((group) => (
+              {orderedNav.map((group) => (
                 <li key={group.label} className="relative">
                   {group.columns ? (
                     <MegaMenu group={group} condensed={condensed} />
@@ -158,7 +161,7 @@ export function NavbarContainer() {
               className="fixed inset-x-0 top-[4.25rem] z-[60] max-h-[calc(100vh-5rem)] overflow-y-auto rounded-b-[1.6rem] border-b border-line bg-white shadow-lift lg:hidden"
             >
               <div className="shell flex flex-col gap-1 py-6">
-                {NAV.map((group) => {
+                {orderedNav.map((group) => {
                   const expanded = openGroup === group.label;
 
                   return (
