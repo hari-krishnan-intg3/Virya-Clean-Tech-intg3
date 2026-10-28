@@ -1,0 +1,5 @@
+﻿state,state_abbreviation,filter_id,filter_applied,target_records,available_at_source,records_extracted,status,extraction_timestamp_utc,source_url
+California,CA,HQ_CA,"{""U.S. Headquarter Office"": ""CA""}",100,137,100,Complete,2026-10-26T02:26:00+00:00,https://otexaprod.trade.gov/madeinusa/searchapp/
+North Carolina,NC,HQ_NC,"{""U.S. Headquarter Office"": ""NC""}",100,109,100,Complete,2026-10-26T02:26:00+00:00,https://otexaprod.trade.gov/madeinusa/searchapp/
+New York,NY,HQ_NY,"{""U.S. Headquarter Office"": ""NY""}",100,74,74,Partial - source has fewer records,2026-10-26T02:26:00+00:00,https://otexaprod.trade.gov/madeinusa/searchapp/
+New Jersey,NJ,HQ_NJ,"{""U.S. Headquarter Office"": ""NJ""}",100,38,38,Partial - source has fewer records,2026-10-26T02:26:00+00:00,https://otexaprod.trade.gov/madeinusa/searchapp/

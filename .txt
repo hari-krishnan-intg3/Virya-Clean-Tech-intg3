@@ -26,3 +26,5 @@ Pre contidions
 _ Parles
 Pareell Tsk
 Sequence Task
+
+https://harikrishnanint2027g3.atlassian.net/jira/software/projects/VCT/settings/automation#/rule-list?systemLabelId=project&page=1&pageSize=20&sortKey=name&sortOrder=ASC
