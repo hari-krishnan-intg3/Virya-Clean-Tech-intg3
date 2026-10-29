@@ -239,6 +239,55 @@ export const NAV: NavGroup[] = [
     },
   },
   {
+    label: 'Carbon Economics',
+    to: '/carbon-economics',
+    context: {
+      eyebrow: 'Decarbonization Finance',
+      title: 'Carbon Economics & Compliance',
+      description: 'Mitigate EU CBAM tariffs, trade in the Indian Carbon Market (CCTS), and secure reasonable assurance for SEBI BRSR Core.',
+    },
+    columns: [
+      {
+        heading: 'Compliance & Tariffs',
+        items: [
+          { label: 'EU CBAM Tariff Shield', to: '/carbon-economics#cbam-calculator', description: 'Replace punitive EU default carbon values with verified telemetry.' },
+          { label: 'Indian Carbon Market (CCTS)', to: '/carbon-economics', description: 'Migrate PAT energy savings into verified Carbon Credit Certificates.' },
+          { label: 'SEBI BRSR Core Assurance', to: '/carbon-economics', description: 'Audit-grade Scope 1, 2 & 3 greenhouse gas reporting ledgers.' },
+        ],
+      },
+      {
+        heading: 'Carbon Finance & Trading',
+        items: [
+          { label: 'Article 6 Bilateral Transfers', to: '/carbon-economics', description: 'Paris Agreement cooperative mechanisms for cross-border carbon sales.' },
+          { label: 'Voluntary Carbon Credits (VCM)', to: '/carbon-economics', description: 'Verra VCS and Gold Standard verification for high-integrity credits.' },
+          { label: 'Green Energy Open Access', to: '/carbon-economics', description: '100 kW threshold captive solar with 100% CSS exemptions.' },
+        ],
+      },
+      {
+        heading: 'Marginal Abatement',
+        items: [
+          { label: 'MACC Capital Prioritization', to: '/carbon-economics', description: 'Ranking clean technologies by net economic profit per ton abated.' },
+          { label: 'Internal Carbon Pricing (ICP)', to: '/carbon-economics', description: '$25–$65/tCO2e shadow pricing for corporate CapEx approvals.' },
+          { label: 'Diesel Replacement Payback', to: '/carbon-economics', description: 'Financial modeling of solar-BESS hybrid diesel elimination.' },
+        ],
+      },
+      {
+        heading: 'Financing & EaaS',
+        items: [
+          { label: 'Energy-as-a-Service (EaaS)', to: '/carbon-economics', description: 'Zero upfront capital expenditure with 15–25 year PPA rates.' },
+          { label: 'Captive RESCO Models', to: '/carbon-economics', description: 'Off-balance sheet solar and BESS delivery with performance SLAs.' },
+          { label: 'ESG-Linked Sustainability Loans', to: '/carbon-economics', description: 'Green finance structuring with verified emission reduction milestones.' },
+        ],
+      },
+    ],
+    feature: {
+      title: 'Facing European CBAM tariffs?',
+      body: 'Model your export exposure and calculate how captive solar and storage mitigate border carbon levies.',
+      to: '/carbon-economics#cbam-calculator',
+      cta: 'Launch CBAM calculator',
+    },
+  },
+  {
     label: 'Energy Platforms',
     to: '/energy-platforms',
     context: {
@@ -365,6 +414,7 @@ export const FOOTER_LINKS = {
   company: [
     { label: 'About', to: '/about' },
     { label: 'Process', to: '/process' },
+    { label: 'Carbon Economics', to: '/carbon-economics' },
     { label: 'Energy Platforms', to: '/energy-platforms' },
     { label: 'Industries', to: '/industries' },
     { label: 'Insights', to: '/insights' },

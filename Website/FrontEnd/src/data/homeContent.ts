@@ -43,66 +43,126 @@ export interface UseCase {
   imageAlt: string;
 }
 
-/** Illustrative scenarios for project discovery, not completed-client case studies. */
+/** Illustrative scenarios for project discovery across 8 core industry verticals. */
 export const useCases: UseCase[] = [
   {
     id: 'daytime-facility',
-    sector: 'Manufacturing',
-    title: 'Match on-site solar to a working day',
+    sector: 'Manufacturing & Industrial',
+    title: 'Match On-Site Solar to Industrial Operating Shifts',
     problem:
-      'A factory may have strong daytime demand, but roof condition, shading, shift patterns and grid constraints determine whether solar generation lines up with real consumption.',
+      'Continuous 3-shift factories face steep maximum demand charges. Rigid rooftop solar can overload light-gauge PEB sheds without rigorous structural dead-load verification.',
     approach:
-      'Compare interval meter data and operating hours with roof area, structural information, shading and connection details before sizing or procurement.',
+      'Compare 15-minute interval smart meter demand with roof dead-load ratings. Deploy high-efficiency N-Type TOPCon or ultra-lightweight 2.9 kg/m² flexible CIGS mats paired with DISCOM net-metering.',
     benefit:
-      'Clarify the opportunity, key assumptions and missing site checks before the team commits to a design or investment decision.',
+      'Reduce daytime grid reliance by up to 65%, lock in levelized energy cost at ₹3.40/kWh, and claim 40% Year 1 accelerated depreciation tax shields.',
     metric:
-      'Solar self-consumption = on-site solar used by the facility ÷ total on-site solar generated. Review alongside imported peak kW.',
-    image: visualAssets.solar.src,
-    imageAlt: 'Original illustration of a factory using rooftop solar energy.',
+      'Solar Self-Consumption Ratio: >92% on-site utilization. Demand shaving: 320 kW avoided peak penalty.',
+    image: visualAssets.solarCommercialRooftop.src,
+    imageAlt: 'Industrial commercial warehouse rooftop covered in high-efficiency solar panel arrays.',
   },
   {
     id: 'fleet-depot',
-    sector: 'Fleet & logistics',
-    title: 'Plan depot charging around vehicle routes',
+    sector: 'Transportation & Fleet Logistics',
+    title: 'Electrify 100+ Commercial Vehicle Depots Without Grid Tripping',
     problem:
-      'Vehicles can return in tight windows and leave together before the next shift. Charger count alone will not reveal whether dwell time, routes and available electrical capacity align.',
+      'Simultaneous charging of 50+ commercial electric buses or delivery vans causes catastrophic 8MW+ transformer demand spikes that exceed sanctioned HT limits.',
     approach:
-      'Map vehicle duty cycles, parking locations, charging windows and connection capacity; then compare phased charger and load-management options.',
+      'Deploy 60kW to 360kW dual-gun DC fast chargers orchestrated by dynamic OCPP 2.0.1 automated load balancing, priority departure algorithms, and containerized battery buffers.',
     benefit:
-      'Give operations and facilities teams a shared charging plan with capacity limits and rollout questions visible early.',
+      'Flatten coincident peak electrical demand by 45%, lower per-km fuel costs from ₹11.50 (diesel) to ₹2.80 (EV), and guarantee 99.4% depot dispatch reliability.',
     metric:
-      'Track kWh delivered per vehicle per shift, charger utilisation and depot peak kW against a representative operating week.',
-    image: visualAssets.ev.src,
-    imageAlt: 'Original illustration of electric fleet vehicles charging at a depot.',
+      'Depot Uptime: 99.4% availability SLA. Coincident peak curtailed from 8.4 MW to 3.8 MW.',
+    image: visualAssets.evBusDepot.src,
+    imageAlt: 'Zero-emission electric bus and commercial fleet high-power charging depot.',
   },
   {
     id: 'critical-loads',
-    sector: 'Healthcare & critical facilities',
-    title: 'Evaluate storage against critical loads',
+    sector: 'Healthcare & Critical Facilities',
+    title: 'Sub-20ms Diesel Genset Displacement with Containerized BESS',
     problem:
-      'Critical equipment, backup arrangements and variable demand make a generic battery size or resilience claim unreliable without a clear load and continuity requirement.',
+      'Hospitals and critical facilities suffer noisy, high-polluting diesel generators running at expensive ₹24–₹28/kWh operating costs during brief voltage fluctuations.',
     approach:
-      'Separate critical from flexible loads, review demand intervals and existing backup systems, and define operating scenarios and safety constraints.',
+      'Integrate containerized Lithium Iron Phosphate (LFP) stationary storage with active liquid cooling and static transfer switches for instantaneous microgrid islanding.',
     benefit:
-      'Make the intended role of storage explicit and identify the engineering, controls and resilience questions that still need validation.',
+      'Sub-20 millisecond automatic changeover eliminates surgical theater and imaging reboot interruptions while cutting auxiliary diesel fuel burn by up to 80%.',
     metric:
-      'Model peak kW reduction and critical-load runtime for a stated scenario; compare metered charge and discharge energy.',
+      'Transfer Switching: <18 ms. Diesel displacement: 72,000 Liters/year saved per 1MWh BESS.',
     image: visualAssets.storage.src,
-    imageAlt: 'Original illustration of battery storage supporting a critical facility.',
+    imageAlt: 'Containerized LFP battery energy storage system with BMS monitoring.',
   },
   {
     id: 'multi-site-visibility',
-    sector: 'Property & multi-site operations',
-    title: 'Turn disconnected energy data into a usable view',
+    sector: 'Real Estate & Multi-Site Portfolios',
+    title: 'Consolidate Multi-Building Telemetry into Unified Cloud Glass',
     problem:
-      'Different meters, buildings, schedules and reporting conventions can make it hard to see where energy use changes or where a closer review is worthwhile.',
+      'Disparate energy meters, tenant billing disputes, and lagged utility bills conceal energy waste, power factor penalties, and phase unbalance across nationwide properties.',
     approach:
-      'Check meter coverage, data intervals, site schedules and device compatibility, then define a consistent dashboard and exception-review workflow.',
+      'Install IoT smart energy gateways on main HT and LT incomers with native Modbus/BACnet protocols, streaming 15-minute telemetry into Virya’s centralized operations cloud.',
     benefit:
-      'Help facilities teams compare like with like, spot data gaps and prioritise investigation without treating a dashboard as an automatic saving.',
+      'Automate tenant sub-metering reconciliation, identify low power factor penalties before DISCOM billing, and benchmark building energy intensity per square foot.',
     metric:
-      'Monitor meter-data completeness, kWh per operating hour by site and the time taken to review flagged exceptions.',
+      'Data Completeness: 99.9% telemetry uptime. Billing Reconciliation: 100% digital audit trace.',
     image: visualAssets.energyControl.src,
-    imageAlt: 'Original illustration of an energy dashboard connecting multiple facilities.',
+    imageAlt: 'Cloud SCADA energy operations dashboard monitoring multi-facility telemetry.',
+  },
+  {
+    id: 'data-center-green',
+    sector: 'Data Centers & Hyperscale Infrastructure',
+    title: 'Achieve 24/7 Carbon-Free Energy for Mission-Critical Compute',
+    problem:
+      'Hyperscale AI workloads require continuous 24/7 power with strict 99.999% tier-IV reliability, making intermittent standalone renewables insufficient on their own.',
+    approach:
+      'Structure bilateral hybrid Wind-Solar Green Energy Open Access (GEOA) PPAs paired with dedicated on-site battery storage for round-the-clock green electron matching.',
+    benefit:
+      'Deliver Power Usage Effectiveness (PUE) below 1.28 while achieving 100% Scope 2 decarbonization compliant with global hyperscale tenant sustainability covenants.',
+    metric:
+      'Round-the-Clock Matching: 88% true 24/7 clean power. Carbon Intensity: 0.04 kg CO2e / kWh.',
+    image: visualAssets.dataCenterGreenPower.src,
+    imageAlt: 'Modern sustainable hyperscale data center powered by solar canopies and battery energy storage.',
+  },
+  {
+    id: 'retail-hospitality',
+    sector: 'Retail & Hospitality Networks',
+    title: 'Turn Guest Parking into Destination Revenue with High-Power EVSE',
+    problem:
+      'Retail malls and luxury hotel chains face rising guest expectations for rapid EV charging but lack spare substation capacity during peak HVAC operating hours.',
+    approach:
+      'Install architectural solar carports integrated with smart DC fast chargers and dynamic load curtailment that automatically prioritizes hotel guest comfort during peak air conditioning loads.',
+    benefit:
+      'Monetize parking dwell times with automated payment gateways, enhance ESG hospitality ratings, and capture corporate fleet business travelers.',
+    metric:
+      'Guest Dwell Monetization: ₹18–₹22/kWh vend rate. Solar Carport Generation: 450 MWh/year.',
+    image: visualAssets.evTwoWheeler.src,
+    imageAlt: 'Electric scooter and vehicle charging at a modern public destination charging hub.',
+  },
+  {
+    id: 'utilities-grid-modern',
+    sector: 'Utilities & Grid Providers',
+    title: 'Enhance Distribution Feeder Resiliency with Turnkey Substation EPC',
+    problem:
+      'Penetration of distributed rooftop solar creates reverse power flows, feeder voltage rise, and high harmonic distortion that trip legacy DISCOM distribution substations.',
+    approach:
+      'Engineer turnkey 11kV/33kV digital substations with numeric protection relays, automated on-load tap changers (OLTC), active harmonic filters, and SCADA connectivity.',
+    benefit:
+      'Maintain feeder voltage within statutory ±5% limits, eliminate harmonic penalties, and satisfy Central Electricity Authority (CEA) grid connectivity regulations.',
+    metric:
+      'Harmonic Distortion: THD < 2.8% (well within IEEE 519 limit). Feeder Tripping: Zero relay faults.',
+    image: visualAssets.gridModernizationSubstation.src,
+    imageAlt: 'Digital electrical substation and grid interconnection facility with high-voltage transformers.',
+  },
+  {
+    id: 'carbon-cbam-export',
+    sector: 'Heavy Industrial & Exporters',
+    title: 'Mitigate EU CBAM Border Tariffs for Steel & Aluminum Exporters',
+    problem:
+      'Full phase-in of EU CBAM threatens Indian metal and engineering exporters with €70–€95/tCO2e border penalties due to fossil fuel-heavy grid electricity and thermal processes.',
+    approach:
+      'Conduct granular product-level embedded emissions accounting, model Marginal Abatement Cost Curves (MACC), and replace captive fossil power with bilateral clean PPAs.',
+    benefit:
+      'Mitigate up to 92% of gross CBAM border tax exposure, protect export operating margins in European markets, and satisfy SEBI BRSR Core assurance mandates.',
+    metric:
+      'Border Liability Reduced: Up to ₹14.2 Crores/year avoided on a 15,000-ton export volume.',
+    image: visualAssets.siteAssessment.src,
+    imageAlt: 'Comprehensive technical site assessment for industrial clean energy deployment.',
   },
 ];

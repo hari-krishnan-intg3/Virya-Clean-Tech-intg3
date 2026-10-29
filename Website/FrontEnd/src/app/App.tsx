@@ -28,6 +28,7 @@ const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
 const EVChargingPage = lazy(() => import('@/pages/EVChargingPage'));
 const RenewablesPage = lazy(() => import('@/pages/RenewablesPage'));
 const IndustriesPage = lazy(() => import('@/pages/IndustriesPage'));
+const CarbonEconomicsPage = lazy(() => import('@/pages/CarbonEconomicsPage'));
 const EnergyPlatformsPage = lazy(() => import('@/pages/EnergyPlatformsPage'));
 const InsightsPage = lazy(() => import('@/pages/InsightsPage'));
 const ProcessPage = lazy(() => import('@/pages/ProcessPage'));
@@ -186,6 +187,7 @@ export default function App() {
             <Route path="/services/wind-energy/:category?" element={<RenewablesPage />} />
             <Route path="/services/:slug" element={<ServiceDetailPage />} />
             <Route path="/industries" element={<IndustriesPage />} />
+            <Route path="/carbon-economics" element={<CarbonEconomicsPage />} />
             <Route path="/energy-platforms" element={<EnergyPlatformsPage />} />
             <Route path="/projects" element={<Navigate to="/energy-platforms" replace />} />
             <Route path="/insights" element={<InsightsPage />} />

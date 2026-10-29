@@ -238,8 +238,8 @@ export function HeroSliderContainer() {
                 <span
                   className={
                     active === index
-                      ? 'block h-[3px] w-10 rounded-full bg-emerald-500'
-                      : 'block h-[3px] w-6 rounded-full bg-white/30 transition-all group-hover:bg-white/60'
+                      ? 'block h-[3px] w-8 rounded-full bg-emerald-500'
+                      : 'block h-[3px] w-4 rounded-full bg-white/30 transition-all group-hover:bg-white/60'
                   }
                 />
               </button>

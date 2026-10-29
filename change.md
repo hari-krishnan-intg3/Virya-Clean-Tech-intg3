@@ -2,6 +2,49 @@
 
 ## 2026-10-29
 
+- Full Platform 6–8 Slider Minimum Rollout Across Digital Presence:
+  - **Home Page Hero Slider** (`HeroSliderContainer.tsx` & `content.ts`): Expanded from 3 to **8 full slides** (1. Industrial Clean Energy, 2. Multi-MW Solar & Flexible CIGS Mats, 3. Megawatt Fleet EV Depots, 4. Containerized LFP BESS, 5. Utility Wind Corridors, 6. 24/7 Digital Hubs & Microgrids, 7. Cloud SCADA & VPPs, 8. Carbon Economics & CBAM).
+  - **Home Page Use Cases Slider** (`UseCasesContainer.tsx` & `homeContent.ts`): Expanded from 4 static cards to an **8-slide interactive Swiper carousel** across all 8 market sectors (Manufacturing, Fleet Logistics, Healthcare, Multi-Site Real Estate, Hyperscale Data Centers, Retail & Hospitality, Utilities & Smart Grids, Heavy Industrial Exporters).
+  - **Solutions Portfolio Showcase Slider** (`SolutionsShowcaseSlider.tsx` & `ServicesPage.tsx`): Built an **8-slide interactive Swiper showcase** representing the 8 CleanTech pillars with operational metrics, technical specifications, and category filters.
+  - **Carbon Economics Strategic Blueprint Slider** (`CarbonEconomicsPage.tsx` & `carbonEconomics.ts`): Built an **8-slide Swiper slider** covering CBAM exposure, Indian Carbon Market CCTS, Marginal Abatement Cost Curves, BRSR Core, Group Captive Open Access, Behind-the-Meter BESS, Green Steel Transition, and Corporate Climate Governance.
+  - **Insights Technical Intelligence Briefs Slider** (`InsightsPage.tsx` & `insights.ts`): Built an **8-slide Swiper slider** with high-level executive research briefs covering ToD tariff arbitrage, EU CBAM accounting, MCS fleet charging, and electrochemical thermal safety.
+
+- Deep Technical Intelligence & Whitepaper Repository (`InsightsPage.tsx` & `insights.ts`):
+  - Created 8 comprehensive, peer-level Technical Whitepapers with regulatory citations, executive summaries, field findings, and actionable procurement recommendations:
+    1. Time-of-Day (ToD) Tariff Optimization & Peak Arbitrage in Southern DISCOMs (TANGEDCO & BESCOM).
+    2. EU CBAM Decarbonization Framework: Embedded Emissions Accounting for Indian Industrial Exporters.
+    3. Megawatt Charging System (MCS) & High-Power Fleet Depot Interconnection Architecture.
+    4. Cell Chemistry Selection for Industrial BESS: LFP vs NMC Under High Tropical Ambient Temperatures.
+    5. Green Energy Open Access (GEOA) 100 kW Rules: Cross-Subsidy Surcharges & Banking Economics.
+    6. Structural Dead-Load Limits on PEB Warehouses: Lightweight CIGS Mats vs Rigid Monofacial/Bifacial Glass.
+    7. Central Electricity Authority (CEA) Technical Standards: Harmonic Filtering, Fault Ride-Through & VCB Protection.
+    8. SEBI BRSR Core & Scope 1/2/3 Telemetry: Building Audit-Ready Digital Energy Trails.
+  - Implemented category filter tabs (`All`, `Solar & Storage`, `EV Mobility`, `Policy & Tariffs`, `Carbon Economics`) and expandable drawer views with engineering mathematical formulas (Arbitrage Gross Margin, Arrhenius Capacity Fade, THD Current, etc.).
+
+- Interactive CleanTech ROI Calculators (`SolutionsRoiCalculators.tsx` in `ServicesPage.tsx`):
+  - Integrated directly into the Offerings/Solutions page (`/services#roi-calculators`).
+  - Multi-technology financial modeling suite with dynamic sliders:
+    1. **Commercial Solar PV ROI**: Real-time generation yield, 40% Year 1 accelerated depreciation tax shields, IRR %, simple payback period, and 25-year cumulative savings.
+    2. **Commercial Fleet EV Electrification TCO**: Fleet size (3W, LCV, Bus, Truck), diesel vs EV per-km expenditure differential, annual fuel savings, EVSE Capex payback in months, and CO2 emissions abated.
+    3. **Industrial BESS Peak Shaving & Arbitrage**: Peak ToD spread, contract demand shaved off billing meters, monthly demand charge savings, and daily discharge arbitrage revenue.
+
+- Interactive Energy Assessment Toolkits (`EnergyAssessmentToolkits.tsx` in `ServicesPage.tsx`):
+  - Integrated directly into the Offerings/Solutions page (`/services#assessment-toolkits`).
+  - 4 interactive sizing and screening tools with real-time engineering verdicts:
+    1. **Transformer & HT Headroom Screener**: Computes safe loading headroom (85% thermal limit), spare kVA/kW, and flags load margins below 15%.
+    2. **Rooftop Structural Screener**: Evaluates PEB metal sheet, RCC slab, curved standing seam, and asbestos roofs; auto-recommends rigid TOPCon vs lightweight 2.9 kg/m² flexible CIGS mats with annual yield forecast.
+    3. **EV Charging Infrastructure Sizer**: Sizes depot connected kW, dual-gun bay count, and charging architecture (DC Fast vs AC Smart) based on fleet battery pack and dwell windows.
+    4. **Diesel Displacement Auditor**: Models 70–85% diesel generator displacement via solar-storage microgrids, quantifying annual fuel cost avoided and Scope 1 metric tons of CO2 eliminated.
+
+- Primary Navigation & Dedicated Page for Carbon Economics (`CarbonEconomicsPage.tsx` & `siteConfig.ts`):
+  - Added primary navigation item `Carbon Economics` in `NavbarContainer.tsx` and full 4-column mega menu in `siteConfig.ts`.
+  - Built interactive EU CBAM Financial Exposure Calculator with sector benchmarks (Iron & Steel, Aluminum & Alloys, Cement & Clinker, Fertilizers & Ammonia) and captive solar/BESS mitigation modeling.
+  - Added Marginal Abatement Cost Curve (MACC) ranking matrix comparing ₹/tCO2e abatement cost, Capex tiers, and implementation lead times.
+
+- Maintained Strict Vercel Serverless Function Limits (<= 12 Functions):
+  - Kept total serverless function count in `api/` at 7 functions, ensuring full compatibility with Vercel Hobby plan.
+  - Clean build verification: `npm run api:typecheck`, `npm run typecheck`, and `npm run build` all pass with 0 errors.
+
 - Resolved Vercel Deployment Limit & Restored Build Compatibility:
   - Identified root cause of Vercel deployment failure: Vercel Hobby plan enforces a hard limit of 12 Serverless Functions. Adding `api/traffic-notify.ts` created a 13th function which exceeded the deployment cap.
   - Consolidated traffic notification handling directly into `api/reports.ts` (`GET/POST /api/reports?type=traffic`), eliminating the 13th function and bringing the total count back to exactly 12 functions.

@@ -28,7 +28,7 @@ export const heroSlides: HeroSlide[] = [
     focal: 'center 52%',
   },
   {
-    id: 'innovation',
+    id: 'solar-rooftop',
     eyebrow: 'HIGH-YIELD RENEWABLE ARCHITECTURES',
     headline: 'Multi-MW Solar PV, Flexible Mats & Microgrids.',
     subtext:
@@ -38,13 +38,63 @@ export const heroSlides: HeroSlide[] = [
     focal: 'center 48%',
   },
   {
-    id: 'solar',
+    id: 'ev-mobility',
     eyebrow: 'ELECTRIC MOBILITY & FLEET DECARBONIZATION',
     headline: 'Megawatt Fleet Depots & Highway EV Corridors.',
     subtext:
       'Turn fleet vehicles into distributed energy assets. High-throughput DC fast chargers for transit buses, commercial haulers, and two/three-wheelers with ISO 15118 dynamic load balancing and automated billing.',
     image: visualAssets.evBusDepot.src,
     imageAlt: visualAssets.evBusDepot.alt,
+    focal: 'center 50%',
+  },
+  {
+    id: 'bess-storage',
+    eyebrow: 'CONTAINERIZED BATTERY ENERGY STORAGE',
+    headline: 'Utility-Grade LFP BESS & Millisecond Peak Shaving.',
+    subtext:
+      'Containerized lithium iron phosphate (LFP) energy storage with liquid thermal management, sub-4ms transfer times, and AI-driven Time-of-Day tariff arbitrage that cuts peak demand charges by up to 45%.',
+    image: visualAssets.storage.src,
+    imageAlt: visualAssets.storage.alt,
+    focal: 'center 50%',
+  },
+  {
+    id: 'wind-generation',
+    eyebrow: 'UTILITY-SCALE & COMMERCIAL WIND POWER',
+    headline: 'High-Yield Wind Corridors & Southern Interconnection.',
+    subtext:
+      'Direct-drive and geared turbines (100kW to 3.5MW) optimized for the high-wind Kayathar and South Tamil Nadu funnels. Integrated with captive transmission pooling for round-the-clock green power.',
+    image: visualAssets.wind.src,
+    imageAlt: visualAssets.wind.alt,
+    focal: 'center 50%',
+  },
+  {
+    id: 'digital-microgrids',
+    eyebrow: '24/7 MISSION-CRITICAL POWER RESILIENCE',
+    headline: 'Hyperscale Microgrids & Data Center Green Power.',
+    subtext:
+      'Achieve 24/7 carbon-free operations with hybrid solar-wind PPAs, containerized BESS ride-through, and zero-diesel backup transitions designed for sub-1.25 PUE hyperscale digital infrastructure.',
+    image: visualAssets.dataCenterGreenPower.src,
+    imageAlt: visualAssets.dataCenterGreenPower.alt,
+    focal: 'center 50%',
+  },
+  {
+    id: 'smart-platforms',
+    eyebrow: 'CLOUD SCADA & VIRTUAL POWER PLANTS',
+    headline: 'Intelligent Energy Platforms & OCPP Orchestration.',
+    subtext:
+      'Sub-second telemetry monitoring, automated demand response, day-ahead neural network generation forecasting, and certified OCPP 2.0.1 charge station management across enterprise distributed energy assets.',
+    image: visualAssets.industrial.src,
+    imageAlt: visualAssets.industrial.alt,
+    focal: 'center 50%',
+  },
+  {
+    id: 'carbon-economics',
+    eyebrow: 'DECARBONIZATION FINANCE & CARBON MARKETS',
+    headline: 'Carbon Economics, CBAM Compliance & ESG Audits.',
+    subtext:
+      'Navigate the Indian Carbon Market (CCTS), mitigate EU CBAM carbon import tariffs, and generate audit-ready SEBI BRSR Core Scope 1, 2, and 3 disclosures backed by certified telemetry intervals.',
+    image: visualAssets.engineering.src,
+    imageAlt: visualAssets.engineering.alt,
     focal: 'center 50%',
   },
 ];
