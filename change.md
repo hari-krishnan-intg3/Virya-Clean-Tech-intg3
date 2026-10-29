@@ -2,6 +2,12 @@
 
 ## 2026-10-29
 
+- Resolved Vercel Deployment Limit & Restored Build Compatibility:
+  - Identified root cause of Vercel deployment failure: Vercel Hobby plan enforces a hard limit of 12 Serverless Functions. Adding `api/traffic-notify.ts` created a 13th function which exceeded the deployment cap.
+  - Consolidated traffic notification handling directly into `api/reports.ts` (`GET/POST /api/reports?type=traffic`), eliminating the 13th function and bringing the total count back to exactly 12 functions.
+  - Removed heavy `playwright` devDependency from `package.json` and restored clean `package-lock.json`.
+  - Added `.vercelignore` to exclude local diagnostic test scripts and media from production build packaging.
+  - Verified full TypeScript compilation (`api:typecheck` and `typecheck`) and production bundle build with zero errors.
 - Restored Clean, Neat Hero Presentation:
   - Removed heavy directional smudge overlays, blurred background boxes, and the live facility telemetry mock widget.
   - Restored full-width, full-bleed hero carousel (`100svh`) with natural, high-resolution photography clearly visible across the entire frame.

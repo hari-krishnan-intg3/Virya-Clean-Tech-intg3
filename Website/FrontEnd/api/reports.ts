@@ -19,6 +19,10 @@ import {
   getVercelAnalytics,
   logVercelAnalytics,
 } from './_lib/vercel-analytics.js';
+import {
+  getTrafficReportSnapshot,
+  sendTrafficAnalyticsNotification,
+} from './_lib/traffic-notification.js';
 
 /**
  * Reports endpoint — daily / weekly / monthly.
@@ -259,6 +263,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const config = loadConfig();
+
+  // Traffic Analytics sub-handler: GET snapshot preview or POST notification dispatch
+  const rawType = (req.method === 'POST' ? req.body?.type : req.query.type)?.toString().toLowerCase();
+  if (rawType === 'traffic') {
+    if (req.method === 'GET') {
+      const snapshot = await getTrafficReportSnapshot(config.sheets, config.google);
+      return res.status(200).json({ ok: true, preview: true, data: snapshot });
+    }
+    const result = await sendTrafficAnalyticsNotification(config.mail, config.sheets, config.google);
+    return res.status(200).json({ ok: true, sent: true, emailId: result.id, data: result.summary });
+  }
   const testMode = req.query.test === 'true' || req.body?.test === true;
   const recordAnalytics = testMode && req.body?.recordAnalytics === true && !config.dryRun;
   if (testMode) {
