@@ -4,6 +4,18 @@ export interface VisualAsset {
 }
 
 export const visualAssets = {
+  heroCleantechHub: {
+    src: '/images/hero-cleantech-hub.jpg',
+    alt: 'Commercial CleanTech energy hub with rooftop solar PV, containerized LFP battery storage, and EV fleet charging depot in India.',
+  },
+  gridModernizationSubstation: {
+    src: '/images/grid-modernization-substation.jpg',
+    alt: 'Digital electrical substation and grid interconnection facility with high-voltage transformers, switchgear, and solar array.',
+  },
+  dataCenterGreenPower: {
+    src: '/images/data-center-green-power.jpg',
+    alt: 'Modern sustainable hyperscale data center powered by solar canopies and containerized battery energy storage.',
+  },
   evAutoRickshaw: {
     src: '/images/ev-auto-rickshaw.jpg',
     alt: 'Electric three-wheeler auto-rickshaw connected to an urban EV charging station.',
@@ -29,140 +41,144 @@ export const visualAssets = {
     alt: 'Vast industrial commercial warehouse rooftop covered in solar panel arrays.',
   },
   solar: {
-    src: '/images/generated-solar.jpg',
-    alt: 'Photograph of a commercial rooftop solar installation in warm evening light.',
+    src: '/images/hero-cleantech-hub.jpg',
+    alt: 'State-of-the-art CleanTech commercial energy hub in bright clear daylight.',
   },
   solarInstallation: {
-    src: '/images/generated-solar-installation.jpg',
-    alt: 'Photograph of a commercial rooftop solar installation in warm evening light.',
+    src: '/images/solar-commercial-rooftop.jpg',
+    alt: 'Commercial warehouse rooftop solar installation with high-efficiency PV arrays.',
   },
   wind: {
-    src: '/images/generated-wind.jpg',
-    alt: 'Photograph of wind turbines operating across an open landscape.',
+    src: '/images/generated-wind-energy.jpg',
+    alt: 'High-capacity utility-scale wind turbines operating in the Kayathar corridor.',
   },
   ev: {
-    src: '/images/generated-ev-charging.jpg',
-    alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
+    src: '/images/ev-bus-depot-charging.jpg',
+    alt: 'Zero-emission electric bus and commercial fleet high-power charging depot.',
   },
   storage: {
     src: '/images/generated-storage-system.jpg',
-    alt: 'Photograph of an engineer reviewing industrial energy equipment.',
+    alt: 'Containerized LFP battery energy storage system with BMS monitoring.',
   },
   industrial: {
-    src: '/images/generated-industrial.jpg',
-    alt: 'Photograph of a modern industrial facility with connected operations.',
+    src: '/images/grid-modernization-substation.jpg',
+    alt: 'Industrial grid interconnection yard and digital substation with solar integration.',
   },
   engineering: {
     src: '/images/generated-engineering.jpg',
-    alt: 'Photograph of engineers collaborating on a technical project.',
+    alt: 'Engineers reviewing single-line electrical diagrams and protection relay coordination.',
   },
   renewable: {
-    src: '/images/generated-renewable.jpg',
-    alt: 'Photograph of renewable energy infrastructure at sunrise.',
+    src: '/images/hero-cleantech-hub.jpg',
+    alt: 'Integrated multi-technology renewable energy infrastructure in India.',
   },
   solarComplex: {
-    src: '/images/generated-solar-complex.jpg',
-    alt: 'Original illustrated view of a commercial rooftop solar installation.',
+    src: '/images/solar-commercial-rooftop.jpg',
+    alt: 'Commercial rooftop solar installation with expansive module arrays.',
   },
   solarMarketRooftop: {
-    src: '/images/generated-solar-market-rooftop.jpg',
-    alt: 'Original illustrated view of a commercial rooftop solar installation.',
+    src: '/images/solar-commercial-rooftop.jpg',
+    alt: 'Expansive commercial solar installation on an industrial facility.',
   },
   solarMarketPanels: {
-    src: '/images/generated-solar-market-panels.jpg',
-    alt: 'Original illustrated view of a commercial rooftop solar installation.',
+    src: '/images/solar-flat-rigid-panels.jpg',
+    alt: 'High-efficiency monocrystalline solar panels on mounting racks.',
   },
   rooftopSolarArray: {
-    src: '/images/ai-solar.svg',
-    alt: 'Illustration of solar panels installed on a commercial rooftop.',
+    src: '/images/solar-commercial-rooftop.jpg',
+    alt: 'Solar panels installed on a commercial industrial rooftop.',
   },
   siteAssessment: {
     src: '/images/generated-site-assessment.jpg',
-    alt: 'Original illustrated view of a site review for a clean-energy project.',
+    alt: 'Comprehensive technical site assessment for industrial clean energy deployment.',
   },
   energyControl: {
     src: '/images/generated-dashboard.jpg',
-    alt: 'Photograph of an operations dashboard used to monitor performance.',
+    alt: 'Cloud SCADA energy operations dashboard monitoring multi-facility telemetry.',
   },
   engineeringBlueprints: {
     src: '/images/generated-blueprints.jpg',
-    alt: 'Original illustrated view of engineers planning a clean-energy project.',
+    alt: 'Electrical engineering schematics, SLD diagrams, and grid protection studies.',
   },
   batteryStorage: {
     src: '/images/generated-battery-room.jpg',
-    alt: 'Photograph of an engineer reviewing industrial energy equipment.',
+    alt: 'Industrial BESS room with lithium iron phosphate (LFP) rack batteries and BMS.',
   },
   electricMobility: {
-    src: '/images/generated-electric-mobility.jpg',
-    alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
+    src: '/images/ev-bus-depot-charging.jpg',
+    alt: 'High-power commercial fleet charging depot with dual-gun DC fast chargers.',
   },
   industrialAssessment: {
-    src: '/images/generated-industrial-assessment.jpg',
-    alt: 'Original illustrated view of a site review for a clean-energy project.',
+    src: '/images/grid-modernization-substation.jpg',
+    alt: 'Substation and facility electrical assessment for renewable integration.',
   },
   solarArray: {
-    src: '/images/ai-solar.svg',
-    alt: 'Illustration of solar panels installed on a commercial rooftop.',
+    src: '/images/solar-flat-rigid-panels.jpg',
+    alt: 'Framed rigid monocrystalline solar array under clear daylight.',
   },
   viryaEnergy: {
-    src: '/images/generated-energy-network.jpg',
-    alt: 'Original illustrated view of connected clean-energy systems.',
+    src: '/images/hero-cleantech-hub.jpg',
+    alt: 'Unified Virya CleanTech energy hub linking generation, storage, and mobility.',
   },
   viryaEngineering: {
     src: '/images/generated-engineering-team.jpg',
-    alt: 'Original illustrated view of engineers planning a clean-energy project.',
+    alt: 'Electrical engineering team conducting power quality and headroom analysis.',
   },
   viryaEvCharging: {
-    src: '/images/generated-ev-charging.jpg',
-    alt: 'Photograph of an electric vehicle at a depot.',
+    src: '/images/ev-bus-depot-charging.jpg',
+    alt: 'High-power DC fast charging depot for electric commercial vehicles.',
   },
   viryaSolar: {
-    src: '/images/generated-solar-field.jpg',
-    alt: 'Original illustrated view of a commercial rooftop solar installation.',
+    src: '/images/solar-commercial-rooftop.jpg',
+    alt: 'Commercial solar PV array installed on an industrial rooftop.',
   },
   viryaWind: {
-    src: '/images/generated-turbine-field.jpg',
-    alt: 'Original illustrated view of wind turbines generating clean electricity.',
+    src: '/images/generated-wind-energy.jpg',
+    alt: 'Wind turbines operating across South Tamil Nadu wind corridors.',
   },
   windEnergy: {
     src: '/images/generated-wind-energy.jpg',
-    alt: 'Original illustrated view of wind turbines generating clean electricity.',
+    alt: 'High-yield wind turbines generating clean energy with 690V/11kV generation.',
   },
   serviceEvCharging: {
-    src: '/images/generated-electric-mobility.jpg',
-    alt: 'Photograph of an electric vehicle at a charging location.',
+    src: '/images/ev-bus-depot-charging.jpg',
+    alt: 'Commercial EV fleet charging depot with fast DC charging infrastructure.',
   },
   manufacturing: {
     src: '/images/generated-factory-floor.jpg',
-    alt: 'Photograph of a modern industrial facility with connected operations.',
+    alt: 'Modern manufacturing facility with sub-metered power monitoring.',
   },
   warehousing: {
     src: '/images/generated-warehouse.jpg',
-    alt: 'Photograph of a warehouse aisle and logistics operations.',
+    alt: 'Logistics distribution center with rooftop solar and electric forklift charging.',
   },
   fleetCharging: {
-    src: '/images/generated-industrial.jpg',
-    alt: 'Photograph of an electric vehicle charging beside modern infrastructure.',
+    src: '/images/ev-bus-depot-charging.jpg',
+    alt: 'Heavy commercial electric fleet depot charging bay.',
   },
   realEstate: {
     src: '/images/generated-office.jpg',
-    alt: 'Photograph of a bright commercial building interior.',
+    alt: 'Commercial business park with tenant EV chargers and architectural solar carports.',
   },
   hospital: {
     src: '/images/generated-hospital.jpg',
-    alt: 'Photograph of a modern hospital corridor.',
+    alt: 'Healthcare facility with critical power reliability and BESS UPS backup.',
   },
   hotel: {
     src: '/images/generated-hotel.jpg',
-    alt: 'Photograph of a modern hotel exterior.',
+    alt: 'Hospitality resort with guest EV charging and energy-saving solar thermal.',
   },
   retail: {
     src: '/images/generated-retail.jpg',
-    alt: 'Photograph of a contemporary retail environment.',
+    alt: 'Retail shopping complex with customer destination DC fast chargers.',
   },
   education: {
     src: '/images/generated-campus.jpg',
-    alt: 'Photograph of a modern education campus.',
+    alt: 'University campus with net-metered rooftop solar and green power displays.',
+  },
+  dataCenter: {
+    src: '/images/data-center-green-power.jpg',
+    alt: 'Enterprise data center powered by solar canopies and containerized battery storage.',
   },
 } satisfies Record<string, VisualAsset>;
 

@@ -19,33 +19,32 @@ export interface HeroSlide {
 export const heroSlides: HeroSlide[] = [
   {
     id: 'future',
-    eyebrow: 'From operating problem to measurable next step',
-    headline: 'Make cleaner energy work in the real world.',
+    eyebrow: 'ENGINEERING INDIA’S ENERGY TRANSITION',
+    headline: 'Industrial Clean Energy, Engineered to Scale.',
     subtext:
-      'Virya connects solar, EV charging, storage and energy data to the way your facility actually runs—so teams can move from a broad ambition to a scoped, measurable decision.',
-    image: visualAssets.solar.src,
-    imageAlt:
-      visualAssets.solar.alt,
+      'Virya integrates multi-MW solar PV, high-power EV charging (3.3kW to 350kW MCS), containerized LFP battery storage, and cloud SCADA telemetry—synchronized directly to your facility’s real operating loads.',
+    image: visualAssets.heroCleantechHub.src,
+    imageAlt: visualAssets.heroCleantechHub.alt,
     focal: 'center 52%',
   },
   {
     id: 'innovation',
-    eyebrow: 'Solutions built around operating reality',
-    headline: 'See the problem before you buy the technology.',
+    eyebrow: 'HIGH-YIELD RENEWABLE ARCHITECTURES',
+    headline: 'Multi-MW Solar PV, Flexible Mats & Microgrids.',
     subtext:
-      'Start with load patterns, operating hours, dependencies and site constraints. Then compare the solution, expected benefit and evidence your team will use to measure progress.',
-    image: visualAssets.wind.src,
-    imageAlt: visualAssets.wind.alt,
+      'Engineered for factories, warehouses, and commercial properties. Deploy high-efficiency rigid monocrystalline arrays (22.5%+ efficiency) or lightweight CIGS flexible mats for curved PEB roofs with zero structural risk.',
+    image: visualAssets.solarCommercialRooftop.src,
+    imageAlt: visualAssets.solarCommercialRooftop.alt,
     focal: 'center 48%',
   },
   {
     id: 'solar',
-    eyebrow: 'A practical plan for the next shift',
-    headline: 'Turn energy goals into an operating plan.',
+    eyebrow: 'ELECTRIC MOBILITY & FLEET DECARBONIZATION',
+    headline: 'Megawatt Fleet Depots & Highway EV Corridors.',
     subtext:
-      'Whether the challenge is fleet charging, peak demand or resilient power, map the sequence, preconditions and metrics before committing to a rollout.',
-    image: visualAssets.ev.src,
-    imageAlt: visualAssets.ev.alt,
+      'Turn fleet vehicles into distributed energy assets. High-throughput DC fast chargers for transit buses, commercial haulers, and two/three-wheelers with ISO 15118 dynamic load balancing and automated billing.',
+    image: visualAssets.evBusDepot.src,
+    imageAlt: visualAssets.evBusDepot.alt,
     focal: 'center 50%',
   },
 ];

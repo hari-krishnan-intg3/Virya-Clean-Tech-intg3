@@ -2,6 +2,16 @@
 
 ## 2026-10-29
 
+- Redesigned Home Landing Page Hero: Aligned all primary content to the left side within a frosted, smudged backdrop card (`bg-[#071712]/85 backdrop-blur-xl border border-white/10 rounded-3xl p-6 sm:p-10`) with directional shading, leaving the right side photograph clear and prominently visible. Added a live facility telemetry snapshot widget over the right image.
+- Generated and integrated 3 new high-resolution photorealistic images:
+  1. `hero-cleantech-hub.jpg`: Indian CleanTech commercial energy hub with rooftop solar PV, containerized LFP BESS, and DC fleet fast-charging bays in daylight.
+  2. `grid-modernization-substation.jpg`: High-voltage electrical substation and digital grid interconnection yard with step-up transformers, switchgear, and solar array.
+  3. `data-center-green-power.jpg`: Hyperscale enterprise data center with solar carport canopies and containerized BESS backup power.
+- Eliminated all negative space across the Home Page:
+  - Replaced sparse 3-bullet positioning with a 4-card Consulting-Led Engineering Architecture grid (Interval Baseline, Multi-Asset Sync, Tariff & ROI, Audit-Ready Carbon Telemetry).
+  - Expanded Offerings to all 8 CleanTech pillars in a balanced 4-column x 2-row grid with generated imagery and architecture links.
+  - Expanded Market Segments to all 8 consulting sectors (Transportation, Manufacturing, Logistics, Real Estate, Utilities, Government, Retail, Data Centers) with concrete applications and business outcomes.
+  - Integrated the Nationwide Regional Locator directly on the Home page featuring dual Google Maps + Terrain views across 10 operational hubs in India.
 - Upgraded Mega Menu to a zero-scroll, compact, high-density layout: eliminated internal desktop scrollbars, reduced typography scale (crisp 0.65rem uppercase headings, 0.75rem item titles, 0.64rem single-line descriptions), streamlined padding, and engineered a 4-column balanced grid fitting comfortably within standard 768p/900p viewports.
 - Replaced Projects with a dedicated "Energy Platforms" route (`/energy-platforms`): built complete software intelligence suite covering Operations SCADA telemetry, OCPP 1.6J/2.0.1 Charge Station Management Server (CSMS), day-ahead neural network generation forecasting, and Virtual Power Plant (VPP) microgrid orchestration. Set automatic 301-equivalent redirect from `/projects` to `/energy-platforms`.
 - Moved About to the last position in the primary navigation order: `Home → Offerings → Industries → Energy Platforms → Insights → About`.
