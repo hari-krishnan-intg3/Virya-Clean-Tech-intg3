@@ -448,3 +448,4 @@ async function updateDailySummary(
     await appendRows(sheets, google, TRAFFIC_TABS.summary, 'A:L', [newDayRow]);
   }
 }
+

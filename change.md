@@ -2,6 +2,15 @@
 
 ## 2026-10-29
 
+- Restored Clean, Neat Hero Presentation:
+  - Removed heavy directional smudge overlays, blurred background boxes, and the live facility telemetry mock widget.
+  - Restored full-width, full-bleed hero carousel (`100svh`) with natural, high-resolution photography clearly visible across the entire frame.
+  - Centered high-impact typography with the rich CleanTech intelligence content:
+    - Slide 1: Multi-MW solar PV, high-power DC EV charging (3.3kW to 350kW MCS), containerized LFP storage, and cloud SCADA telemetry.
+    - Slide 2: Multi-MW solar PV, flexible CIGS mats for curved roofs, and microgrids.
+    - Slide 3: Megawatt fleet depots, transit bus charging, and highway corridors.
+  - Added clean, transparent inline capability badges: `3.3–350 kW EV Charging`, `22.5%+ Multi-MW Solar PV`, `Containerized LFP Storage`, `OCPP 2.0.1 & ISO 15118 Telemetry`, and `10 Hubs Across India`.
+  - Verified visual rendering via automated Playwright screenshot capture and passed full production build.
 - Built Complete Traffic Analytics Google Sheets Infrastructure (*"The Reports"*, ID: `13hYacqrTMuR9QabZbLFukyhb5K6GNMZSdQZOa8ri3N4`):
   - Created 6 dedicated subsection tabs in the production Google Sheet:
     1. `Full_Traffic_Session_Analytics` (30 columns): Comprehensive telemetry per session (Visitor ID, Device, OS, Browser, Screen Resolution, Language, Country, Region, City, IP, Referrer, UTM parameters, Entry/Exit pages, Page Views, Active Seconds, Max Scroll Depth %, Intent Score, Lead Converted status, and Raw JSON payload).
