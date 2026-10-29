@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { NavbarContainer } from '@/components/layout/NavbarContainer';
 import { FooterContainer } from '@/components/layout/FooterContainer';
 import { ScrollManager } from '@/components/layout/ScrollManager';
@@ -28,7 +28,7 @@ const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'));
 const EVChargingPage = lazy(() => import('@/pages/EVChargingPage'));
 const RenewablesPage = lazy(() => import('@/pages/RenewablesPage'));
 const IndustriesPage = lazy(() => import('@/pages/IndustriesPage'));
-const ProjectsPage = lazy(() => import('@/pages/ProjectsPage'));
+const EnergyPlatformsPage = lazy(() => import('@/pages/EnergyPlatformsPage'));
 const InsightsPage = lazy(() => import('@/pages/InsightsPage'));
 const ProcessPage = lazy(() => import('@/pages/ProcessPage'));
 const AboutPage = lazy(() => import('@/pages/AboutPage'));
@@ -186,7 +186,8 @@ export default function App() {
             <Route path="/services/wind-energy/:category?" element={<RenewablesPage />} />
             <Route path="/services/:slug" element={<ServiceDetailPage />} />
             <Route path="/industries" element={<IndustriesPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/energy-platforms" element={<EnergyPlatformsPage />} />
+            <Route path="/projects" element={<Navigate to="/energy-platforms" replace />} />
             <Route path="/insights" element={<InsightsPage />} />
             <Route path="/process" element={<ProcessPage />} />
             <Route path="/about" element={<AboutPage />} />

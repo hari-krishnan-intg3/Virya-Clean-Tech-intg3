@@ -11,12 +11,11 @@ interface MegaMenuProps {
 }
 
 /**
- * Hover-revealed navigation panel.
+ * Compact, zero-scroll mega navigation panel.
  *
- * Opens on pointer entry, closes on pointer exit with a short grace delay so
- * a visitor crossing the gap between the trigger and the panel does not lose
- * it. Fully operable by keyboard: the trigger is a real link, Tab moves into
- * the panel, and Escape returns focus to the trigger.
+ * Information-dense layout engineered to fit within standard desktop
+ * viewports without any vertical scrolling. Features reduced font scale,
+ * tight spacing, and crisp CleanTech application hierarchies.
  */
 export function MegaMenu({ group, condensed }: MegaMenuProps) {
   const [open, setOpen] = useState(false);
@@ -89,11 +88,11 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
           to={group.to}
           data-menu-trigger={group.label}
           className={cn(
-            'group inline-flex items-center rounded-lg px-3 py-2 text-[0.95rem] font-semibold transition-colors duration-200',
+            'group inline-flex items-center rounded-lg px-2.5 py-1.5 text-[0.92rem] font-semibold transition-colors duration-200',
             open || focusWithin
-              ? 'text-emerald-700'
+              ? 'text-emerald-400'
               : condensed
-                ? 'text-ink hover:text-emerald-700'
+                ? 'text-white/90 hover:text-emerald-400'
                 : 'text-white/85 hover:text-white',
           )}
         >
@@ -106,78 +105,86 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
           aria-controls={panelId}
           aria-label={`${open ? 'Close' : 'Open'} ${group.label} menu`}
           className={cn(
-            'grid h-9 w-8 place-items-center rounded-lg transition-colors hover:bg-white/10',
-            condensed ? 'text-ink-faint' : 'text-white/60',
+            'grid h-8 w-7 place-items-center rounded-md transition-colors hover:bg-white/10',
+            condensed ? 'text-white/60' : 'text-white/60',
           )}
         >
-          <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', open && 'rotate-180')} />
+          <ChevronDown className={cn('h-3.5 w-3.5 transition-transform duration-200', open && 'rotate-180')} />
         </button>
       </div>
 
-      {/* Full-width panel, positioned against the viewport rather than the trigger. */}
+      {/* Full-width panel, non-scrolling desktop container */}
       <div
         id={panelId}
         role="region"
         aria-label={group.label}
         hidden={!open}
-        className="fixed left-1/2 top-[4.5rem] z-50 w-[min(84rem,calc(100vw-2rem))] -translate-x-1/2 pt-3"
+        className="fixed left-1/2 top-[4.15rem] z-50 w-[min(94rem,calc(100vw-1.5rem))] -translate-x-1/2 pt-1"
       >
         <div
           className={cn(
-            'panel overflow-hidden transition-[opacity,transform] duration-200',
+            'panel overflow-hidden border border-white/10 bg-[#07130f]/95 shadow-2xl backdrop-blur-2xl transition-[opacity,transform] duration-200 rounded-xl',
             open ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0',
           )}
         >
-          <div className="grid max-h-[min(78vh,46rem)] overflow-y-auto lg:grid-cols-[16rem_minmax(0,1fr)]">
-            <aside className="flex flex-col justify-between border-b border-white/10 bg-[#0d2019] p-6 sm:p-7 lg:border-b-0 lg:border-r">
+          <div className="grid max-h-[calc(100vh-5rem)] overflow-y-auto lg:max-h-none lg:overflow-visible lg:grid-cols-[13rem_minmax(0,1fr)]">
+            <aside className="flex flex-col justify-between border-b border-white/10 bg-[#091a14] p-3.5 sm:p-4 lg:border-b-0 lg:border-r">
               <div>
-                <span className="inline-flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.17em] text-emerald-300">
-                  <Compass className="h-3.5 w-3.5" aria-hidden="true" />
-                  {group.context?.eyebrow ?? 'Explore'}
+                <span className="inline-flex items-center gap-1.5 text-[0.62rem] font-bold uppercase tracking-[0.16em] text-emerald-400">
+                  <Compass className="h-3 w-3" aria-hidden="true" />
+                  {group.context?.eyebrow ?? 'Architecture'}
                 </span>
-                <h2 className="mt-4 text-xl font-bold leading-snug text-white">
+                <h2 className="mt-1.5 text-base font-bold leading-snug text-white">
                   {group.context?.title ?? group.label}
                 </h2>
-                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-                  {group.context?.description ?? 'Explore information and resources from Virya Clean Tech.'}
+                <p className="mt-1 text-[0.72rem] leading-snug text-ink-muted">
+                  {group.context?.description ?? 'Explore CleanTech architectures and engineering capabilities from Virya.'}
                 </p>
               </div>
               <Link
                 to={group.to}
                 onClick={hideNow}
-                className="mt-6 inline-flex w-fit items-center gap-2 text-sm font-semibold text-emerald-300 hover:text-emerald-200"
+                className="mt-3 inline-flex w-fit items-center gap-1.5 text-[0.75rem] font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
               >
                 Explore {group.label}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </Link>
             </aside>
 
             <div
               className={cn(
-                'grid gap-x-6 gap-y-6 p-5 sm:p-7',
+                'grid gap-2 p-2.5',
                 group.columns.length >= 6
-                  ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-                  : 'sm:grid-cols-2',
+                  ? 'sm:grid-cols-2 lg:grid-cols-4'
+                  : group.columns.length >= 3
+                    ? 'sm:grid-cols-2 lg:grid-cols-4'
+                    : 'sm:grid-cols-2',
               )}
             >
               {group.columns.map((column) => (
-                <div key={column.heading} className="rounded-lg bg-white/[0.02] p-3 border border-white/5">
-                  <p className="mb-2.5 border-b border-white/10 pb-2 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-emerald-400">
+                <div
+                  key={column.heading}
+                  className="rounded-lg bg-white/[0.025] p-2 border border-white/5 hover:border-emerald-500/25 hover:bg-white/[0.04] transition-colors"
+                >
+                  <p className="mb-1 border-b border-white/10 pb-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-emerald-400">
                     {column.heading}
                   </p>
-                  <ul className="space-y-1">
+                  <ul className="space-y-0.5">
                     {column.items.map((item) => (
                       <li key={item.to + item.label}>
                         <Link
                           to={item.to}
                           onClick={hideNow}
-                          className="group/item block rounded-lg p-2 transition-colors duration-200 hover:bg-white/5"
+                          className="group/item block rounded px-1.5 py-0.5 transition-colors duration-150 hover:bg-white/5"
                         >
-                          <span className="flex items-center justify-between text-[0.88rem] font-semibold text-ink transition-colors group-hover/item:text-emerald-300">
+                          <span className="flex items-center justify-between text-[0.75rem] font-semibold text-white group-hover/item:text-emerald-300 transition-colors leading-tight">
                             <span>{item.label}</span>
-                            <ArrowRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100" aria-hidden="true" />
+                            <ArrowRight
+                              className="h-3 w-3 -translate-x-1 opacity-0 transition-all duration-150 group-hover/item:translate-x-0 group-hover/item:opacity-100 text-emerald-400"
+                              aria-hidden="true"
+                            />
                           </span>
-                          <span className="mt-0.5 line-clamp-2 block text-[0.74rem] leading-relaxed text-ink-muted">
+                          <span className="mt-0.5 line-clamp-1 block text-[0.64rem] leading-tight text-ink-muted group-hover/item:text-ink-faint">
                             {item.description}
                           </span>
                         </Link>
@@ -190,21 +197,20 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
           </div>
 
           {group.feature && (
-            <div className="border-t border-white/10 bg-[#091510] px-6 py-4 sm:px-7">
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="max-w-lg">
-                  <p className="text-sm font-bold text-ink">{group.feature.title}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-ink-muted">
-                    {group.feature.body}
-                  </p>
+            <div className="border-t border-white/10 bg-[#06120e] px-4 py-1.5 text-xs">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="max-w-2xl flex items-center gap-2">
+                  <span className="font-semibold text-white text-[0.74rem] shrink-0">{group.feature.title}</span>
+                  <span className="text-white/30 hidden sm:inline">•</span>
+                  <span className="text-[0.68rem] text-ink-muted line-clamp-1">{group.feature.body}</span>
                 </div>
                 <Link
                   to={group.feature.to}
                   onClick={hideNow}
-                  className="inline-flex items-center gap-2 rounded-lg border border-emerald-300/25 px-4 py-2.5 text-sm font-semibold text-emerald-300 transition-colors hover:border-emerald-300/50 hover:bg-emerald-300/10"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-emerald-400/30 px-2.5 py-0.5 text-[0.7rem] font-semibold text-emerald-400 hover:border-emerald-400/60 hover:bg-emerald-400/10 transition-colors shrink-0"
                 >
                   {group.feature.cta}
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  <ArrowRight className="h-3 w-3" aria-hidden="true" />
                 </Link>
               </div>
             </div>

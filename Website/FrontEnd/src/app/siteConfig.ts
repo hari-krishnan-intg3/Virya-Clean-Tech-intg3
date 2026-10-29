@@ -1,5 +1,5 @@
 import { services, type ServiceSlug } from '@/data/services';
-import { OFFERINGS_TREE, MARKET_SEGMENTS } from '@/data/offeringsArchitecture';
+import { OFFERINGS_TREE } from '@/data/offeringsArchitecture';
 
 /**
  * Business, contact and navigation architecture.
@@ -103,69 +103,35 @@ export const NAV: NavGroup[] = [
     label: 'Home',
     to: '/',
     context: {
-      eyebrow: 'Start here',
-      title: 'A clearer view of clean energy',
-      description: 'Explore Virya’s capabilities, approach and practical next steps for your site.',
+      eyebrow: 'Start Here',
+      title: 'A Clearer View of Clean Energy',
+      description: 'Explore Virya’s engineering capabilities, site-first methodology, and regional infrastructure.',
     },
     columns: [
       {
         heading: 'Explore Virya',
         items: [
-          { label: 'Our approach', to: '/about', description: 'Start with the facility, its energy use and operating context.' },
-          { label: 'Energy services', to: '/services', description: 'Compare solar, charging, storage and connected-energy options.' },
-          { label: 'Industries', to: '/industries', description: 'See how energy needs differ across operating environments.' },
-          { label: 'Latest insights', to: '/insights', description: 'Read practical context for energy decisions.' },
+          { label: 'CleanTech Offerings', to: '/services', description: '8 core pillars covering EV charging, solar, wind, BESS & platforms.' },
+          { label: 'Market Segments', to: '/industries', description: 'Consulting-led architectures across 8 core industry sectors.' },
+          { label: 'Energy Platforms', to: '/energy-platforms', description: 'SCADA telemetry, certified OCPP charge management & AI forecasting.' },
+          { label: 'Technical Insights', to: '/insights', description: 'Sourced analysis on India’s grid codes, tariffs & decarbonization.' },
         ],
       },
       {
-        heading: 'Plan a next step',
+        heading: 'Plan a Next Step',
         items: [
-          { label: 'How we work', to: '/process', description: 'Understand the path from first questions to a scoped review.' },
-          { label: 'Request a consultation', to: '/request-consultation', description: 'Share your project objective with the Virya team.' },
-          { label: 'Common questions', to: '/faq', description: 'Find answers about services, feasibility and next steps.' },
-          { label: 'Contact Virya', to: '/contact', description: 'Reach the team directly with a question.' },
+          { label: 'Engineering Process', to: '/process', description: 'Structured roadmap from feasibility study to turnkey commissioning.' },
+          { label: 'Request a Consultation', to: '/request-consultation', description: 'Direct project scope review with electrical engineers.' },
+          { label: 'Regional Hubs & Locator', to: '/contact', description: 'Interactive map across Bengaluru HQ, Tamil Nadu & western hubs.' },
+          { label: 'Common Questions', to: '/faq', description: 'Clear answers on feasibility, tariffs, timelines & compliance.' },
         ],
       },
     ],
     feature: {
       title: 'Have a project in mind?',
-      body: 'Share your site, energy needs and objectives to start a focused conversation.',
+      body: 'Share your facility loads, location, and energy objectives to start a focused review.',
       to: '/request-consultation',
       cta: 'Request a consultation',
-    },
-  },
-  {
-    label: 'About',
-    to: '/about',
-    context: {
-      eyebrow: 'About Virya',
-      title: 'People, process and perspective',
-      description: 'Learn about our site-first approach and how to connect with our team.',
-    },
-    columns: [
-      {
-        heading: 'The company',
-        items: [
-          { label: 'About Virya', to: '/about', description: 'Our practical, site-first view of clean-energy decisions.' },
-          { label: 'Our process', to: '/process', description: 'What to expect as a project question takes shape.' },
-          { label: 'Projects & capabilities', to: '/projects', description: 'Explore project considerations and areas of work.' },
-          { label: 'Insights', to: '/insights', description: 'Read practical context on energy and technology.' },
-        ],
-      },
-      {
-        heading: 'Connect',
-        items: [
-          { label: 'Careers', to: '/careers', description: 'Explore current opportunities and role information.' },
-          { label: 'Contact', to: '/contact', description: 'Reach the Bengaluru team directly.' },
-          { label: 'Frequently asked questions', to: '/faq', description: 'Review common questions before getting in touch.' },
-        ],
-      },
-    ],
-    feature: {
-      title: 'Know what to expect',
-      body: 'See how an initial conversation can progress into a clearly scoped project review.',
-      to: '/process',
-      cta: 'View our process',
     },
   },
   {
@@ -196,114 +162,212 @@ export const NAV: NavGroup[] = [
     to: '/industries',
     context: {
       eyebrow: 'Market Segments',
-      title: 'Engineered for Operating Contexts',
-      description: 'Consulting-led clean-energy architectures aligned with sector-specific loads, duty cycles, and business outcomes.',
+      title: 'Industry → Applications → Outcomes',
+      description: 'Consulting-led CleanTech architectures aligned with sector-specific loads, duty cycles, and business outcomes.',
     },
     columns: [
       {
-        heading: 'Mobility & Operations',
-        items: MARKET_SEGMENTS.slice(0, 4).map((segment) => ({
-          label: segment.title,
-          to: `/industries#${segment.slug}`,
-          description: segment.tagline,
-        })),
+        heading: 'Transportation & Mobility',
+        items: [
+          { label: 'Fleet EVSE & Bus Depots', to: '/industries#transportation', description: 'Megawatt depot charging & transit bus electrification.' },
+          { label: 'Truck Corridors & Hubs', to: '/industries#transportation', description: 'Heavy-duty highway fast DC charging networks.' },
+          { label: 'Route Energy Analytics', to: '/industries#transportation', description: 'Battery swapping & telematics-driven range planning.' },
+        ],
       },
       {
-        heading: 'Infrastructure & Real Assets',
-        items: MARKET_SEGMENTS.slice(4).map((segment) => ({
-          label: segment.title,
-          to: `/industries#${segment.slug}`,
-          description: segment.tagline,
-        })),
+        heading: 'Manufacturing & Industrial',
+        items: [
+          { label: 'Industrial Solar Arrays', to: '/industries#manufacturing', description: 'High-yield rooftop PV & balance-of-plant integration.' },
+          { label: 'Containerized BESS Storage', to: '/industries#manufacturing', description: 'Peak demand shaving & millisecond power protection.' },
+          { label: 'CBAM Decarbonization', to: '/industries#manufacturing', description: 'Export carbon audits & Scope 1 & 2 reduction roadmaps.' },
+        ],
+      },
+      {
+        heading: 'Logistics & Warehousing',
+        items: [
+          { label: 'Warehouse EV Hubs', to: '/industries#logistics', description: 'Yard fast chargers & material handling equipment EVSE.' },
+          { label: 'Cold Chain Microgrids', to: '/industries#logistics', description: 'Zero-downtime solar-hybrid power for temperature control.' },
+          { label: 'Distribution Center Solar', to: '/industries#logistics', description: 'Expansive flat roof PV arrays & Time-of-Day arbitrage.' },
+        ],
+      },
+      {
+        heading: 'Real Estate & Smart Buildings',
+        items: [
+          { label: 'Tenant EV Charging', to: '/industries#real-estate', description: 'Automated billing, load sharing & resident app access.' },
+          { label: 'Commercial Solar Rooftops', to: '/industries#real-estate', description: 'Architectural carports & common-area net metering.' },
+          { label: 'LEED & IGBC Compliance', to: '/industries#real-estate', description: 'Audit-ready carbon telemetry & BEMS integration.' },
+        ],
+      },
+      {
+        heading: 'Utilities & Energy Providers',
+        items: [
+          { label: 'Distributed Energy (DERs)', to: '/industries#utilities', description: 'Substation interconnection, hosting capacity & feeder sync.' },
+          { label: 'Virtual Power Plants (VPP)', to: '/industries#utilities', description: 'Aggregated distributed solar & BESS dispatch for discoms.' },
+          { label: 'Grid Power Quality', to: '/industries#utilities', description: 'Harmonic mitigation, power factor & reactive compensation.' },
+        ],
+      },
+      {
+        heading: 'Government & Smart Cities',
+        items: [
+          { label: 'Public EV Charging Hubs', to: '/industries#government', description: 'Multi-bay public DC fast charging & urban infrastructure.' },
+          { label: 'Transit Bus Electrification', to: '/industries#government', description: 'Overhead pantographs, depot chargers & PM E-DRIVE.' },
+          { label: 'Net-Zero Civic Buildings', to: '/industries#government', description: 'Municipal solar microgrids & smart city telemetry.' },
+        ],
+      },
+      {
+        heading: 'Retail & Hospitality',
+        items: [
+          { label: 'Destination Fast Charging', to: '/industries#retail', description: 'Customer DC charging hubs that boost footfall & dwell time.' },
+          { label: 'Architectural Solar Carports', to: '/industries#retail', description: 'Aesthetic shaded parking generating on-site green power.' },
+          { label: 'Brand Carbon Dashboards', to: '/industries#retail', description: 'Customer-facing sustainability kiosks & green branding.' },
+        ],
+      },
+      {
+        heading: 'Data Centers & Digital Hubs',
+        items: [
+          { label: '24/7 Carbon-Free Power', to: '/industries#data-centers', description: 'Multi-MW solar-wind hybrid PPAs with BESS firming.' },
+          { label: 'High-C-Rate UPS Storage', to: '/industries#data-centers', description: 'Millisecond battery failover replacing diesel generators.' },
+          { label: 'Sub-1.25 PUE Optimization', to: '/industries#data-centers', description: 'AI chiller telemetry & thermal efficiency controls.' },
+        ],
       },
     ],
     feature: {
       title: 'Sector-specific feasibility reviews',
-      body: 'Explore tailored CleanTech applications and ROI modeling for your industry.',
+      body: 'Explore consulting-led CleanTech applications and ROI modeling for your industry.',
       to: '/industries',
       cta: 'Explore all 8 market segments',
     },
   },
   {
-    label: 'Projects',
-    to: '/projects',
+    label: 'Energy Platforms',
+    to: '/energy-platforms',
     context: {
-      eyebrow: 'Project planning',
-      title: 'Move from questions to a scope',
-      description: 'Understand the information, site conditions and decisions that shape energy projects.',
+      eyebrow: 'Software Intelligence',
+      title: 'Cloud Orchestration & Telemetry',
+      description: 'Industrial SCADA, certified OCPP charge management, and machine-learning energy intelligence.',
     },
     columns: [
       {
-        heading: 'Capabilities',
+        heading: 'Operations & SCADA',
         items: [
-          { label: 'Project overview', to: '/projects', description: 'Explore the kinds of site and energy questions we help assess.' },
-          { label: 'Services', to: '/services', description: 'Review the clean-energy capabilities available to explore.' },
-          { label: 'Industries', to: '/industries', description: 'Review operating contexts across different facility types.' },
+          { label: 'Energy Operations Platform', to: '/energy-platforms', description: 'Unified multi-facility telemetry & real-time SLD tracking.' },
+          { label: 'Power Quality & Harmonics', to: '/energy-platforms', description: 'Continuous THD, power factor, and voltage sag alerts.' },
+          { label: 'Sub-Metered Facility IoT', to: '/energy-platforms', description: 'Zone-level power tracing & machine duty cycle monitoring.' },
         ],
       },
       {
-        heading: 'Project planning',
+        heading: 'EV Software & CSMS',
         items: [
-          { label: 'How we work', to: '/process', description: 'A clear path from initial context to an agreed scope.' },
-          { label: 'Common questions', to: '/faq', description: 'Get answers about feasibility and planning.' },
-          { label: 'Contact the team', to: '/contact', description: 'Discuss project information and possible next steps.' },
+          { label: 'OCPP 1.6J / 2.0.1 Server', to: '/energy-platforms', description: 'Certified charger management, OTA diagnostics & reboot.' },
+          { label: 'Dynamic Load Balancing', to: '/energy-platforms', description: 'Automated current throttling preventing breaker trips.' },
+          { label: 'Automated Billing & UPI', to: '/energy-platforms', description: 'Instant tariffs, corporate RFID, and automated reconciliation.' },
+        ],
+      },
+      {
+        heading: 'AI & Forecasting',
+        items: [
+          { label: 'Day-Ahead Generation Forecast', to: '/energy-platforms', description: '96%+ accuracy satellite irradiance & wake modeling.' },
+          { label: 'Time-of-Day Tariff Arbitrage', to: '/energy-platforms', description: 'Automated off-peak battery charge & peak shaving.' },
+          { label: 'Battery SoH & Thermal Care', to: '/energy-platforms', description: 'Degradation tracking & thermal runaway prevention.' },
+        ],
+      },
+      {
+        heading: 'Grid & Microgrids',
+        items: [
+          { label: 'Virtual Power Plants (VPP)', to: '/energy-platforms', description: 'Aggregated DER dispatch into state energy exchanges.' },
+          { label: 'Automated Demand Response', to: '/energy-platforms', description: 'Non-critical load shedding during peak discom alerts.' },
+          { label: 'DG-PV-BESS Reverse Protection', to: '/energy-platforms', description: 'Zero generator back-feed during grid trip events.' },
         ],
       },
     ],
     feature: {
-      title: 'Planning a project?',
-      body: 'Bring your objectives and site context together for a practical first discussion.',
-      to: '/request-consultation',
-      cta: 'Start a conversation',
+      title: 'Ready for full telemetry visibility?',
+      body: 'Integrate your solar, BESS, and EVSE hardware into Virya Energy Platforms with zero vendor lock-in.',
+      to: '/request-consultation?service=software-iot',
+      cta: 'Request a platform demo',
     },
   },
   {
     label: 'Insights',
     to: '/insights',
     context: {
-      eyebrow: 'Ideas & guidance',
-      title: 'Make informed energy decisions',
-      description: 'Read practical context on the energy transition, feasibility and choosing next steps.',
+      eyebrow: 'Ideas & Guidance',
+      title: 'Make Informed Energy Decisions',
+      description: 'Read practical context on India’s clean energy transition, technical feasibility, and regulatory frameworks.',
     },
     columns: [
       {
-        heading: 'Energy context',
+        heading: 'Technical Intelligence',
         items: [
-          { label: 'Latest insights', to: '/insights', description: 'Read sourced context on India’s energy transition.' },
-          { label: 'Frequently asked questions', to: '/faq', description: 'Answers on feasibility, services and first steps.' },
-          { label: 'How we work', to: '/process', description: 'See how questions progress into project-specific scope.' },
+          { label: 'Latest Insights & Whitepapers', to: '/insights', description: 'Sourced analysis on solar ROI, tariffs & open-access policy.' },
+          { label: 'Frequently Asked Questions', to: '/faq', description: 'Technical answers on solar, BESS, EVSE & feasibility.' },
+          { label: 'Engineering Methodology', to: '/process', description: 'See how questions progress into site-specific single line diagrams.' },
         ],
       },
       {
-        heading: 'Explore further',
+        heading: 'Strategic Guidance',
         items: [
-          { label: 'Industries', to: '/industries', description: 'See how operating needs vary from site to site.' },
-          { label: 'Explore services', to: '/services', description: 'Review clean-energy options for commercial facilities.' },
-          { label: 'Request a consultation', to: '/request-consultation', description: 'Discuss the question behind your project.' },
-          { label: 'Contact Virya', to: '/contact', description: 'Connect with the team about your energy questions.' },
+          { label: 'Market Segments Architecture', to: '/industries', description: 'Consulting-led blueprints across 8 industrial sectors.' },
+          { label: 'CleanTech Offerings Scope', to: '/services', description: 'Explore full lifecycle engineering across all clean technologies.' },
+          { label: 'Direct Engineering Scope', to: '/request-consultation', description: 'Discuss the engineering challenge behind your facility.' },
         ],
       },
     ],
     feature: {
       title: 'Have a question about your site?',
-      body: 'Browse common questions or talk through the context behind your project.',
+      body: 'Browse common technical questions or talk through the context behind your project.',
       to: '/faq',
       cta: 'Browse common questions',
+    },
+  },
+  {
+    label: 'About',
+    to: '/about',
+    context: {
+      eyebrow: 'Engineering Leadership',
+      title: 'Site-First CleanTech Engineering',
+      description: 'Headquartered in Bengaluru with operational hubs across Tamil Nadu and western industrial corridors.',
+    },
+    columns: [
+      {
+        heading: 'The Company',
+        items: [
+          { label: 'About Virya', to: '/about', description: 'Our engineering philosophy, site-first principles & governance.' },
+          { label: 'Engineering Process', to: '/process', description: 'Structured delivery from site audit to commissioning.' },
+          { label: 'Energy Platforms', to: '/energy-platforms', description: 'Cloud SCADA, certified OCPP charge management & telemetry.' },
+          { label: 'Regional Hubs & Presence', to: '/contact', description: '10 operational hubs across Bengaluru, Tamil Nadu & India.' },
+        ],
+      },
+      {
+        heading: 'Connect & Engage',
+        items: [
+          { label: 'Request a Consultation', to: '/request-consultation', description: 'Direct project scope review with electrical engineers.' },
+          { label: 'Technical Insights', to: '/insights', description: 'Research papers on tariffs, grid codes & battery chemistry.' },
+          { label: 'Frequently Asked Questions', to: '/faq', description: 'Verified engineering answers for facility managers.' },
+          { label: 'Careers at Virya', to: '/careers', description: 'Engineering, software, and project delivery openings.' },
+        ],
+      },
+    ],
+    feature: {
+      title: 'Consult our engineering team',
+      body: 'Get a site-specific feasibility review for solar, EVSE, or storage.',
+      to: '/request-consultation',
+      cta: 'Book a consultation',
     },
   },
 ];
 
 /** Flat links always visible in the bar. */
-export const PRIMARY_LINKS = [{ label: 'Home', to: '/' }, ...NAV.map((g) => ({ label: g.label, to: g.to }))];
+export const PRIMARY_LINKS = NAV.map((g) => ({ label: g.label, to: g.to }));
 
 /** Bottom-of-footer sitemap. */
 export const FOOTER_LINKS = {
   company: [
     { label: 'About', to: '/about' },
     { label: 'Process', to: '/process' },
-    { label: 'Projects & capabilities', to: '/projects' },
-    { label: 'Insights', to: '/insights' },
+    { label: 'Energy Platforms', to: '/energy-platforms' },
     { label: 'Industries', to: '/industries' },
+    { label: 'Insights', to: '/insights' },
     { label: 'Careers', to: '/careers' },
     { label: 'FAQ', to: '/faq' },
   ],
