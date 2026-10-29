@@ -3,6 +3,7 @@ import { sessionConfig } from './_lib/config.js';
 import { buildRequestContext, isVercelInternal } from './_lib/context.js';
 import { findReturningSession, normalizeSessionRecord, upsertSession, type SessionPayload } from './_lib/session.js';
 import { findReturningRedisSession, pingRedisSessionStore, upsertRedisSession } from './_lib/redis-session.js';
+import { recordFullTrafficTelemetry } from './_lib/traffic-analytics.js';
 
 /**
  * Visitor session endpoint.
@@ -120,6 +121,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     } else if (config.sheets && config.google) {
       result = await upsertSession(config.sheets, config.google, config.sessionsTab, payload, request);
+      try {
+        await recordFullTrafficTelemetry(config.sheets, config.google, payload, request);
+      } catch (subErr) {
+        console.warn('[session] Traffic subsections sync warning:', (subErr as Error).message);
+      }
       storage = 'sheets';
     } else {
       return res.status(204).end();
