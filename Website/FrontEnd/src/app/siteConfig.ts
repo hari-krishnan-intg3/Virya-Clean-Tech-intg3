@@ -1,4 +1,5 @@
-import { services, industries, type ServiceSlug } from '@/data/services';
+import { services, type ServiceSlug } from '@/data/services';
+import { OFFERINGS_TREE, MARKET_SEGMENTS } from '@/data/offeringsArchitecture';
 
 /**
  * Business, contact and navigation architecture.
@@ -97,13 +98,6 @@ export interface NavGroup {
   to: string;
 }
 
-const serviceItems: NavChild[] = services.map((service) => ({
-  label: service.label,
-  to: `/services/${service.slug}`,
-  description: service.tagline,
-  accent: service.slug,
-}));
-
 export const NAV: NavGroup[] = [
   {
     label: 'Home',
@@ -178,106 +172,56 @@ export const NAV: NavGroup[] = [
     label: 'Offerings',
     to: '/services',
     context: {
-      eyebrow: 'Energy solutions',
-      title: 'Explore the right capabilities',
-      description: 'Compare technologies and services in the context of your facility and operating needs.',
+      eyebrow: 'CleanTech Pillars',
+      title: 'Full Lifecycle Energy Architecture',
+      description: 'End-to-end capabilities spanning electric mobility, solar, wind, storage, AI platforms and utility modernization.',
     },
-    columns: [
-      {
-        heading: 'What we build',
-        items: serviceItems,
-      },
-      {
-        heading: 'Plan your next step',
-        items: [
-          {
-            label: 'All services',
-            to: '/services',
-            description: 'The full capability set, side by side.',
-          },
-          {
-            label: 'How we work',
-            to: '/process',
-            description: 'From initial questions to project-specific next steps.',
-          },
-          {
-            label: 'Request a consultation',
-            to: '/request-consultation',
-            description: 'Share your site context and project objective.',
-          },
-          {
-            label: 'Common questions',
-            to: '/faq',
-            description: 'Information about services, feasibility and next steps.',
-          },
-          {
-            label: 'Industries',
-            to: '/industries',
-            description: 'Explore operating contexts across eight segments.',
-          },
-          {
-            label: 'Contact the team',
-            to: '/contact',
-            description: 'Ask a question about your facility or project.',
-          },
-        ],
-      },
-    ],
+    columns: OFFERINGS_TREE.map((pillar) => ({
+      heading: pillar.title,
+      items: pillar.items.map((sub) => ({
+        label: sub.label,
+        to: sub.to,
+        description: sub.description,
+      })),
+    })),
     feature: {
-      title: 'Not sure which option to explore?',
-      body: 'Start with your facility, operating needs and project objective. The right next step depends on the site.',
-      to: '/services/consulting',
-      cta: 'Explore assessment services',
+      title: 'Need a customized energy architecture?',
+      body: 'Engage our technical architects to scope solar, EV charging, storage and smart platforms for your facility.',
+      to: '/request-consultation',
+      cta: 'Request an engineering review',
     },
   },
   {
     label: 'Industries',
     to: '/industries',
     context: {
-      eyebrow: 'Industries we serve',
-      title: 'Designed around how sites operate',
-      description: 'Explore energy considerations for facilities with different loads, schedules and infrastructure.',
+      eyebrow: 'Market Segments',
+      title: 'Engineered for Operating Contexts',
+      description: 'Consulting-led clean-energy architectures aligned with sector-specific loads, duty cycles, and business outcomes.',
     },
     columns: [
       {
-        heading: 'Who we work with',
-        items: industries.slice(0, 4).map((industry) => ({
-          label: industry.label,
-          to: `/industries#${industry.slug}`,
-          description: industry.pressure,
+        heading: 'Mobility & Operations',
+        items: MARKET_SEGMENTS.slice(0, 4).map((segment) => ({
+          label: segment.title,
+          to: `/industries#${segment.slug}`,
+          description: segment.tagline,
         })),
       },
       {
-        heading: 'More sectors',
-        items: [
-          ...industries.slice(4).map((industry) => ({
-            label: industry.label,
-            to: `/industries#${industry.slug}`,
-            description: industry.pressure,
-          })),
-          {
-            label: 'All industries',
-            to: '/industries',
-            description: 'Eight segments, with the pressure point for each.',
-          },
-          {
-            label: 'Explore energy services',
-            to: '/services',
-            description: 'Compare capabilities for your site and operating needs.',
-          },
-          {
-            label: 'Common questions',
-            to: '/faq',
-            description: 'Learn about feasibility reviews and project next steps.',
-          },
-        ],
+        heading: 'Infrastructure & Real Assets',
+        items: MARKET_SEGMENTS.slice(4).map((segment) => ({
+          label: segment.title,
+          to: `/industries#${segment.slug}`,
+          description: segment.tagline,
+        })),
       },
     ],
     feature: {
-      title: 'Every site has its own context',
-      body: 'Discuss your facility and operating requirements before deciding which options to explore.',
-      to: '/request-consultation',
-      cta: 'Discuss your site',
+      title: 'Sector-specific feasibility reviews',
+      body: 'Explore tailored CleanTech applications and ROI modeling for your industry.',
+      to: '/industries',
+      cta: 'Explore all 8 market segments',
     },
   },
   {

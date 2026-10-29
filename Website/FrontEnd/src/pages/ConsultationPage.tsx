@@ -10,7 +10,7 @@ import { visualAssets } from '@/data/visuals';
  */
 export default function ConsultationPage() {
   return (
-    <>
+    <div className="pt-16 sm:pt-20">
       <BookingFormContainer />
 
       {/* What happens next — reduces the "what am I committing to" hesitation. */}
@@ -32,6 +32,6 @@ export default function ConsultationPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

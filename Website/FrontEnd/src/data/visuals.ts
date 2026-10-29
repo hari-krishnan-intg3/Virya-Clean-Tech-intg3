@@ -4,6 +4,30 @@ export interface VisualAsset {
 }
 
 export const visualAssets = {
+  evAutoRickshaw: {
+    src: '/images/ev-auto-rickshaw.jpg',
+    alt: 'Electric three-wheeler auto-rickshaw connected to an urban EV charging station.',
+  },
+  evTwoWheeler: {
+    src: '/images/ev-two-wheeler.jpg',
+    alt: 'Electric scooter charging at a modern public AC charging post.',
+  },
+  evBusDepot: {
+    src: '/images/ev-bus-depot-charging.jpg',
+    alt: 'Electric city transit bus charging at a high-power depot charging bay.',
+  },
+  solarFlexibleMat: {
+    src: '/images/solar-flexible-mat.jpg',
+    alt: 'Lightweight flexible solar panel mats seamlessly installed on curved warehouse roof.',
+  },
+  solarFlatRigid: {
+    src: '/images/solar-flat-rigid-panels.jpg',
+    alt: 'High-efficiency rigid monocrystalline solar panels with aluminum framing in sunlight.',
+  },
+  solarCommercialRooftop: {
+    src: '/images/solar-commercial-rooftop.jpg',
+    alt: 'Vast industrial commercial warehouse rooftop covered in solar panel arrays.',
+  },
   solar: {
     src: '/images/generated-solar.jpg',
     alt: 'Photograph of a commercial rooftop solar installation in warm evening light.',

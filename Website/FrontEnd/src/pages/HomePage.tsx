@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Building2, Factory, HeartPulse, Truck, Warehouse } from 'lucide-react';
+import { ArrowRight, ChevronRight, Building2, Factory, HeartPulse, Truck, Warehouse } from 'lucide-react';
 import { HeroSliderContainer } from '@/components/sections/HeroSliderContainer';
 import { InsightBand } from '@/components/sections/InsightBand';
 import { EnergyEcosystemContainer } from '@/components/sections/EnergyEcosystemContainer';
@@ -130,38 +130,193 @@ export default function HomePage() {
             </Link>
           </Reveal>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {[
               {
-                title: 'EV charging',
-                detail: 'Cars, two-wheelers, electric autos, buses and fleets.',
-                spec: 'Charging time · charger type · fleet ROI',
+                title: 'EV Charging Infrastructure',
+                detail: 'High-power depot, corridor, and workplace charging from 3.3 kW AC to 350 kW DC & MCS.',
+                spec: 'Real vehicle charge times · ISO 15118-20 · Fleet TCO ROI',
                 image: visualAssets.ev,
                 to: '/services/ev-charging',
               },
               {
-                title: 'Solar power',
-                detail: 'Rigid modules, flexible panels and rooftop systems.',
-                spec: 'System size · daily generation · savings',
-                image: visualAssets.solarInstallation,
+                title: 'Solar Photovoltaic Systems',
+                detail: 'Rigid monocrystalline panels, lightweight flexible mats, and commercial rooftop arrays.',
+                spec: '22%+ cell efficiency · 4.5 m²/kWp · Zero export controls',
+                image: visualAssets.solarFlatRigid,
                 to: '/services/solar',
               },
               {
-                title: 'Wind energy',
-                detail: 'Turbine classes, hourly output and Kayathar site context.',
-                spec: 'Rated output · current · rotor speed',
-                image: visualAssets.wind,
+                title: 'Wind Energy Systems',
+                detail: 'Kayathar and South Tamil Nadu wind corridors with low-speed direct drive and geared turbines.',
+                spec: '690V / 11kV generation · Hourly kWh metrics · Capacity factor',
+                image: visualAssets.windEnergy,
                 to: '/services/wind-energy',
               },
+              {
+                title: 'Battery & Energy Storage (BESS)',
+                detail: 'Containerized utility & industrial LFP storage for peak demand shaving and UPS microgrids.',
+                spec: 'Sub-4ms transfer · Peak tariff arbitrage · Thermal AI',
+                image: visualAssets.batteryStorage,
+                to: '/services/battery',
+              },
+              {
+                title: 'Smart Energy & IoT Platforms',
+                detail: 'Real-time telemetry, SCADA monitoring, day-ahead solar forecasting, and OCPP charge management.',
+                spec: 'Sub-second telemetry · Automated billing · AI load shift',
+                image: visualAssets.energyControl,
+                to: '/services/software-iot',
+              },
+              {
+                title: 'Engineering & Turnkey EPC',
+                detail: 'End-to-end electrical single line design, transformer headroom studies, and discom approvals.',
+                spec: 'Statutory approvals · HT yards · Guaranteed 98%+ SLA',
+                image: visualAssets.engineering,
+                to: '/services/consulting',
+              },
             ].map((offering, index) => (
-              <Reveal key={offering.title} delay={index * 0.06} as="div">
-                <Link to={offering.to} className="card card-hover group block h-full overflow-hidden">
+              <Reveal key={offering.title} delay={index * 0.05} as="div">
+                <Link to={offering.to} className="card card-hover group block h-full overflow-hidden border border-line">
                   <CardImage image={offering.image} className="aspect-[16/9]" />
                   <div className="p-6">
-                    <p className="text-xl font-bold text-ink">{offering.title}</p>
-                    <p className="mt-2 text-sm leading-relaxed text-ink-muted">{offering.detail}</p>
-                    <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-emerald-300">{offering.spec}</p>
-                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-emerald-300">Explore offering <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                    <p className="text-lg font-bold text-ink group-hover:text-emerald-300 transition-colors">{offering.title}</p>
+                    <p className="mt-2 text-xs leading-relaxed text-ink-muted">{offering.detail}</p>
+                    <p className="mt-3 text-[0.72rem] font-bold uppercase tracking-wider text-emerald-400">{offering.spec}</p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-300 group-hover:translate-x-1 transition-transform">
+                      Explore architecture <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Concrete Vehicle & CleanTech Showcase Strip */}
+      <section className="section bg-mist border-y border-line">
+        <div className="shell">
+          <Reveal className="flex flex-wrap items-end justify-between gap-6">
+            <div className="max-w-2xl">
+              <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+                Segment Hardware & Duty Cycles
+              </span>
+              <h2 className="mt-3 text-2xl font-extrabold text-ink sm:text-3xl lg:text-4xl">
+                Real Vehicles, Concrete Charge Times & Clean Generation.
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                Explore certified electric vehicles operating across India, their verified charging speeds, and modular solar and wind technologies.
+              </p>
+            </div>
+            <Link to="/services/ev-charging" className="btn-primary-lg text-xs">
+              Open EV charging knowledge repository <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </Reveal>
+
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[
+              {
+                title: 'Electric Passenger Cars',
+                model: 'Tata Nexon (45 kWh) & Ioniq 5 (72.6 kWh)',
+                spec: '18 mins HPC · 56 mins DC · 6.0h AC',
+                connector: 'CCS2 / Type 2 AC',
+                image: visualAssets.ev,
+                to: '/services/ev-charging/passenger',
+                tag: 'Cars (BEV/PHEV)',
+              },
+              {
+                title: 'Electric Two-Wheelers',
+                model: 'Ather 450X (3.7 kWh) & Ola S1 Pro (4 kWh)',
+                spec: '50 mins fast · 15 min 50km top-up · Swap Kiosks',
+                connector: 'Standard 15A & Fast Ports',
+                image: visualAssets.evTwoWheeler,
+                to: '/services/ev-charging/two-wheelers',
+                tag: '2-Wheelers',
+              },
+              {
+                title: 'Electric Auto-Rickshaws',
+                model: 'Mahindra Treo & Euler HiLoad (12.4 kWh)',
+                spec: '3.8h AC · 15 mins for 50km · 2 min Swapping',
+                connector: '16A Industrial & DC Fast',
+                image: visualAssets.evAutoRickshaw,
+                to: '/services/ev-charging/three-wheelers',
+                tag: '3-Wheelers',
+              },
+              {
+                title: 'Electric Transit Buses',
+                model: 'Olectra K9 (360 kWh) & Tata Starbus EV',
+                spec: '110 mins 150kW Dual-Gun · 12 min Pantograph',
+                connector: 'Dual CCS2 & SAE J3105',
+                image: visualAssets.evBusDepot,
+                to: '/services/ev-charging/buses',
+                tag: 'Electric Buses',
+              },
+              {
+                title: 'Commercial Trucks & Fleets',
+                model: 'Tata Ace EV & Heavy 40-55T Haulers',
+                spec: '105 mins DC Fast · 35 mins Megawatt MCS',
+                connector: 'Dual CCS2 & MCS Standard',
+                image: visualAssets.industrial,
+                to: '/services/ev-charging/fleets',
+                tag: 'Commercial Fleets',
+              },
+              {
+                title: 'Rigid Monocrystalline Solar',
+                model: 'TOPCon & Mono PERC Framed Modules',
+                spec: '22.5%+ efficiency · 4.5 m²/kWp · 25-yr warranty',
+                connector: 'Framed RCC & Ground Arrays',
+                image: visualAssets.solarFlatRigid,
+                to: '/services/solar/rigid',
+                tag: 'Rigid Solar',
+              },
+              {
+                title: 'Flexible Thin-Film Solar Mats',
+                model: 'Ultra-Lightweight CIGS Solar Mats',
+                spec: '2.8 kg/m² · 30° bend radius · Peel-and-stick',
+                connector: 'Curved Roofs & Metal PEBs',
+                image: visualAssets.solarFlexibleMat,
+                to: '/services/solar/flexible',
+                tag: 'Flexible Solar',
+              },
+              {
+                title: 'Kayathar Wind Corridors',
+                model: 'Direct-Drive & Geared Turbines (100kW–3.5MW)',
+                spec: '690V / 11kV AC · 9–18 RPM · High-wind funnel',
+                connector: 'South Tamil Nadu Pooling',
+                image: visualAssets.windEnergy,
+                to: '/services/wind-energy/utility',
+                tag: 'Wind Turbines',
+              },
+            ].map((card, index) => (
+              <Reveal key={card.title} delay={index * 0.04} as="div">
+                <Link
+                  to={card.to}
+                  className="group card card-hover flex h-full flex-col justify-between overflow-hidden border border-line bg-card"
+                >
+                  <div>
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <CardImage image={card.image} className="aspect-[16/10] group-hover:scale-105 transition-transform duration-500" />
+                      <span className="absolute bottom-2.5 left-2.5 rounded-full border border-white/20 bg-[#07110f]/80 px-2.5 py-0.5 text-[0.68rem] font-bold text-white backdrop-blur-sm">
+                        {card.tag}
+                      </span>
+                    </div>
+                    <div className="p-4 sm:p-5">
+                      <h3 className="text-sm font-bold text-ink group-hover:text-emerald-300 transition-colors">
+                        {card.title}
+                      </h3>
+                      <p className="mt-1 text-xs text-ink-muted">
+                        {card.model}
+                      </p>
+                      <div className="mt-3 rounded-lg bg-mist/80 p-2.5 border border-line">
+                        <p className="text-xs font-bold text-emerald-400">{card.spec}</p>
+                        <p className="mt-0.5 font-mono text-[0.68rem] text-ink-faint">{card.connector}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 sm:p-5 pt-0">
+                    <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-300 group-hover:translate-x-1 transition-transform">
+                      View details & specs <ChevronRight className="h-3 w-3" />
+                    </span>
                   </div>
                 </Link>
               </Reveal>

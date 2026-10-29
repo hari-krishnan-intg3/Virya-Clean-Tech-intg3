@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getService } from '@/data/services';
 import type { NavGroup } from '@/app/siteConfig';
 
 interface MegaMenuProps {
@@ -121,7 +120,7 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
         role="region"
         aria-label={group.label}
         hidden={!open}
-        className="fixed left-1/2 top-[4.5rem] z-50 w-[min(70rem,calc(100vw-2rem))] -translate-x-1/2 pt-3"
+        className="fixed left-1/2 top-[4.5rem] z-50 w-[min(84rem,calc(100vw-2rem))] -translate-x-1/2 pt-3"
       >
         <div
           className={cn(
@@ -129,14 +128,14 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
             open ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-1 opacity-0',
           )}
         >
-          <div className="grid max-h-[min(76vh,42rem)] overflow-y-auto lg:grid-cols-[15rem_minmax(0,1fr)]">
+          <div className="grid max-h-[min(78vh,46rem)] overflow-y-auto lg:grid-cols-[16rem_minmax(0,1fr)]">
             <aside className="flex flex-col justify-between border-b border-white/10 bg-[#0d2019] p-6 sm:p-7 lg:border-b-0 lg:border-r">
               <div>
                 <span className="inline-flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.17em] text-emerald-300">
                   <Compass className="h-3.5 w-3.5" aria-hidden="true" />
                   {group.context?.eyebrow ?? 'Explore'}
                 </span>
-                <h2 className="mt-4 text-xl leading-snug">
+                <h2 className="mt-4 text-xl font-bold leading-snug text-white">
                   {group.context?.title ?? group.label}
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-ink-muted">
@@ -153,49 +152,37 @@ export function MegaMenu({ group, condensed }: MegaMenuProps) {
               </Link>
             </aside>
 
-            <div className="grid gap-x-7 gap-y-6 p-5 sm:grid-cols-2 sm:p-7">
+            <div
+              className={cn(
+                'grid gap-x-6 gap-y-6 p-5 sm:p-7',
+                group.columns.length >= 6
+                  ? 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                  : 'sm:grid-cols-2',
+              )}
+            >
               {group.columns.map((column) => (
-                <div key={column.heading}>
-                  <p className="mb-3 border-b border-white/10 pb-2.5 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-ink-faint">
+                <div key={column.heading} className="rounded-lg bg-white/[0.02] p-3 border border-white/5">
+                  <p className="mb-2.5 border-b border-white/10 pb-2 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-emerald-400">
                     {column.heading}
                   </p>
                   <ul className="space-y-1">
-                    {column.items.map((item) => {
-                      const service =
-                        group.label !== 'Offerings' && item.accent
-                          ? getService(item.accent)
-                          : undefined;
-
-                      return (
-                        <li key={item.to + item.label}>
-                          <Link
-                            to={item.to}
-                            onClick={hideNow}
-                            className="group/item flex gap-3 rounded-xl p-2.5 transition-colors duration-200 hover:bg-white/5"
-                          >
-                            {service && (
-                              <span
-                                className={cn(
-                                  'mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white',
-                                  service.gradient,
-                                )}
-                              >
-                                <service.icon className="h-4 w-4" strokeWidth={2} aria-hidden="true" />
-                              </span>
-                            )}
-                            <span className="min-w-0">
-                              <span className="flex items-center gap-1 text-[0.92rem] font-semibold text-ink transition-colors group-hover/item:text-emerald-300">
-                                {item.label}
-                                <ArrowRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100" aria-hidden="true" />
-                              </span>
-                              <span className="mt-0.5 block text-[0.78rem] leading-relaxed text-ink-muted">
-                                {item.description}
-                              </span>
-                            </span>
-                          </Link>
-                        </li>
-                      );
-                    })}
+                    {column.items.map((item) => (
+                      <li key={item.to + item.label}>
+                        <Link
+                          to={item.to}
+                          onClick={hideNow}
+                          className="group/item block rounded-lg p-2 transition-colors duration-200 hover:bg-white/5"
+                        >
+                          <span className="flex items-center justify-between text-[0.88rem] font-semibold text-ink transition-colors group-hover/item:text-emerald-300">
+                            <span>{item.label}</span>
+                            <ArrowRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100" aria-hidden="true" />
+                          </span>
+                          <span className="mt-0.5 line-clamp-2 block text-[0.74rem] leading-relaxed text-ink-muted">
+                            {item.description}
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </div>
               ))}

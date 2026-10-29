@@ -10,7 +10,7 @@ import { useScrolled } from '@/hooks/useScrolled';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils';
 
-const NAV_ORDER = ['Home', 'Offerings', 'About', 'Industries', 'Projects', 'Insights'];
+const NAV_ORDER = ['Home', 'Offerings', 'Industries', 'Projects', 'About', 'Insights'];
 const orderedNav = [...NAV].sort((left, right) => NAV_ORDER.indexOf(left.label) - NAV_ORDER.indexOf(right.label));
 
 /**
