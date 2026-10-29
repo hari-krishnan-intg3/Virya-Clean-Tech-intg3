@@ -1,6 +1,15 @@
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
-import { chromium } from 'playwright';
+// Dynamically load playwright if available for local execution
+async function getChromium() {
+  try {
+    const pw = await import('playwright');
+    return pw.chromium;
+  } catch {
+    console.error('Playwright is not installed. To run locally: npx -y playwright test');
+    process.exit(0);
+  }
+}
 
 // 1. Ensure environment variables are loaded
 function loadEnvLocal() {
@@ -39,6 +48,7 @@ async function runTrafficPlaywrightTest() {
 
   // Step 2: Launch real Chromium browser
   console.log('\n[Step 2] Launching Chromium browser with Playwright...');
+  const chromium = await getChromium();
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { loadConfig } from './_lib/config.js';
+import { loadConfig, missingEnv } from './_lib/config.js';
 import { sendTrafficAnalyticsNotification, getTrafficReportSnapshot } from './_lib/traffic-notification.js';
 
 /**
@@ -12,6 +12,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Cache-Control', 'no-store');
 
   try {
+    const missing = missingEnv();
+    if (missing.length > 0) {
+      return res.status(500).json({
+        ok: false,
+        error: `Missing required environment variables: ${missing.join(', ')}`,
+      });
+    }
+
     const config = loadConfig();
 
     if (req.method === 'GET') {

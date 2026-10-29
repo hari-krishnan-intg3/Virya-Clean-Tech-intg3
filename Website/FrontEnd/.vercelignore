@@ -1,0 +1,5 @@
+scripts/
+*.png
+.env.local
+.env*.local
+*.log
