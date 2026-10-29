@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { CtaBand } from '@/components/sections/PageHero';
 import { RegionalLocator } from '@/components/RegionalLocator';
+import { RevenueCalculators } from '@/components/solutions/RevenueCalculators';
 import { Reveal, SmartImage } from '@/components/ui';
 import { visualAssets } from '@/data/visuals';
 import { EV_VEHICLE_DATABASE } from '@/data/offeringsArchitecture';
@@ -794,6 +795,8 @@ export default function EVChargingPage() {
           </div>
         </div>
       </section>
+
+      <RevenueCalculators />
 
       {/* Regional All-India Hubs & Google Maps Locator */}
       <section className="section">
