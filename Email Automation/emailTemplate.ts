@@ -1,5 +1,8 @@
-import type { Insight } from '../Website/FrontEnd/src/data/insights.js';
-import type { Service } from '../Website/FrontEnd/src/data/services.js';
+import { insights, type Insight } from '../Website/FrontEnd/src/data/insights.js';
+import { services, type Service } from '../Website/FrontEnd/src/data/services.js';
+import { EMAIL_TEMPLATES, type EmailTemplateItem } from './emailTemplatesData.js';
+
+export { EMAIL_TEMPLATES, type EmailTemplateItem };
 
 const BANNER_BASE_URL = 'https://virya-clean-tech-intg3.vercel.app/email-banners';
 
@@ -161,4 +164,69 @@ export function generateViryaEmailText(data: NewsletterData): string {
     'Virya CleanTech | connect@viryacleantech.com | +91 8317494969',
     'Unsubscribe: email connect@viryacleantech.com with subject Unsubscribe.',
   ].join('\n');
+}
+
+/**
+ * 100 Templates Helper Functions
+ */
+
+export function getEmailTemplateById(id: number): EmailTemplateItem | undefined {
+  return EMAIL_TEMPLATES.find((t) => t.id === id);
+}
+
+export function getEmailTemplatesByCategory(category: string): EmailTemplateItem[] {
+  const norm = category.toLowerCase();
+  return EMAIL_TEMPLATES.filter((t) => t.category.toLowerCase().includes(norm));
+}
+
+export function getEmailTemplatesByRole(role: string): EmailTemplateItem[] {
+  const norm = role.toLowerCase();
+  return EMAIL_TEMPLATES.filter((t) => t.recipientRole.toLowerCase().includes(norm));
+}
+
+export function buildNewsletterDataFromTemplate(
+  template: EmailTemplateItem,
+  recipientName = 'Colleague'
+): NewsletterData {
+  const featuredService = services.find((s) => s.slug === template.serviceSlug) || services[0];
+  const otherServices = services.filter((s) => s.slug !== template.serviceSlug);
+  const matchedInsight = insights.find((i) => i.id === template.insightId) || insights[0];
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+  const timeStr = `${now.toLocaleTimeString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  })} IST`;
+
+  return {
+    date: dateStr,
+    time: timeStr,
+    recipientName,
+    recipientRole: template.recipientRole,
+    headline: template.headline,
+    personalizedMessage: template.personalizedMessage,
+    featuredService,
+    updates: otherServices,
+    insight: matchedInsight,
+  };
+}
+
+export function renderEmailTemplateHTML(templateId: number, recipientName?: string): string {
+  const template = getEmailTemplateById(templateId) || EMAIL_TEMPLATES[0];
+  const data = buildNewsletterDataFromTemplate(template, recipientName);
+  return generateViryaEmailHTML(data);
+}
+
+export function renderEmailTemplateText(templateId: number, recipientName?: string): string {
+  const template = getEmailTemplateById(templateId) || EMAIL_TEMPLATES[0];
+  const data = buildNewsletterDataFromTemplate(template, recipientName);
+  return generateViryaEmailText(data);
 }

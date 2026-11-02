@@ -193,3 +193,4 @@ export const MACC_RANKING: MACCItem[] = [
     suitability: 'Unreliable Grid Areas, Hospitals',
   },
 ];
+

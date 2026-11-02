@@ -2,7 +2,13 @@ import { sendEmail } from '../Website/FrontEnd/api/_lib/mailer.js';
 import type { MailConfig } from '../Website/FrontEnd/api/_lib/config.js';
 import { featuredInsights } from '../Website/FrontEnd/src/data/insights.js';
 import { services, type Service } from '../Website/FrontEnd/src/data/services.js';
-import { generateViryaEmailHTML, generateViryaEmailText } from './emailTemplate.js';
+import {
+  generateViryaEmailHTML,
+  generateViryaEmailText,
+  EMAIL_TEMPLATES,
+  getEmailTemplateById,
+  buildNewsletterDataFromTemplate,
+} from './emailTemplate.js';
 
 interface TestProfile {
   recipientName: string;
@@ -95,10 +101,61 @@ function formatNow(): { date: string; time: string } {
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
+
+  if (args.includes('--list')) {
+    console.log(`\n======================================================`);
+    console.log(`Virya CleanTech: 100 Email Templates Catalog (${EMAIL_TEMPLATES.length} loaded)`);
+    console.log(`======================================================\n`);
+    for (const t of EMAIL_TEMPLATES) {
+      console.log(`[#${String(t.id).padStart(3, '0')}] [${t.category}]`);
+      console.log(`      Role: ${t.recipientRole}`);
+      console.log(`      Subject: ${t.subject}\n`);
+    }
+    console.log(`To preview a specific template, run: --template <id>`);
+    return;
+  }
+
+  const templateIndex = args.indexOf('--template');
+  if (templateIndex >= 0) {
+    const templateId = Number(args[templateIndex + 1]);
+    const template = getEmailTemplateById(templateId);
+    if (!template) {
+      throw new Error(`Template #${templateId} not found. Valid IDs: 1 to ${EMAIL_TEMPLATES.length}.`);
+    }
+
+    const data = buildNewsletterDataFromTemplate(template, 'Executive');
+    const html = generateViryaEmailHTML(data);
+    const text = generateViryaEmailText(data);
+
+    console.log(`\n======================================================`);
+    console.log(`PREVIEW: Template #${template.id} [${template.category}]`);
+    console.log(`Target: ${template.recipientRole}`);
+    console.log(`Subject: ${template.subject}`);
+    console.log(`======================================================\n`);
+    console.log(`Headline: ${template.headline}`);
+    console.log(`\nMessage:\n${template.personalizedMessage}\n`);
+    console.log(`Key Takeaway: ${template.keyTakeaway}`);
+    console.log(`CTA: ${template.ctaText} -> ${template.ctaUrl}`);
+    console.log(`\nHTML size: ${html.length} chars | Text size: ${text.length} chars.`);
+
+    if (args.includes('--send-test')) {
+      const mail = getMailConfig();
+      const result = await sendEmail(mail, {
+        subject: `[TEMPLATE #${template.id} TEST] ${template.subject}`,
+        html,
+        text,
+      });
+      console.log(`\nTest email successfully sent to ${mail.to}. Resend ID: ${result.id}`);
+    } else {
+      console.log(`\nTo send this template as a test to MAIL_TO, add --send-test`);
+    }
+    return;
+  }
+
   const sendIndex = args.indexOf('--send-test');
   const testCount = sendIndex < 0 ? 0 : Number(args[sendIndex + 1]);
   if (sendIndex < 0 && args.length > 0 && !(args.length === 1 && args[0] === '--preview')) {
-    throw new Error('Supported usage: --preview or --send-test 1..5');
+    throw new Error('Supported usage: --list, --template <1-100> [--send-test], --preview, or --send-test 1..5');
   }
   if (sendIndex >= 0 && args.length !== 2) {
     throw new Error('Supported usage: --preview or --send-test 1..5');
@@ -134,7 +191,8 @@ async function main(): Promise<void> {
       console.log(`${index + 1}. ${profile.recipientRole} — ${profile.subject}`);
       console.log(`   HTML: ${html.length} characters; text: ${text.length} characters.`);
     }
-    console.log('Use --send-test 5 to send all five versions to MAIL_TO.');
+    console.log('\nTip: Use --list to view all 100 templates or --template <id> to inspect any template.');
+    console.log('Use --send-test 5 to send all five sample versions to MAIL_TO.');
     return;
   }
 

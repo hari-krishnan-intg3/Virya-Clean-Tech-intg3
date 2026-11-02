@@ -1,22 +1,49 @@
-# Virya CleanTech Newsletter
+# Virya CleanTech Email Automation & Outreach Engine
 
-The sender uses the existing Google Sheets and Resend environment variables in
-`Website/FrontEnd/.env.local`. It does not require new environment variables.
+The email system uses the existing Resend environment variables in `Website/FrontEnd/.env.local`. It does not require new environment variables.
 
-Newsletter copy and service links come from the website's service and insight
-data. Test sends use five predefined business roles, each with a distinct
-subject, personalized copy and featured service. They do not read lead names,
-email addresses or other lead fields. Test messages go only to the configured
-`MAIL_TO` address; the sheet is not treated as a newsletter subscriber list.
+## 100 Production-Ready B2B Email Templates Catalog
 
-Run from the workspace root in PowerShell:
+A complete, role-specific catalog of 100 distinct email templates is located in:
+- `Email Automation/emailTemplatesData.ts` (Typed TypeScript definitions)
+- `Email Automation/100_Email_Templates_Catalog.md` (Human-readable markdown guide for sales & marketing)
 
+### Categories Covered:
+1. **Manufacturing & Heavy Industrial Decarbonization** (#001 - #012)
+2. **Logistics, Warehousing & Fleet Electrification** (#013 - #025)
+3. **Commercial Real Estate, Smart Buildings & SEZs** (#026 - #037)
+4. **Battery Energy Storage (BESS) & Microgrid Resilience** (#038 - #048)
+5. **Data Centers & Critical Power Infrastructure** (#049 - #058)
+6. **Carbon Economics, EU CBAM & Global Export Defense** (#059 - #070)
+7. **ESG Reporting, SEBI BRSR Core & Corporate Governance** (#071 - #080)
+8. **Utilities, DISCOMs & High-Voltage Grid Modernization** (#081 - #090)
+9. **Retail, Hospitality, Healthcare & Institutions** (#091 - #100)
+
+## CLI Usage
+
+Run from the `Website/FrontEnd` directory in PowerShell:
+
+### 1. List All 100 Templates
 ```powershell
-Push-Location .\Website\FrontEnd
-node --env-file=.env.local .\node_modules\tsx\dist\cli.mjs "..\..\Email Automation\sendNewsletter.ts" --preview
-Pop-Location
+node --env-file=.env.local .\node_modules\tsx\dist\cli.mjs "..\..\Email Automation\sendNewsletter.ts" --list
 ```
 
-To send five clearly labeled, role-specific test messages to `MAIL_TO`, replace
-`--preview` with `--send-test 5`. The sender rejects counts above five and sends
-no mail unless `--send-test` is explicitly provided.
+### 2. Preview a Specific Template (e.g. Template #59 - CBAM Defense)
+```powershell
+node --env-file=.env.local .\node_modules\tsx\dist\cli.mjs "..\..\Email Automation\sendNewsletter.ts" --template 59
+```
+
+### 3. Send a Specific Template as a Test Email to `MAIL_TO`
+```powershell
+node --env-file=.env.local .\node_modules\tsx\dist\cli.mjs "..\..\Email Automation\sendNewsletter.ts" --template 59 --send-test
+```
+
+### 4. Preview the Default 5 Sample Executive Roles
+```powershell
+node --env-file=.env.local .\node_modules\tsx\dist\cli.mjs "..\..\Email Automation\sendNewsletter.ts" --preview
+```
+
+### 5. Send Sample Test Emails to `MAIL_TO`
+```powershell
+node --env-file=.env.local .\node_modules\tsx\dist\cli.mjs "..\..\Email Automation\sendNewsletter.ts" --send-test 5
+```
