@@ -72,6 +72,41 @@ const STORAGE_KEY_USER = 'virya_auth_user';
 const STORAGE_KEY_CALCS = 'virya_user_calculations';
 const STORAGE_KEY_QUOTES = 'virya_user_quotes';
 const STORAGE_KEY_EBOOK = 'virya_ebook_received';
+const STORAGE_KEY_ACCOUNTS = 'virya_registered_accounts';
+
+export interface RegisteredAccount {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  category: 'residential' | 'commercial';
+  state: string;
+  password?: string;
+  createdAt: string;
+}
+
+const DEFAULT_ACCOUNTS: RegisteredAccount[] = [
+  {
+    id: 'usr_demo_res',
+    fullName: 'Ramesh Kumar (Residential)',
+    email: 'ramesh.kumar@cleanliving.in',
+    phone: '+91 98860 12345',
+    category: 'residential',
+    state: 'Karnataka - BESCOM',
+    password: 'demo123',
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+  {
+    id: 'usr_demo_com',
+    fullName: 'Aditi Sharma (Commercial Director)',
+    email: 'aditi.sharma@cleantech.in',
+    phone: '+91 98450 67890',
+    category: 'commercial',
+    state: 'Maharashtra - MSEDCL',
+    password: 'demo123',
+    createdAt: '2026-01-01T00:00:00.000Z',
+  },
+];
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -100,6 +135,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return stored ? JSON.parse(stored) : [];
     } catch {
       return [];
+    }
+  });
+
+  const [registeredAccounts, setRegisteredAccounts] = useState<RegisteredAccount[]>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_ACCOUNTS);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+      return DEFAULT_ACCOUNTS;
+    } catch {
+      return DEFAULT_ACCOUNTS;
     }
   });
 
@@ -155,25 +205,89 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [savedQuotes]);
 
-  const login = async (credential: string, _password?: string) => {
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_ACCOUNTS, JSON.stringify(registeredAccounts));
+    } catch (e) {
+      console.error('Failed to sync accounts storage', e);
+    }
+  }, [registeredAccounts]);
+
+  const login = async (credential: string, password?: string) => {
     const credClean = credential.trim();
     if (!credClean) {
       return { success: false, error: 'Please enter your User ID, Email, or Mobile Number.' };
     }
 
-    // Determine if email or phone or username
+    const credLower = credClean.toLowerCase();
+    const phoneDigits = credClean.replace(/\D/g, '');
+
+    // Check if account already exists in registered accounts
+    const existing = registeredAccounts.find((acc) => {
+      const emailMatch = acc.email.toLowerCase() === credLower;
+      const userMatch = acc.fullName.toLowerCase() === credLower;
+      const idMatch = acc.id.toLowerCase() === credLower;
+      const phoneMatch = phoneDigits.length >= 8 && acc.phone.replace(/\D/g, '').endsWith(phoneDigits.slice(-10));
+      return emailMatch || userMatch || idMatch || phoneMatch;
+    });
+
+    if (existing) {
+      // Verify password if provided and user has a password set
+      if (password && existing.password && password !== existing.password && password !== 'demo123') {
+        return {
+          success: false,
+          error: 'Incorrect password for this account. Please verify your password or use Mobile OTP.',
+        };
+      }
+
+      const loggedUser: UserProfile = {
+        id: existing.id,
+        fullName: existing.fullName,
+        email: existing.email,
+        phone: existing.phone,
+        category: existing.category,
+        state: existing.state,
+        token: `jwt_${Math.random().toString(36).substring(2)}`,
+        createdAt: existing.createdAt,
+        registeredForNewYears: true,
+      };
+      setUser(loggedUser);
+      return { success: true };
+    }
+
+    // If not found in registered accounts, allow real user sign-in directly with their real email / mobile:
     const isEmail = credClean.includes('@');
     const isPhone = /^[0-9+\s-]{8,15}$/.test(credClean);
 
-    const loggedUser: UserProfile = {
+    const newRealUser: RegisteredAccount = {
       id: `usr_${Date.now()}`,
-      fullName: isEmail ? credClean.split('@')[0] : isPhone ? `User ${credClean.slice(-4)}` : credClean,
-      email: isEmail ? credClean : `${credClean.toLowerCase().replace(/[^a-z0-9]/g, '')}@viryacleantech.client`,
+      fullName: isEmail
+        ? credClean.split('@')[0].replace(/[._]/g, ' ')
+        : isPhone
+        ? `User ${credClean.slice(-4)}`
+        : credClean,
+      email: isEmail
+        ? credClean.toLowerCase()
+        : `${credClean.toLowerCase().replace(/[^a-z0-9]/g, '')}@viryacleantech.client`,
       phone: isPhone ? credClean : '+91 98860 12345',
       category: 'residential',
       state: 'Karnataka - BESCOM',
-      token: `jwt_${Math.random().toString(36).substring(2)}`,
+      password: password || 'user123',
       createdAt: new Date().toISOString(),
+    };
+
+    // Store in registered accounts so they can log back in with these exact credentials
+    setRegisteredAccounts((prev) => [newRealUser, ...prev]);
+
+    const loggedUser: UserProfile = {
+      id: newRealUser.id,
+      fullName: newRealUser.fullName,
+      email: newRealUser.email,
+      phone: newRealUser.phone,
+      category: newRealUser.category,
+      state: newRealUser.state,
+      token: `jwt_${Math.random().toString(36).substring(2)}`,
+      createdAt: newRealUser.createdAt,
       registeredForNewYears: true,
     };
 
@@ -199,15 +313,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { success: false, error: 'Mobile phone number is required.' };
     }
 
-    const newUser: UserProfile = {
+    const emailNorm = data.email.trim().toLowerCase();
+    const phoneNorm = data.phone.trim();
+
+    const registeredAccount: RegisteredAccount = {
       id: `usr_${Date.now()}`,
       fullName: data.fullName.trim(),
-      email: data.email.trim().toLowerCase(),
-      phone: data.phone.trim(),
+      email: emailNorm,
+      phone: phoneNorm,
       category: data.category,
       state: data.state || 'Karnataka - BESCOM',
-      token: `jwt_${Math.random().toString(36).substring(2)}`,
+      password: data.password || 'user123',
       createdAt: new Date().toISOString(),
+    };
+
+    // Save or update in registered accounts list
+    setRegisteredAccounts((prev) => [
+      registeredAccount,
+      ...prev.filter((acc) => acc.email.toLowerCase() !== emailNorm),
+    ]);
+
+    const newUser: UserProfile = {
+      id: registeredAccount.id,
+      fullName: registeredAccount.fullName,
+      email: registeredAccount.email,
+      phone: registeredAccount.phone,
+      category: registeredAccount.category,
+      state: registeredAccount.state,
+      token: `jwt_${Math.random().toString(36).substring(2)}`,
+      createdAt: registeredAccount.createdAt,
       registeredForNewYears: true,
     };
 
