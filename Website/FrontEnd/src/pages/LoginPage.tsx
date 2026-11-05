@@ -219,7 +219,7 @@ export default function LoginPage() {
           <div className="mt-6 text-center text-xs text-white/60">
             Don&apos;t have an account yet?{' '}
             <Link to="/register" className="font-bold text-emerald-400 hover:underline">
-              Register for New Year Savings →
+              Register as a New User →
             </Link>
           </div>
         </div>

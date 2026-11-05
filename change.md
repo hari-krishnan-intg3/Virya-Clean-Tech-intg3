@@ -19,12 +19,12 @@
     6. *Mobile Towers & Solar Telecom Towers (Diesel genset replacement)*
 
 - **User Registration & Login with Dynamic Navigation** (`AuthContext.tsx`, `LoginPage.tsx`, `RegisterPage.tsx`, `NavbarContainer.tsx`):
-  - **"Register for New Years" Portal** (`RegisterPage.tsx`): 2026 Energy Independence registration capturing category (Residential vs Commercial), contact info, and utility DISCOM, automatically synced to `/api/leads`.
+  - **"New User Registration" Portal** (`RegisterPage.tsx`): CleanTech Energy registration capturing category (Residential vs Commercial), contact info, and utility DISCOM, automatically synced to `/api/leads`.
   - **User Login** (`LoginPage.tsx`): Multi-mode sign-in supporting User ID, Email, or Mobile OTP verification with demo quick-access triggers.
   - **Dynamic Navigation Integration** (`NavbarContainer.tsx` & `MegaMenu.tsx`):
     - When authenticated, the main navigation bar dynamically reveals an additional menu item: **"ROI Calculators"** (`/roi-calculator`).
     - User account pill shows user profile name, category badge, and one-click Logout.
-    - When guest, clean "Sign In" and "Register (New Year)" links are displayed.
+    - When guest, clean "Sign In" and "New User Register" links are displayed.
   - **User Dashboard & History**: Saved calculations and generated proposals persisted in local state.
 
 - **CleanTech Energy Independence E-Book Auto-Delivery** (`EbookDownloadModal.tsx`):

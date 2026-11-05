@@ -174,7 +174,7 @@ export function NavbarContainer() {
                     className="hidden xl:inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 hover:bg-emerald-500/30 transition shadow-sm"
                   >
                     <Sparkles className="h-3 w-3 text-emerald-400" />
-                    <span>Register (New Year)</span>
+                    <span>New User Register</span>
                   </Link>
                 </div>
               )}
@@ -367,7 +367,7 @@ export function NavbarContainer() {
                         className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-600/30 bg-emerald-50 py-2.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100"
                       >
                         <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
-                        <span>Register (New Year)</span>
+                        <span>New User Register</span>
                       </Link>
                     </div>
                   )}

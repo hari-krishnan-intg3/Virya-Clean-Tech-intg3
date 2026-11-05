@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   BookOpen,
   Building,
@@ -29,25 +29,29 @@ import { CalculatorEquipmentSlider } from '@/components/calculator/CalculatorEqu
 
 export default function RoiCalculatorPage() {
   const { user, isAuthenticated, saveCalculation, savedCalculations } = useAuth();
+  const [searchParams] = useSearchParams();
+
+  const initialCategory = searchParams.get('mode') === 'commercial' ? 'commercial' : (user?.category || 'residential');
 
   // Mode: Residential vs Commercial
-  const [category, setCategory] = useState<'residential' | 'commercial'>(
-    user?.category || 'residential'
-  );
+  const [category, setCategory] = useState<'residential' | 'commercial'>(initialCategory);
 
   // Selected technology
-  const [techType, setTechType] = useState<TechnologyType>('solar-rooftop');
+  const initialTech = (searchParams.get('tech') as TechnologyType) || 'solar-rooftop';
+  const [techType, setTechType] = useState<TechnologyType>(
+    Object.keys(TECHNOLOGIES).includes(initialTech) ? initialTech : 'solar-rooftop'
+  );
 
   // Input states
   const [discomKey, setDiscomKey] = useState<string>('karnataka-bescom');
   const [monthlyBill, setMonthlyBill] = useState<number>(
-    category === 'residential' ? 4200 : 85000
+    initialCategory === 'residential' ? 4200 : 85000
   );
   const [monthlyUnits, setMonthlyUnits] = useState<number>(
-    category === 'residential' ? 520 : 9500
+    initialCategory === 'residential' ? 520 : 9500
   );
   const [sanctionedLoad, setSanctionedLoad] = useState<number>(
-    category === 'residential' ? 5 : 65
+    initialCategory === 'residential' ? 5 : 65
   );
   const [customSystemSize, setCustomSystemSize] = useState<number>(0);
 
@@ -56,9 +60,9 @@ export default function RoiCalculatorPage() {
   const [uploadStatus, setUploadStatus] = useState<string | null>(null);
 
   // Modals
-  const [showQuoteModal, setShowQuoteModal] = useState(false);
-  const [showEbookModal, setShowEbookModal] = useState(false);
-  const [showFullTable, setShowFullTable] = useState(false);
+  const [showQuoteModal, setShowQuoteModal] = useState(searchParams.get('modal') === 'quote');
+  const [showEbookModal, setShowEbookModal] = useState(searchParams.get('modal') === 'ebook');
+  const [showFullTable, setShowFullTable] = useState(searchParams.get('table') === 'full');
 
   // Category switch helper
   const handleCategorySwitch = (cat: 'residential' | 'commercial') => {

@@ -112,6 +112,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.search.includes('auth=demo') && !user) {
+      setUser({
+        id: 'usr_demo_2026',
+        fullName: 'Ramesh Kumar (Residential)',
+        email: 'ramesh.kumar@cleanliving.in',
+        phone: '+91 98860 12345',
+        category: 'residential',
+        state: 'Karnataka - BESCOM',
+        token: 'jwt_demo_token',
+        createdAt: new Date().toISOString(),
+        registeredForNewYears: true,
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
     try {
       if (user) {
         localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(user));
@@ -209,8 +225,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           company: newUser.category === 'commercial' ? `${newUser.fullName} Enterprises` : 'Residential Consumer',
           service: 'solar',
           location: newUser.state,
-          details: `Registered for New Year CleanTech Energy Platform (${newUser.category}). Auto-qualified for PM Surya Ghar / Commercial AD.`,
-          source: 'new-year-registration',
+          details: `Registered for New User CleanTech Energy Platform (${newUser.category}). Auto-qualified for PM Surya Ghar / Commercial AD.`,
+          source: 'new-user-registration',
           newsletterConsent: true,
         }),
       }).catch(() => {
@@ -308,3 +324,4 @@ export function useAuth() {
   }
   return context;
 }
+

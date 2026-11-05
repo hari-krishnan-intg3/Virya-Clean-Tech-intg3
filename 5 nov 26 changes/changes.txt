@@ -1,0 +1,14 @@
+Savings & ROI Calculator: Added dual Residential/Commercial calculator with electricity bill upload, manual kWh inputs, state tariffs, and full Bill of Quantities (BOQ).
+25-Year Compound Projection: Engineered automated 5% yearly electricity tariff inflation with 0.7%/yr degradation across all 25 years of savings.
+Automated Branded Proposal Generator: Built one-click printable and auto-emailed official PDF quotes with stamped BOQs, cashflow tables, and warranty terms.
+Government Subsidies Highlight: Integrated PM Surya Ghar Muft Bijli Yojana highlighting ₹78,000 DBT subsidies where 3 kW yields over ₹1 Lakh in first-cycle savings.
+User Registration for New Year: Created the New Year CleanTech Energy Registration portal capturing user details and auto-syncing to backend lead intake.
+User Login & Session History: Built multi-mode sign-in with User ID, password, or mobile OTP, persisting calculation histories and saved quotes in dashboard memory.
+Dynamic Navigation Integration: The main navigation dynamically displays an additional "ROI Calculators" menu item and user profile pill only when logged in.
+CleanTech E-Book Auto-Delivery: Automated instant delivery and download of the 2026 CleanTech Energy Independence & Solar Guidebook upon sign-up or calculation.
+Solar Paai (Solar Mats): Added flexible, peel-and-stick lightweight CIGS solar mats for PEB factory sheds and curved roofs to all calculators and menus.
+Sodium-ion Batteries: Added dedicated thermal-runaway safe Sodium BESS stationary storage options and technical specifications across digital presence.
+Hydrogen Generation Plants: Added megawatt-scale PEM and Alkaline green hydrogen water electrolyzer plants for heavy industrial decarbonization.
+Mobile & Telecom Solar Towers: Added dedicated hybrid solar-battery systems replacing diesel generators on cellular telecom cell towers.
+EV Fleet Charging Stations: Integrated depot fast chargers (30kW–360kW DC) and PM E-DRIVE subsidy specifications into calculations and menus.
+8-Slider Carousel Rollout: Deployed 8-slide minimum interactive carousels across every page including Industries, EV Charging, Renewables, and ROI Calculator.

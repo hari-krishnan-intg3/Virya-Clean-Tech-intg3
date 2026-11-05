@@ -440,3 +440,4 @@ function generateBoq(techType: TechnologyType, sizeKw: number, category: 'reside
     { item: 'Net Metering & Cloud Telemetry', specification: 'DISCOM approved bidirectional meter + WiFi/4G Data Logger', quantity: '1 Kit' },
   ];
 }
+

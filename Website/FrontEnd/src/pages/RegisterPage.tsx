@@ -71,7 +71,7 @@ export default function RegisterPage() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-4 py-1 text-xs font-bold text-emerald-300">
             <Sparkles className="h-4 w-4 text-emerald-400" />
-            <span>New Year 2026 CleanTech Energy Registration</span>
+            <span>New User CleanTech Energy Registration</span>
           </div>
           <h1 className="mt-4 text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
             Unlock Your <span className="text-emerald-400">25-Year Clean Energy Returns</span>
@@ -257,7 +257,7 @@ export default function RegisterPage() {
                 <div className="flex items-start gap-2">
                   <Sparkles className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong>New Year Advantage:</strong> You will immediately receive the official 2026 CleanTech Energy Independence E-Book and unlocked access to the interactive 25-year ROI proposal generator.
+                    <strong>New User Advantage:</strong> You will immediately receive the official 2026 CleanTech Energy Independence E-Book and unlocked access to the interactive 25-year ROI proposal generator.
                   </span>
                 </div>
               </div>
@@ -291,3 +291,4 @@ export default function RegisterPage() {
     </div>
   );
 }
+
