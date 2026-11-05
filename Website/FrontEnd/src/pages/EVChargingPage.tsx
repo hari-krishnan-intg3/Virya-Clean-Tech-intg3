@@ -8,6 +8,7 @@ import {
   Calculator,
   CarFront,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   CircleDollarSign,
   Clock3,
@@ -15,18 +16,77 @@ import {
   MapPin,
   PlugZap,
   Route,
+  Sparkles,
   Truck,
   Zap,
   Layers,
   Cpu,
   ShieldCheck,
 } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import type { Swiper as SwiperClass } from 'swiper';
 import { CtaBand } from '@/components/sections/PageHero';
 import { RegionalLocator } from '@/components/RegionalLocator';
 import { RevenueCalculators } from '@/components/solutions/RevenueCalculators';
 import { Reveal, SmartImage } from '@/components/ui';
 import { visualAssets } from '@/data/visuals';
 import { EV_VEHICLE_DATABASE } from '@/data/offeringsArchitecture';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+const EV_SLIDES_8 = [
+  {
+    badge: 'Depot Fleet Charging',
+    title: '30kW–120kW Dual Gun DC Fast Chargers',
+    spec: 'CCS2 / GB-T Standard • Dynamic Load Balancing',
+    desc: 'Engineered for last-mile delivery vans and intra-city logistics fleets with automated overnight queuing.',
+  },
+  {
+    badge: 'Transit Bus Electrification',
+    title: '180kW–360kW Megawatt Depot Chargers',
+    spec: 'Dual CCS2 Gun Dispenser • Liquid-Cooled Cables',
+    desc: 'High-current rapid turnaround charging for municipal transit buses and intercity electric coaches.',
+  },
+  {
+    badge: 'Highway Corridor HPC',
+    title: 'High-Power Opportunity Pantographs (450kW)',
+    spec: 'SAE J3105 Inverted Pantograph • 12-Min Top-Up',
+    desc: 'Ultra-fast opportunity charging at terminal layovers and key freight highway corridors.',
+  },
+  {
+    badge: 'Workplace & Community AC',
+    title: '7.4kW–22kW Smart AC Type-2 Chargers',
+    spec: 'RFID Access • Dynamic Load Sharing • App Billing',
+    desc: 'Seamless multi-bay charging for corporate IT campuses, commercial tech parks, and luxury apartments.',
+  },
+  {
+    badge: '90-Sec Battery Swapping',
+    title: 'Automated 12-Bay Battery Swap Kiosks',
+    spec: '90-Second Exchange • Cell SoH Telemetry',
+    desc: 'Designed for high-mileage 2-wheeler delivery riders and 3-wheeler passenger auto-rickshaws.',
+  },
+  {
+    badge: 'Heavy Hauler Megawatt (MCS)',
+    title: 'Megawatt Charging System for 40–55T Haulers',
+    spec: 'Up to 1250V / 1000A+ • Ultra-Heavy Duty',
+    desc: 'Dedicated high-power charging for heavy mining, industrial freight, and port container haulers.',
+  },
+  {
+    badge: 'Solar-BESS Buffer Microgrid',
+    title: 'Co-Located Rooftop Solar & Containerized BESS',
+    spec: 'Zero Transformer Overload • Peak Tariff Shaving',
+    desc: 'Buffering coincident peak charging demand using on-site battery storage and solar canopies.',
+  },
+  {
+    badge: 'Government Schemes & Subsidies',
+    title: 'PM E-DRIVE Scheme Direct Subsidies',
+    spec: 'Up to 50% EVSE Subsidies • FAME-Successor Framework',
+    desc: 'Direct capital incentives for public EV charging networks, bus depot electrification, and municipal hubs.',
+  },
+];
 
 const SEGMENTS = {
   passenger: {
@@ -197,6 +257,8 @@ export default function EVChargingPage() {
   const [gridFactor, setGridFactor] = useState(0.716);
   const [fuelFactor, setFuelFactor] = useState(2.31);
   const [activeCity, setActiveCity] = useState(CITIES[0]);
+  const [evSliderIdx, setEvSliderIdx] = useState(0);
+  const [evSwiper, setEvSwiper] = useState<SwiperClass | null>(null);
 
   if (segment && !(segment in SEGMENTS)) return <Navigate to="/services/ev-charging" replace />;
 
@@ -305,6 +367,96 @@ export default function EVChargingPage() {
                 High-Uptime EVSE Sizing & Deployment
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8-Slide EV Fleet & HPC Charging Carousel */}
+      <section className="border-b border-line bg-card py-10">
+        <div className="shell">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-4">
+            <div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700">
+                <Sparkles className="h-3.5 w-3.5" />
+                8 EV Charging Infrastructures (30kW–450kW)
+              </span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-ink mt-1">
+                Engineered Charging Solutions & Subsidies
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs font-bold text-ink-faint mr-2">
+                0{evSliderIdx + 1} <span className="text-slate-300">/</span> 0{EV_SLIDES_8.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => evSwiper?.slidePrev()}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-white text-ink hover:bg-mist transition active:scale-95 shadow-sm"
+                aria-label="Previous EV slide"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => evSwiper?.slideNext()}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-white text-ink hover:bg-mist transition active:scale-95 shadow-sm"
+                aria-label="Next EV slide"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <Swiper
+              modules={[Autoplay, Navigation, Pagination]}
+              autoplay={{ delay: 8500, disableOnInteraction: false }}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                768: { slidesPerView: 2 },
+                1280: { slidesPerView: 4 },
+              }}
+              onSwiper={setEvSwiper}
+              onSlideChange={(s) => setEvSliderIdx(s.realIndex)}
+            >
+              {EV_SLIDES_8.map((slide, idx) => (
+                <SwiperSlide key={slide.title}>
+                  <div className="h-full rounded-2xl border border-line bg-mist/60 p-5 flex flex-col justify-between hover:border-emerald-600/40 transition">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="rounded-full bg-emerald-100 border border-emerald-300 px-2.5 py-0.5 text-[0.65rem] font-bold text-emerald-800 uppercase">
+                          {slide.badge}
+                        </span>
+                        <span className="font-mono text-xs font-bold text-slate-400">
+                          0{idx + 1}.
+                        </span>
+                      </div>
+                      <h3 className="mt-3 text-sm sm:text-base font-bold text-ink">
+                        {slide.title}
+                      </h3>
+                      <p className="mt-1 text-[0.7rem] font-semibold text-emerald-700">
+                        {slide.spec}
+                      </p>
+                      <p className="mt-2 text-xs leading-relaxed text-ink-muted">
+                        {slide.desc}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-line">
+                      <Link
+                        to="/roi-calculator"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800"
+                      >
+                        <span>Calculate Fleet ROI</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </section>

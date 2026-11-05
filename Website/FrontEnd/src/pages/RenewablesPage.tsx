@@ -3,18 +3,78 @@ import { Link, Navigate, useLocation, useParams } from 'react-router-dom';
 import {
   ArrowRight,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   CircleDollarSign,
   Factory,
   MapPin,
+  Sparkles,
   Sun,
   Wind,
   Zap,
 } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import type { Swiper as SwiperClass } from 'swiper';
 import { CtaBand } from '@/components/sections/PageHero';
 import { RegionalLocator } from '@/components/RegionalLocator';
 import { Reveal, SmartImage } from '@/components/ui';
 import { visualAssets } from '@/data/visuals';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+const RENEWABLES_SLIDES_8 = [
+  {
+    badge: 'Solar Generation',
+    title: 'Tier-1 Mono PERC & N-Type TOPCon Panels',
+    spec: '22.8% Module Efficiency • ALMM Certified',
+    desc: 'High-density rigid bifacial panels optimized for concrete factory roofs and utility-scale ground mount solar farms.',
+  },
+  {
+    badge: 'Lightweight Innovation',
+    title: 'Solar Mat / Solar Paai (Flexible CIGS)',
+    spec: '2.9 kg/m² • Zero Roof Punctures • Peel-and-Stick',
+    desc: 'Engineered for curved industrial roofs, old asbestos or lightweight metal PEB sheds where rigid panels are rejected.',
+  },
+  {
+    badge: 'Architectural Solar',
+    title: 'Engineered Commercial Solar Carports',
+    spec: 'Double Cantilever Design • EVSE Integration',
+    desc: 'Converts corporate and commercial parking lots into on-site renewable power generators with shaded EV charging bays.',
+  },
+  {
+    badge: 'Wind Energy',
+    title: 'Low-Wind Class-III Utility Wind Turbines',
+    spec: '140m–160m Hub Heights • 3.0MW–4.2MW Turbines',
+    desc: 'Sited along Kayathar, Tirunelveli, and coastal corridors to maximize annual capacity utilization factor (CUF > 36%).',
+  },
+  {
+    badge: 'Hybrid Microgrid',
+    title: 'Synchronized Solar-Wind-BESS Microgrids',
+    spec: 'Sub-20ms Transfer Switch • Zero Curtailment',
+    desc: 'Combines diurnal solar with evening wind generation to achieve flat round-the-clock clean energy output.',
+  },
+  {
+    badge: 'Clean Fuel Decarbonization',
+    title: 'Green Hydrogen Generation Plants',
+    spec: 'PEM & Alkaline Water Electrolysis • 99.999% Purity',
+    desc: 'Decarbonizes thermal processes, chemical production, and heavy transport with zero fossil emissions.',
+  },
+  {
+    badge: 'Telecom Infrastructure',
+    title: 'Mobile Towers & Solar Telecom Towers',
+    spec: '-48V DC Telecom Output • 90%+ Diesel Avoided',
+    desc: 'Replaces noisy diesel gensets on cellular base stations with dedicated solar PV and sodium/LFP battery banks.',
+  },
+  {
+    badge: 'Government Scheme',
+    title: 'PM Surya Ghar Muft Bijli Yojana (₹78k Subsidy)',
+    spec: '3 kW System -> Save Over ₹1 Lakh in Year 1',
+    desc: 'Direct Benefit Transfer (DBT) subsidies deposited directly into the consumer account, yielding instant paybacks.',
+  },
+];
 
 const SOLAR_TYPES = {
   rigid: {
@@ -199,6 +259,8 @@ export default function RenewablesPage() {
   const [investment, setInvestment] = useState(12000000); // ₹
   const [gridFactor, setGridFactor] = useState(0.716); // kg CO₂/kWh
   const [mapPlace, setMapPlace] = useState(isWind ? 'Kayathar, Tamil Nadu' : 'Bengaluru');
+  const [renSliderIdx, setRenSliderIdx] = useState(0);
+  const [renSwiper, setRenSwiper] = useState<SwiperClass | null>(null);
 
   const selected = category
     ? isWind
@@ -332,6 +394,96 @@ export default function RenewablesPage() {
                 {isWind ? 'Kayathar Corridor Wind Engineering' : 'Tier-1 Mono PERC & TOPCon Photovoltaics'}
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8-Slide CleanTech & Renewables Carousel */}
+      <section className="border-b border-line bg-card py-10">
+        <div className="shell">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-4">
+            <div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700">
+                <Sparkles className="h-3.5 w-3.5" />
+                8 Solar, Wind, Paai, Hydrogen & Subsidies
+              </span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-ink mt-1">
+                Engineered Clean Energy Generation Technologies
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs font-bold text-ink-faint mr-2">
+                0{renSliderIdx + 1} <span className="text-slate-300">/</span> 0{RENEWABLES_SLIDES_8.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => renSwiper?.slidePrev()}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-white text-ink hover:bg-mist transition active:scale-95 shadow-sm"
+                aria-label="Previous renewable slide"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => renSwiper?.slideNext()}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-white text-ink hover:bg-mist transition active:scale-95 shadow-sm"
+                aria-label="Next renewable slide"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <Swiper
+              modules={[Autoplay, Navigation, Pagination]}
+              autoplay={{ delay: 8500, disableOnInteraction: false }}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                768: { slidesPerView: 2 },
+                1280: { slidesPerView: 4 },
+              }}
+              onSwiper={setRenSwiper}
+              onSlideChange={(s) => setRenSliderIdx(s.realIndex)}
+            >
+              {RENEWABLES_SLIDES_8.map((slide, idx) => (
+                <SwiperSlide key={slide.title}>
+                  <div className="h-full rounded-2xl border border-line bg-mist/60 p-5 flex flex-col justify-between hover:border-emerald-600/40 transition">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="rounded-full bg-emerald-100 border border-emerald-300 px-2.5 py-0.5 text-[0.65rem] font-bold text-emerald-800 uppercase">
+                          {slide.badge}
+                        </span>
+                        <span className="font-mono text-xs font-bold text-slate-400">
+                          0{idx + 1}.
+                        </span>
+                      </div>
+                      <h3 className="mt-3 text-sm sm:text-base font-bold text-ink">
+                        {slide.title}
+                      </h3>
+                      <p className="mt-1 text-[0.7rem] font-semibold text-emerald-700">
+                        {slide.spec}
+                      </p>
+                      <p className="mt-2 text-xs leading-relaxed text-ink-muted">
+                        {slide.desc}
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-line">
+                      <Link
+                        to="/roi-calculator"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800"
+                      >
+                        <span>Calculate 25-Yr ROI</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
       </section>

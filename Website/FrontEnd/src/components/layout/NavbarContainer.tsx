@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { ChevronDown, Menu, X } from 'lucide-react';
+import { ChevronDown, LogIn, LogOut, Menu, Sparkles, User, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Logo } from '@/components/ui';
 import { MegaMenu } from './MegaMenu';
-import { NAV } from '@/app/siteConfig';
+import { NAV, type NavGroup } from '@/app/siteConfig';
+import { useAuth } from '@/context/AuthContext';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { useScrolled } from '@/hooks/useScrolled';
 import { cn } from '@/lib/utils';
 import { trackEvent } from '@/lib/utils';
-
-const NAV_ORDER = ['Home', 'Offerings', 'Industries', 'Carbon Economics', 'Energy Platforms', 'Insights', 'About'];
-const orderedNav = [...NAV].sort((left, right) => NAV_ORDER.indexOf(left.label) - NAV_ORDER.indexOf(right.label));
 
 /**
  * Primary navigation.
@@ -19,8 +17,11 @@ const orderedNav = [...NAV].sort((left, right) => NAV_ORDER.indexOf(left.label) 
  * Desktop is a hover-revealed mega menu (see `MegaMenu`). Mobile is a full
  * sheet with collapsible groups. Both expose the same destinations so nothing
  * is desktop-only.
+ *
+ * Dynamically reveals "ROI Calculators" and User Session State when authenticated.
  */
 export function NavbarContainer() {
+  const { user, isAuthenticated, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const scrolled = useScrolled(24);
@@ -28,6 +29,30 @@ export function NavbarContainer() {
   const location = useLocation();
 
   const condensed = scrolled || menuOpen || location.pathname !== '/';
+
+  // Dynamically insert "ROI Calculators" when authenticated
+  const orderedNav = useMemo(() => {
+    const base: NavGroup[] = [...NAV];
+    if (isAuthenticated) {
+      base.push({
+        label: 'ROI Calculators',
+        to: '/roi-calculator',
+      });
+    }
+    const NAV_ORDER = [
+      'Home',
+      'Offerings',
+      'Industries',
+      'Carbon Economics',
+      'Energy Platforms',
+      'Insights',
+      'ROI Calculators',
+      'About',
+    ];
+    return base.sort(
+      (left, right) => NAV_ORDER.indexOf(left.label) - NAV_ORDER.indexOf(right.label),
+    );
+  }, [isAuthenticated]);
 
   // Any navigation closes the mobile sheet.
   useEffect(() => {
@@ -107,11 +132,57 @@ export function NavbarContainer() {
             </ul>
 
             {/* ── Actions ─────────────────────────────────────────── */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              {isAuthenticated && user ? (
+                <div className="hidden md:flex items-center gap-2">
+                  <Link
+                    to="/roi-calculator"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-3 py-1.5 text-xs font-bold text-emerald-300 hover:bg-emerald-500/25 transition"
+                  >
+                    <User className="h-3.5 w-3.5" />
+                    <span>{user.fullName.split(' ')[0]}</span>
+                    <span className="rounded bg-emerald-500/30 px-1.5 py-0.2 text-[0.6rem] uppercase tracking-wider text-emerald-200">
+                      {user.category}
+                    </span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    title="Sign Out"
+                    className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-semibold text-white/70 hover:bg-white/10 hover:text-white transition"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                    <span className="hidden xl:inline">Logout</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="hidden md:flex items-center gap-1.5">
+                  <Link
+                    to="/login"
+                    onClick={() => trackEvent('nav_click', { target: 'login' })}
+                    className={cn(
+                      'inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition',
+                      condensed ? 'text-ink hover:text-emerald-700' : 'text-white/80 hover:text-white',
+                    )}
+                  >
+                    <LogIn className="h-3.5 w-3.5" />
+                    <span>Sign In</span>
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => trackEvent('nav_click', { target: 'register' })}
+                    className="hidden xl:inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300 hover:bg-emerald-500/30 transition shadow-sm"
+                  >
+                    <Sparkles className="h-3 w-3 text-emerald-400" />
+                    <span>Register (New Year)</span>
+                  </Link>
+                </div>
+              )}
+
               <Link
                 to="/request-consultation"
                 onClick={() => trackEvent('nav_click', { target: 'consultation' })}
-                className="btn-primary hidden h-10 min-w-[12rem] justify-center px-5 text-sm leading-none shadow-soft sm:inline-flex"
+                className="btn-primary hidden h-10 min-w-[11rem] justify-center px-4 text-xs font-bold leading-none shadow-soft sm:inline-flex"
               >
                 Request Consultation
               </Link>
@@ -253,7 +324,54 @@ export function NavbarContainer() {
                   );
                 })}
 
-                <div className="mt-5 flex flex-col gap-3">
+                <div className="mt-5 flex flex-col gap-2.5">
+                  {isAuthenticated && user ? (
+                    <div className="rounded-xl border border-emerald-500/30 bg-emerald-50 p-3 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-ink flex items-center gap-1.5">
+                          <User className="h-3.5 w-3.5 text-emerald-700" />
+                          <span>{user.fullName} ({user.category})</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            logout();
+                            setMenuOpen(false);
+                          }}
+                          className="font-bold text-rose-600 hover:underline"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                      <Link
+                        to="/roi-calculator"
+                        onClick={() => setMenuOpen(false)}
+                        className="mt-2 block font-semibold text-emerald-700 hover:underline"
+                      >
+                        → Open ROI Calculators & Proposals
+                      </Link>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link
+                        to="/login"
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center justify-center gap-1.5 rounded-xl border border-line bg-white py-2.5 text-xs font-bold text-ink hover:bg-mist"
+                      >
+                        <LogIn className="h-3.5 w-3.5" />
+                        <span>Sign In</span>
+                      </Link>
+                      <Link
+                        to="/register"
+                        onClick={() => setMenuOpen(false)}
+                        className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-600/30 bg-emerald-50 py-2.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100"
+                      >
+                        <Sparkles className="h-3.5 w-3.5 text-emerald-600" />
+                        <span>Register (New Year)</span>
+                      </Link>
+                    </div>
+                  )}
+
                   <Link
                     to="/request-consultation"
                     onClick={() => trackEvent('cta_click', { placement: 'mobile-nav' })}

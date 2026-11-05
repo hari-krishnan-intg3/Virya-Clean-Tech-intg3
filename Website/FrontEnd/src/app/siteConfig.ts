@@ -142,14 +142,36 @@ export const NAV: NavGroup[] = [
       title: 'Full Lifecycle Energy Architecture',
       description: 'End-to-end capabilities spanning electric mobility, solar, wind, storage, AI platforms and utility modernization.',
     },
-    columns: OFFERINGS_TREE.map((pillar) => ({
-      heading: pillar.title,
-      items: pillar.items.map((sub) => ({
-        label: sub.label,
-        to: sub.to,
-        description: sub.description,
+    columns: [
+      ...OFFERINGS_TREE.map((pillar) => ({
+        heading: pillar.title,
+        items: pillar.items.map((sub) => ({
+          label: sub.label,
+          to: sub.to,
+          description: sub.description,
+        })),
       })),
-    })),
+      {
+        heading: 'Government Schemes & Subsidies',
+        items: [
+          {
+            label: 'PM Surya Ghar: Muft Bijli',
+            to: '/roi-calculator',
+            description: '₹78,000 direct DBT subsidy. 3 kW system yields over ₹1 Lakh in first-cycle savings.',
+          },
+          {
+            label: 'Commercial 40% Accelerated Dep.',
+            to: '/roi-calculator',
+            description: 'Section 32 tax shield + Green Energy Open Access (GEOA 100kW threshold).',
+          },
+          {
+            label: 'PM-KUSUM & PM E-DRIVE',
+            to: '/services/ev-charging',
+            description: 'Subsidies for solar ag feeders, solar pumps, and electric transit charging depots.',
+          },
+        ],
+      },
+    ],
     feature: {
       title: 'Need a customized energy architecture?',
       body: 'Engage our technical architects to scope solar, EV charging, storage and smart platforms for your facility.',

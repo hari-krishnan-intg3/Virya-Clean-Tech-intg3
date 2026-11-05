@@ -3,15 +3,26 @@ import { Link } from 'react-router-dom';
 import {
   ArrowRight,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
+  Sparkles,
   TrendingUp,
 } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import type { Swiper as SwiperClass } from 'swiper';
 import { PageHero, CtaBand } from '@/components/sections/PageHero';
 import { SmartImage } from '@/components/ui';
 import { MARKET_SEGMENTS } from '@/data/offeringsArchitecture';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 export default function IndustriesPage() {
   const [activeSegmentSlug, setActiveSegmentSlug] = useState(MARKET_SEGMENTS[0].slug);
+  const [sliderIndex, setSliderIndex] = useState(0);
+  const [swiper, setSwiper] = useState<SwiperClass | null>(null);
 
   return (
     <>
@@ -58,6 +69,113 @@ export default function IndustriesPage() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8-Slide Industry Segments Carousel */}
+      <section className="border-b border-line bg-card py-10">
+        <div className="shell">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-line pb-4">
+            <div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-700">
+                <Sparkles className="h-3.5 w-3.5" />
+                8 Market Segments Carousel
+              </span>
+              <h2 className="text-xl sm:text-2xl font-extrabold text-ink mt-1">
+                Consulting-Led Sector Architectures
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs font-bold text-ink-faint mr-2">
+                0{sliderIndex + 1} <span className="text-slate-300">/</span> 0{MARKET_SEGMENTS.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => swiper?.slidePrev()}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-white text-ink hover:bg-mist transition active:scale-95 shadow-sm"
+                aria-label="Previous industry slide"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => swiper?.slideNext()}
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-line bg-white text-ink hover:bg-mist transition active:scale-95 shadow-sm"
+                aria-label="Next industry slide"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <Swiper
+              modules={[Autoplay, Navigation, Pagination]}
+              autoplay={{ delay: 8000, disableOnInteraction: false }}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                768: { slidesPerView: 2 },
+                1280: { slidesPerView: 3 },
+              }}
+              onSwiper={setSwiper}
+              onSlideChange={(s) => setSliderIndex(s.realIndex)}
+            >
+              {MARKET_SEGMENTS.map((seg, idx) => {
+                const Icon = seg.icon;
+                return (
+                  <SwiperSlide key={seg.slug}>
+                    <div className="h-full rounded-2xl border border-line bg-mist/60 p-5 flex flex-col justify-between hover:border-emerald-600/40 transition">
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-100 text-emerald-800">
+                            <Icon className="h-5 w-5" />
+                          </span>
+                          <span className="font-mono text-xs font-bold text-slate-400">
+                            0{idx + 1}.
+                          </span>
+                        </div>
+                        <h3 className="mt-3 text-base font-bold text-ink">
+                          {seg.title}
+                        </h3>
+                        <p className="mt-1 text-xs font-semibold text-emerald-700">
+                          {seg.tagline}
+                        </p>
+                        <p className="mt-2 text-xs leading-relaxed text-ink-muted line-clamp-3">
+                          {seg.overview}
+                        </p>
+
+                        <div className="mt-4 border-t border-line/70 pt-3">
+                          <span className="text-[0.65rem] font-bold text-ink-faint uppercase tracking-wider block mb-1">
+                            Key Applications
+                          </span>
+                          <div className="flex flex-wrap gap-1">
+                            {seg.applications.slice(0, 3).map((app, i) => (
+                              <span key={i} className="rounded-md bg-white border border-line px-2 py-0.5 text-[0.65rem] text-ink font-medium">
+                                {app}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 pt-3 border-t border-line">
+                        <a
+                          href={`#${seg.slug}`}
+                          onClick={() => setActiveSegmentSlug(seg.slug)}
+                          className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800"
+                        >
+                          <span>Deep Dive Specifications</span>
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
           </div>
         </div>
       </section>

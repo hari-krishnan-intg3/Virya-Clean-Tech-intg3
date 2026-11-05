@@ -44,14 +44,14 @@ export const OFFERINGS_TREE: OfferingPillar[] = [
     tagline: 'High-uptime depot, en-route, and destination EV charging networks.',
     items: [
       {
-        label: 'Fleet Charging',
-        to: '/services/ev-charging/fleets',
-        description: 'Dedicated depot charging systems for delivery vans, logistics fleets, and heavy trucks.',
+        label: 'EV Charging Stations',
+        to: '/services/ev-charging',
+        description: 'High-power DC fast charging hubs (30kW–360kW) and AC Type-2 networks.',
       },
       {
-        label: 'Public Charging Networks',
-        to: '/services/ev-charging',
-        description: 'High-power DC fast charging hubs, highway corridors, and urban commercial charging.',
+        label: 'Fleet Charging & Bus Depots',
+        to: '/services/ev-charging/fleets',
+        description: 'Dedicated depot charging systems for delivery vans, logistics fleets, and transit buses.',
       },
       {
         label: 'Workplace & Community Charging',
@@ -70,17 +70,22 @@ export const OFFERINGS_TREE: OfferingPillar[] = [
       {
         label: 'Solar Energy Systems',
         to: '/services/solar',
-        description: 'Rigid panels, lightweight flexible mats, and engineered commercial rooftop arrays.',
+        description: 'Rigid N-Type TOPCon & bifacial panels with bidirectional DISCOM net-metering.',
+      },
+      {
+        label: 'Solar Mat / Solar Paai',
+        to: '/services/solar',
+        description: 'Ultra-lightweight (2.9 kg/m²) flexible peel-and-stick solar mats for PEB sheds & curved roofs.',
+      },
+      {
+        label: 'Hydrogen Plants',
+        to: '/services/solar',
+        description: 'MW-scale green hydrogen water electrolyzers (PEM/Alkaline) for zero-emission industrial heating.',
       },
       {
         label: 'Hybrid Energy Systems',
         to: '/services/wind-energy',
         description: 'Integrated solar-wind microgrids with synchronized power management and battery storage.',
-      },
-      {
-        label: 'Energy Asset Management',
-        to: '/services/consulting',
-        description: 'Continuous telemetry, predictive maintenance, and degradation analytics for clean assets.',
       },
     ],
   },
@@ -94,17 +99,22 @@ export const OFFERINGS_TREE: OfferingPillar[] = [
       {
         label: 'Battery Storage Systems',
         to: '/services/battery',
-        description: 'Containerized LFP battery storage engineered for peak shaving and power backup.',
+        description: 'Containerized LFP battery storage engineered for peak shaving and factory backup.',
+      },
+      {
+        label: 'Sodium Batteries (Sodium BESS)',
+        to: '/services/battery',
+        description: 'Thermal-runaway safe, abundant non-lithium stationary chemistry for extreme Indian climates.',
+      },
+      {
+        label: 'Mobile Towers & Solar Towers',
+        to: '/services/battery',
+        description: 'Solar-battery hybrid systems replacing diesel gensets on cellular telecom towers with 100% uptime.',
       },
       {
         label: 'Battery Intelligence',
         to: '/services/battery',
-        description: 'AI-driven State-of-Health (SoH), thermal run-away prevention, and cycle life prediction.',
-      },
-      {
-        label: 'Battery Circular Economy',
-        to: '/services/battery',
-        description: 'Second-life battery repurposing, state diagnostics, and closed-loop recycling pathways.',
+        description: 'AI-driven State-of-Health (SoH), thermal runaway prevention, and cycle life prediction.',
       },
     ],
   },

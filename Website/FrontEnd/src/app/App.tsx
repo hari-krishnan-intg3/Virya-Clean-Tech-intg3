@@ -37,6 +37,9 @@ const ContactPage = lazy(() => import('@/pages/ContactPage'));
 const ConsultationPage = lazy(() => import('@/pages/ConsultationPage'));
 const CareersPage = lazy(() => import('@/pages/CareersPage'));
 const FaqPage = lazy(() => import('@/pages/FaqPage'));
+const LoginPage = lazy(() => import('@/pages/LoginPage'));
+const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
+const RoiCalculatorPage = lazy(() => import('@/pages/RoiCalculatorPage'));
 const ControllerPage = lazy(() => import('@/pages/ControllerPage'));
 const JiraPracticePage = lazy(() => import('@/pages/JiraPracticePage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
@@ -197,6 +200,9 @@ export default function App() {
             <Route path="/request-consultation" element={<ConsultationPage />} />
             <Route path="/careers" element={<CareersPage />} />
             <Route path="/faq" element={<FaqPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/roi-calculator" element={<RoiCalculatorPage />} />
             <Route path="/controller" element={<ControllerPage />} />
             <Route path="/jira-practice" element={<JiraPracticePage />} />
             <Route path="*" element={<NotFoundPage />} />

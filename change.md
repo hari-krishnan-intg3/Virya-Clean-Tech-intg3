@@ -1,5 +1,47 @@
 # Change Notes
 
+## 2026-11-05
+
+- **Savings & ROI Calculator / Automated Proposal Engine** (`RoiCalculatorPage.tsx` & `roiCalculations.ts`):
+  - **Smart Bill Upload & Manual Input**: Drag-and-drop utility bill parser (BESCOM, TANGEDCO, MSEDCL, GUVNL, BSES, TSSPDCL, etc.) with automatic OCR extraction of monthly bill (₹), consumption (kWh), and sanctioned load.
+  - **Dual Calculation Modes**:
+    - *Residential Mode*: 1 kW to 10 kW systems featuring **PM Surya Ghar: Muft Bijli Yojana** subsidies (₹30,000 for 1 kW, ₹60,000 for 2 kW, ₹78,000 for 3 kW+), prominently highlighting *"3 kW System: ₹78,000 Direct DBT Subsidy -> Save over ₹1 Lakh in Year 1!"*.
+    - *Commercial & Industrial Mode*: 10 kW to 2,000 kW systems with Section 32 **40% Accelerated Depreciation (AD)** tax shields, ToD demand charge shaving, and Green Energy Open Access (GEOA 100 kW).
+  - **25-Year Compound Financial Projection with 5% Annual Increase**: Automatically applies a **5% yearly compounding tariff inflation** alongside 0.7%/yr PV degradation to reflect realistic utility rate growth in India across a complete 25-year cashflow table.
+  - **Engineered Bill of Quantities (BOQ)**: Automated sizing for modules/mats, string inverters, HDG mounting structures, DC/AC distribution boards, 1500V cabling, 3-pit chemical earthing, and bidirectional net-meters.
+  - **Automated Branded Quote & Proposal Generator** (`AutomatedQuoteModal.tsx`): One-click printable/exportable official proposal with unique reference (`VCT-PROP-2026-XXXX`), itemized BOQ, 25-year cashflows, warranty SLAs, and auto-email integration.
+  - **CleanTech Technology Expansions**: Dedicated calculations and options for:
+    1. *Solar Rooftop (TOPCon / Bifacial)*
+    2. *Solar Mat / Solar Paai (Lightweight 2.9 kg/m² peel-and-stick flexible CIGS for PEB sheds & curved roofs)*
+    3. *EV Charging Infrastructure (30kW–360kW DC Fast & 22kW AC)*
+    4. *Sodium-Ion Batteries (Sodium BESS non-lithium fire-safe storage)*
+    5. *Green Hydrogen Generation Plants (PEM & Alkaline electrolyzers)*
+    6. *Mobile Towers & Solar Telecom Towers (Diesel genset replacement)*
+
+- **User Registration & Login with Dynamic Navigation** (`AuthContext.tsx`, `LoginPage.tsx`, `RegisterPage.tsx`, `NavbarContainer.tsx`):
+  - **"Register for New Years" Portal** (`RegisterPage.tsx`): 2026 Energy Independence registration capturing category (Residential vs Commercial), contact info, and utility DISCOM, automatically synced to `/api/leads`.
+  - **User Login** (`LoginPage.tsx`): Multi-mode sign-in supporting User ID, Email, or Mobile OTP verification with demo quick-access triggers.
+  - **Dynamic Navigation Integration** (`NavbarContainer.tsx` & `MegaMenu.tsx`):
+    - When authenticated, the main navigation bar dynamically reveals an additional menu item: **"ROI Calculators"** (`/roi-calculator`).
+    - User account pill shows user profile name, category badge, and one-click Logout.
+    - When guest, clean "Sign In" and "Register (New Year)" links are displayed.
+  - **User Dashboard & History**: Saved calculations and generated proposals persisted in local state.
+
+- **CleanTech Energy Independence E-Book Auto-Delivery** (`EbookDownloadModal.tsx`):
+  - Automatic download and delivery of the 2026 *CleanTech Energy Independence & Solar Guidebook* covering PM Surya Ghar subsidy navigation, commercial AD tax depreciation, Solar Paai installation, and equipment checklists.
+
+- **8-Slide Carousels Across All Pages**:
+  - `RoiCalculatorPage.tsx`: Built `CalculatorEquipmentSlider.tsx` with 8 slides across all equipment, technologies, and government schemes.
+  - `IndustriesPage.tsx`: Added an 8-slide interactive Swiper carousel covering all 8 consulting-led market segments.
+  - `EVChargingPage.tsx`: Added an 8-slide interactive Swiper carousel covering depot DC fast charging, bus pantographs, MCS megawatt charging, battery swap kiosks, and PM E-DRIVE subsidies.
+  - `RenewablesPage.tsx`: Added an 8-slide interactive Swiper carousel covering TOPCon rigid modules, Solar Paai flexible mats, carports, wind turbines, hydrogen plants, telecom solar towers, and PM Surya Ghar subsidies.
+  - Existing 8-slide carousels on `HomePage.tsx` (Hero 8-slider, Use Cases 8-slider), `ServicesPage.tsx` (SolutionsShowcaseSlider 8-slider), `CarbonEconomicsPage.tsx` (8-slider), and `InsightsPage.tsx` (8-slider) verified.
+
+- **Full Mega Menu Expansion**:
+  - Added dedicated items for *Fleets*, *EV Charging Stations*, *Solar Energy Systems*, *Solar Mat / Solar Paai*, *Mobile Towers & Solar Telecom Towers*, *Hydrogen Plants*, *Sodium Batteries*, and *Government Schemes & Subsidies* (PM Surya Ghar ₹78,000 DBT, PM-KUSUM, PM E-DRIVE, GEOA 100kW).
+
+
+
 ## 2026-11-02
 
 - Master 100 Production-Ready B2B Email Outreach Templates:
