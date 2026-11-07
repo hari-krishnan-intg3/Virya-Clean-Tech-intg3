@@ -151,21 +151,33 @@ export function AutomatedQuoteModal({
             </div>
           </div>
 
-          {/* Client Details */}
+          {/* Client Details & Energy Economics */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs">
             <div>
               <span className="font-bold text-slate-400 uppercase tracking-wider text-[0.65rem]">Prepared For</span>
               <p className="font-bold text-sm text-slate-900 mt-0.5">{name}</p>
               <p className="text-slate-600">{email || 'Verified Client'} • {phone || '+91'}</p>
-              <p className="text-slate-600">Site Location: {result.selectedDiscom}</p>
+              <p className="text-slate-600">Location: <span className="font-semibold text-slate-900">{result.selectedDiscom}</span></p>
+              <p className="text-slate-600 mt-1">
+                State Scheme: <strong className="text-emerald-700">{result.stateGovtScheme.stateSchemeName}</strong>
+              </p>
             </div>
             <div>
-              <span className="font-bold text-slate-400 uppercase tracking-wider text-[0.65rem]">System Classification</span>
+              <span className="font-bold text-slate-400 uppercase tracking-wider text-[0.65rem]">Energy Economics & Baseline</span>
               <p className="font-bold text-sm text-slate-900 mt-0.5">
                 {result.recommendedSystemSizeKw} kW {result.techType.replace('-', ' ').toUpperCase()}
               </p>
-              <p className="text-slate-600">Category: <span className="capitalize font-semibold text-emerald-800">{result.category}</span></p>
-              <p className="text-slate-600">Monthly Baseline: ₹{result.monthlyBillInr.toLocaleString('en-IN')} (~{result.monthlyUnitsKwh} kWh)</p>
+              <div className="mt-1 space-y-0.5 text-slate-600">
+                <p>
+                  Tariff on Bill: <strong className="text-slate-900 font-mono">₹{result.activeTariffRate.toFixed(2)}/kWh</strong> ({result.category === 'residential' ? `Res Slab | Com: ₹${result.commercialTariffRate}/kWh` : `Com Slab | Res: ₹${result.residentialTariffRate}/kWh`})
+                </p>
+                <p>
+                  Units Required: <strong className="text-slate-900 font-mono">{result.monthlyUnitsKwh.toLocaleString('en-IN')} kWh/mo</strong> (Bill ÷ Tariff = ~{result.dailyUnitsKwh} kWh/day)
+                </p>
+                <p>
+                  Per Capita Usage: <strong className="text-emerald-700 font-mono">{result.perCapitaMonthlyKwh} kWh/person/mo</strong> ({result.perCapitaBenchmarkRatio}x India Avg of 105 kWh/mo)
+                </p>
+              </div>
             </div>
           </div>
 

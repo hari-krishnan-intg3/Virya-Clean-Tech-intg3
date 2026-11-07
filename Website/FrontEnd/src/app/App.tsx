@@ -40,6 +40,7 @@ const FaqPage = lazy(() => import('@/pages/FaqPage'));
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
 const RoiCalculatorPage = lazy(() => import('@/pages/RoiCalculatorPage'));
+const EbookReaderPage = lazy(() => import('@/pages/EbookReaderPage'));
 const ControllerPage = lazy(() => import('@/pages/ControllerPage'));
 const JiraPracticePage = lazy(() => import('@/pages/JiraPracticePage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
@@ -203,6 +204,7 @@ export default function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/roi-calculator" element={<RoiCalculatorPage />} />
+            <Route path="/ebook-guide" element={<EbookReaderPage />} />
             <Route path="/controller" element={<ControllerPage />} />
             <Route path="/jira-practice" element={<JiraPracticePage />} />
             <Route path="*" element={<NotFoundPage />} />

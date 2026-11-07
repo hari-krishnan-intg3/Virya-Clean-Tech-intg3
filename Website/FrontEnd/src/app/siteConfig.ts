@@ -370,6 +370,8 @@ export const NAV: NavGroup[] = [
       {
         heading: 'Technical Intelligence',
         items: [
+          { label: '2026 CleanTech Guidebook (Special Report)', to: '/ebook-guide', description: 'Comprehensive guide to solar, PM Surya Ghar, Solar Paai & 25-yr ROI.' },
+          { label: 'ROI & Savings Calculator', to: '/roi-calculator', description: 'Interactive 25-year compounding ROI engine with 5% tariff inflation.' },
           { label: 'Latest Insights & Whitepapers', to: '/insights', description: 'Sourced analysis on solar ROI, tariffs & open-access policy.' },
           { label: 'Frequently Asked Questions', to: '/faq', description: 'Technical answers on solar, BESS, EVSE & feasibility.' },
           { label: 'Engineering Methodology', to: '/process', description: 'See how questions progress into site-specific single line diagrams.' },
@@ -436,6 +438,8 @@ export const FOOTER_LINKS = {
   company: [
     { label: 'About', to: '/about' },
     { label: 'Process', to: '/process' },
+    { label: 'ROI Calculator', to: '/roi-calculator' },
+    { label: 'CleanTech E-Book (2026)', to: '/ebook-guide' },
     { label: 'Carbon Economics', to: '/carbon-economics' },
     { label: 'Energy Platforms', to: '/energy-platforms' },
     { label: 'Industries', to: '/industries' },
